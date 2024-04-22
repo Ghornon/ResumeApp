@@ -2,9 +2,12 @@ import { useState } from 'react';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
+import firebase from 'firebase/compat/app';
 
 function App() {
 	const [count, setCount] = useState(0);
+
+	const firebaseApp = firebase.apps;
 
 	return (
 		<>
@@ -17,6 +20,7 @@ function App() {
 				</a>
 			</div>
 			<h1>Vite + React</h1>
+			<h2>{JSON.stringify(firebaseApp)}</h2>
 			<div className="card">
 				<button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
 				<p>
