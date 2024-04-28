@@ -1,6 +1,7 @@
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../config/firebase';
-import { signOut } from 'firebase/auth';
+import { signOut } from 'firebase/auth/cordova';
+
 
 const Dashboard = () => {
     const [user] = useAuthState(auth);

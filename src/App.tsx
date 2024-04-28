@@ -1,63 +1,54 @@
-import { ReactNode, Suspense, useContext } from 'react';
-// import { Auth } from './components/AuthSzymon';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Home from './pages/Home';
+import { Suspense } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
 import NotFound from './pages/NotFound';
-import { AuthContext } from './context/AuthContext';
+import { AuthGuard } from './helpers/AuthGuard';
+import Dashboard from './pages/Dashboard';
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
 import Profile from './pages/Profile';
 
 const App = () => {
-    const { currentUser } = useContext(AuthContext);
-
-    const RequireAuth = ({ children }: { children: ReactNode }) => {
-        return currentUser ? children : <Navigate to="/login" />;
-    };
-
-    const LogIn = ({ children }: { children: ReactNode }) => {
-        return !currentUser ? children : <Navigate to="/" />;
-    };
     return (
         <BrowserRouter>
             <Suspense fallback={<div>Loading...</div>}>
                 <Routes>
                     <Route path="/">
-                        {/* <Route index element={<Auth />} /> */}
                         <Route
                             index
                             element={
-                                <RequireAuth>
-                                    <Home />
-                                </RequireAuth>
+                                <AuthGuard check={true}>
+                                    <Dashboard />
+                                </AuthGuard>
                             }
                         />
                         <Route
-                            path="/login"
+                            path="/signin"
                             element={
-                                <LogIn>
-                                    <Login />
-                                </LogIn>
+                                <AuthGuard check={false}>
+                                    <SignIn />
+                                </AuthGuard>
                             }
                         />
                         <Route
-                            path="/reagister"
+                            path="/signup"
                             element={
-                                <LogIn>
-                                    <Register />
-                                </LogIn>
+                                <AuthGuard check={false}>
+                                    <SignUp />
+                                </AuthGuard>
                             }
                         />
                         <Route
                             path="/profile"
                             element={
-                                <LogIn>
+                                <AuthGuard check={true}>
                                     <Profile />
-                                </LogIn>
+                                </AuthGuard>
                             }
                         />
+
+                        <Route path="*" element={<NotFound />} />
                     </Route>
-                    <Route path="*" element={<NotFound />} />
                 </Routes>
             </Suspense>
         </BrowserRouter>
