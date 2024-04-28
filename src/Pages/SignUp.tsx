@@ -16,12 +16,9 @@ import { Alert, IconButton } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import MicrosoftIcon from '@mui/icons-material/Microsoft';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '../config/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { Navigate } from 'react-router-dom';
 import { addDoc, collection } from 'firebase/firestore';
-import { Spinner } from '../components/Spinner';
 import { SignUpType } from '../types/SignUp.types';
 import { useState } from 'react';
 import { FirebaseError } from 'firebase/app';
@@ -30,7 +27,6 @@ import { FirebaseError } from 'firebase/app';
 const defaultTheme = createTheme();
 
 const SignUp = () => {
-    const [user, loading, authStateError] = useAuthState(auth);
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -101,10 +97,6 @@ const SignUp = () => {
             }
         }
     };
-
-    if (loading) return <Spinner />;
-
-    if (user) return <Navigate to="/dashboard" replace={true} />;
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -266,13 +258,6 @@ const SignUp = () => {
                         ''
                     )}
                 </Box>
-                {authStateError ? (
-                    <Alert variant="filled" severity="error">
-                        {authStateError.message}
-                    </Alert>
-                ) : (
-                    ''
-                )}
             </Container>
         </ThemeProvider>
     );
