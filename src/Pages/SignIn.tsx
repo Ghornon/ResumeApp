@@ -12,7 +12,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Alert, CircularProgress, IconButton } from '@mui/material';
+import { Alert, IconButton } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import MicrosoftIcon from '@mui/icons-material/Microsoft';
@@ -23,6 +23,7 @@ import { Navigate } from 'react-router-dom';
 import { useState } from 'react';
 import { FirebaseError } from 'firebase/app';
 import { SignInType } from '../types/SignIn.types';
+import { Spinner } from '../components/Spinner';
 
 const defaultTheme = createTheme();
 
@@ -68,6 +69,7 @@ const SignIn = () => {
         if (!validateForm()) return;
 
         try {
+            console.log('Logging...');
             await signInWithEmailAndPassword(auth, formData.email, formData.password);
         } catch (e) {
             const error = e instanceof FirebaseError;
@@ -78,14 +80,7 @@ const SignIn = () => {
         }
     };
 
-    if (loading)
-        return (
-            <Grid container spacing={2} minHeight={'100vh'}>
-                <Grid xs display="flex" justifyContent="center" alignItems="center">
-                    <CircularProgress />
-                </Grid>
-            </Grid>
-        );
+    if (loading) return <Spinner />;
 
     if (user) return <Navigate to="/dashboard" replace={true} />;
 

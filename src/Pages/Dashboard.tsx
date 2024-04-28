@@ -1,9 +1,8 @@
-import React from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../config/firebase';
 import { signOut } from 'firebase/auth';
 import { Navigate } from 'react-router-dom';
-import { CircularProgress, Grid } from '@mui/material';
+import { Spinner } from '../components/Spinner';
 
 const Dashboard = () => {
     const [user, loading, error] = useAuthState(auth);
@@ -11,14 +10,7 @@ const Dashboard = () => {
         signOut(auth);
     };
 
-    if (loading)
-        return (
-            <Grid container spacing={2} minHeight={'100vh'}>
-                <Grid xs display="flex" justifyContent="center" alignItems="center">
-                    <CircularProgress />
-                </Grid>
-            </Grid>
-        );
+    if (loading) return <Spinner />;
 
     if (!user) return <Navigate to="/signin" replace={true} />;
 
