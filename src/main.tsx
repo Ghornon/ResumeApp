@@ -2,19 +2,23 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import '@fortawesome/fontawesome-free/css/all.min.css';
+import SignIn from './Pages/SignIn';
+import SignUp from './Pages/SignUp';
+import Dashboard from './Pages/Dashboard';
+
 import './styles/main.scss';
-import { Auth } from './components/Auth';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-	<React.StrictMode>
-		<BrowserRouter>
-			<Routes>
-				<Route path="/">
-					<Route index element={<Auth />} />
-					<Route path="/login" element={<div>LoginPage</div>} />
-				</Route>
-			</Routes>
-		</BrowserRouter>
-	</React.StrictMode>
+    <React.StrictMode>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/">
+                    <Route index element={<SignIn />} />
+                    <Route path="/signin" element={<SignIn />} />
+                    <Route path="/signup" element={<SignUp />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
+                </Route>
+            </Routes>
+        </BrowserRouter>
+    </React.StrictMode>,
 );
