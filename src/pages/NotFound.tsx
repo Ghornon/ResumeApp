@@ -1,6 +1,5 @@
-import { Avatar, Box, Button, Container, Grid, Typography } from '@mui/material';
+import { Box, Button, Grid, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 const NotFound = () => {
     const navigate = useNavigate();
