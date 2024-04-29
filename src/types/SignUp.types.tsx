@@ -1,8 +1,7 @@
-export type SignUpType = {
-    email: string;
-    password: string;
+import { SignInType } from './SignIn.types';
+
+export type SignUpType = SignInType & {
     retype: string;
     firstName: string;
     lastName: string;
-    firebase: string;
 };

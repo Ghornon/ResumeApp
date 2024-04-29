@@ -14,12 +14,13 @@ import Container from '@mui/material/Container';
 import { Alert, IconButton } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import MicrosoftIcon from '@mui/icons-material/Microsoft';
 import { auth } from '../config/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useState } from 'react';
 import { FirebaseError } from 'firebase/app';
 import { SignInType } from '../types/SignIn.types';
+import { useSignInWithGithub, useSignInWithGoogle } from 'react-firebase-hooks/auth';
+import handleSocialLogin from '../helpers/handleSocialLogin';
 
 const SignIn = () => {
     const [formData, setFormData] = useState({
@@ -28,6 +29,8 @@ const SignIn = () => {
     });
 
     const [validationErrors, setValidationErrors] = useState({} as SignInType);
+    const [signInWithGoogle] = useSignInWithGoogle(auth);
+    const [signInWithGithub] = useSignInWithGithub(auth);
 
     const validateForm = () => {
         const validationErrors = {} as SignInType;
@@ -62,7 +65,6 @@ const SignIn = () => {
         if (!validateForm()) return;
 
         try {
-            console.log('Logging...');
             await signInWithEmailAndPassword(auth, formData.email, formData.password);
         } catch (e) {
             const error = e instanceof FirebaseError;
@@ -154,16 +156,30 @@ const SignIn = () => {
                             alignItems: 'center',
                             justifyContent: 'center',
                         }}>
-                        <IconButton color="primary" aria-label="Sign in with Google account">
+                        <IconButton
+                            color="primary"
+                            aria-label="Sign in with Google account"
+                            onClick={() =>
+                                handleSocialLogin(
+                                    signInWithGoogle,
+                                    validationErrors,
+                                    setValidationErrors,
+                                )
+                            }>
                             <GoogleIcon />
                         </IconButton>
 
-                        <IconButton color="primary" aria-label="Sign in with GitHub account">
+                        <IconButton
+                            color="primary"
+                            aria-label="Sign in with GitHub account"
+                            onClick={() =>
+                                handleSocialLogin(
+                                    signInWithGithub,
+                                    validationErrors,
+                                    setValidationErrors,
+                                )
+                            }>
                             <GitHubIcon />
-                        </IconButton>
-
-                        <IconButton color="primary" aria-label="Sign in with Microsoft account">
-                            <MicrosoftIcon />
                         </IconButton>
                     </Box>
                     {validationErrors.firebase ? (
