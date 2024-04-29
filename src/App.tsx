@@ -1,17 +1,17 @@
-import { Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import NotFound from './pages/NotFound';
 import { AuthGuard } from './helpers/AuthGuard';
-import Dashboard from './pages/Dashboard';
-import SignIn from './pages/SignIn';
-import SignUp from './pages/SignUp';
-import Profile from './pages/Profile';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Spinner } from './components/Spinner';
+import NotFound from './pages/NotFound';
+const SignIn = lazy(()=>import('./pages/SignIn'))
+const SignUp = lazy(() => import('./pages/SignUp'));
+const MainLayout = lazy(() => import('./layout/MainLayout'));
+const Dashboard = lazy(()=>import('./pages/Dashboard'))
+const Profile = lazy(() => import('./pages/Profile'));
+const CVMaker = lazy(() => import('./pages/CVMaker/CVMaker'));
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { purple } from '@mui/material/colors';
-import MainLayout from './layout/MainLayout';
-import CVMaker from './pages/CVMaker/CVMaker';
 
 const defaultTheme = createTheme({
     palette: {
