@@ -10,6 +10,8 @@ import Profile from './pages/Profile';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Spinner } from './components/Spinner';
 import { purple } from '@mui/material/colors';
+import MainLayout from './layout/MainLayout';
+import CVMaker from './pages/CVMaker/CVMaker';
 
 const defaultTheme = createTheme({
     palette: {
@@ -27,13 +29,16 @@ const App = () => {
                     <Routes>
                         <Route path="/">
                             <Route
-                                index
+                                path="/"
                                 element={
                                     <AuthGuard check={true}>
-                                        <Dashboard />
+                                        <MainLayout />
                                     </AuthGuard>
-                                }
-                            />
+                                }>
+                                <Route index element={<Dashboard />} />
+                                <Route path="/profile" element={<Profile />} />
+                                <Route path="/cvmaker" element={<CVMaker />} />
+                            </Route>
                             <Route
                                 path="/signin"
                                 element={
@@ -50,15 +55,6 @@ const App = () => {
                                     </AuthGuard>
                                 }
                             />
-                            <Route
-                                path="/profile"
-                                element={
-                                    <AuthGuard check={true}>
-                                        <Profile />
-                                    </AuthGuard>
-                                }
-                            />
-
                             <Route path="*" element={<NotFound />} />
                         </Route>
                     </Routes>
