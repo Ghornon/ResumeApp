@@ -1,5 +1,5 @@
 import { FirebaseError } from 'firebase/app';
-import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import { SignInType } from '../types/SignIn.types';
 import { SignUpType } from '../types/SignUp.types';
@@ -21,13 +21,12 @@ const handleSocialLogin = async (
 
         const displayName = user.displayName.split(' ');
 
-        const usersRef = collection(db, 'users');
-        const q = query(usersRef, where('uid', '==', user.uid));
-        const querySnapshot = await getDocs(q);
+        const usersRef = doc(db, 'users', user.uid);
+        const userSnap = await getDoc(usersRef);
 
-        if (querySnapshot) return;
+        if (userSnap.exists()) return;
 
-        await addDoc(usersRef, {
+        await setDoc(usersRef, {
             uid: user.uid,
             authProvider: 'social',
             email: user.email,
