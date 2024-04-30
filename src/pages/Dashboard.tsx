@@ -1,7 +1,9 @@
+import DocumentTabs from '../layout/DocumentTabs';
+
 const Dashboard = () => {
     return (
         <div>
-            <p>Dashboard</p>
+            <DocumentTabs />
         </div>
     );
 };
