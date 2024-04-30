@@ -5,8 +5,8 @@ import { NavLink } from 'react-router-dom';
 
 const Header = () => {
     return (
-        <AppBar component="header" position="fixed" color="inherit" elevation={0}>
-            <Toolbar>
+        <AppBar component="header" position="fixed" color="inherit" elevation={0} sx={{display: 'flex',alignItems: 'center'}}>
+            <Toolbar sx={{ display: 'flex', maxWidth: '1200px', width: '100%',alignItems: 'center' }}>
                 <NavLink
                     to="/"
                     style={{

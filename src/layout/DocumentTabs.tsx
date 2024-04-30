@@ -3,7 +3,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { Button, Container, Grid } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DocumentPane from '../components/DocumentPane';
 
@@ -47,10 +47,10 @@ export default function DocumentTabs() {
     };
 
     return (
-        <Container>
+        <Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                 <Typography
-                    variant="h4"
+                    variant="h5"
                     sx={{ textTransform: 'uppercase', color: 'primary', fontWeight: 'bold' }}>
                     Documents
                 </Typography>
@@ -80,6 +80,6 @@ export default function DocumentTabs() {
             <CustomTabPanel value={value} index={1}>
                 Item Two
             </CustomTabPanel>
-        </Container>
+        </Box>
     );
 }
