@@ -21,6 +21,8 @@ const handleSocialLogin = async (
 
         const displayName = user.displayName.split(' ');
 
+        console.log(user);
+
         const usersRef = doc(db, 'users', user.uid);
         const userSnap = await getDoc(usersRef);
 
@@ -32,6 +34,7 @@ const handleSocialLogin = async (
             email: user.email,
             firstName: displayName[0],
             lastName: displayName[1],
+            photoURL: user.photoURL,
         });
     } catch (e) {
         const error = e instanceof FirebaseError;

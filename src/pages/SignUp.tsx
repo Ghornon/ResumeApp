@@ -85,6 +85,7 @@ const SignUp = () => {
                 email: formData.email,
                 firstName: formData.firstName,
                 lastName: formData.lastName,
+                photoURL: '',
             });
         } catch (e) {
             const error = e instanceof FirebaseError;
