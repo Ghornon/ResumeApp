@@ -12,6 +12,8 @@ enum languageLevel {
 export type ResumeType = {
     uid: string;
     name: string;
+    template: string;
+    timestamp: Timestamp;
     personalDetails: {
         jobTitle: string;
         photoUrl: string;

@@ -6,6 +6,12 @@ import Box from '@mui/material/Box';
 import { Button, Grid } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DocumentPane from '../components/DocumentPane';
+import { collection, query, where } from 'firebase/firestore';
+import { useCollection } from 'react-firebase-hooks/firestore';
+import { db } from '../config/firebase';
+import { Spinner } from '../components/Spinner';
+import ErrorSnackbar from '../components/ErrorSnackbar';
+import { getAuth } from 'firebase/auth';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -39,12 +45,26 @@ function a11yProps(index: number) {
     };
 }
 
-export default function DocumentTabs() {
+const DocumentTabs = () => {
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
+
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    const [resumesSnapshot, loading, error] = useCollection(
+        query(collection(db, 'resumes'), where('uid', '==', user?.uid)),
+        {
+            snapshotListenOptions: { includeMetadataChanges: true },
+        },
+    );
+
+    if (loading) return <Spinner />;
+
+    if (error) return <ErrorSnackbar>{error.message}</ErrorSnackbar>;
 
     return (
         <Box>
@@ -66,15 +86,22 @@ export default function DocumentTabs() {
             </Box>
             <CustomTabPanel value={value} index={0}>
                 <Grid container spacing={2}>
-                    <Grid item xs={12} md={6}>
-                        <DocumentPane />
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <DocumentPane />
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <DocumentPane />
-                    </Grid>
+                    {resumesSnapshot?.docs.map((doc) => {
+                        const { name, template, timestamp } = doc.data();
+                        console.log(name, template);
+                        const date = new Date(timestamp.seconds * 1000).toLocaleDateString();
+                        return (
+                            <Grid item xs={12} md={6}>
+                                <DocumentPane
+                                    key={doc.id}
+                                    docId={doc.id}
+                                    name={name}
+                                    template={template}
+                                    date={date}
+                                />
+                            </Grid>
+                        );
+                    })}
                 </Grid>
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
@@ -82,4 +109,6 @@ export default function DocumentTabs() {
             </CustomTabPanel>
         </Box>
     );
-}
+};
+
+export default DocumentTabs;

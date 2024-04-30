@@ -4,7 +4,24 @@ import DocumentCard from './DocumentCard';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DownloadIcon from '@mui/icons-material/Download';
 import DeleteIcon from '@mui/icons-material/Delete';
-const DocumentPane = () => {
+import { db } from '../config/firebase';
+import { doc, deleteDoc } from 'firebase/firestore';
+
+const DocumentPane = ({
+    docId,
+    name,
+    template,
+    date,
+}: {
+    docId: string;
+    name: string;
+    template: string;
+    date: string;
+}) => {
+    const handleRemove = async () => {
+        await deleteDoc(doc(db, 'resumes', docId));
+    };
+
     return (
         <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
@@ -13,8 +30,9 @@ const DocumentPane = () => {
                 </Box>
             </Grid>
             <Grid item xs={12} sm={6}>
-                <Typography variant="subtitle1">Title</Typography>
-                <Typography variant="overline">{Date()}</Typography>
+                <Typography variant="subtitle2">{name}</Typography>
+                <Typography variant="subtitle1">Template: {template}</Typography>
+                <Typography variant="overline">{date}</Typography>
                 <Box>
                     <Button variant="text" size="small" startIcon={<ModeEditIcon />}>
                         Edit
@@ -22,7 +40,11 @@ const DocumentPane = () => {
                     <Button variant="text" size="small" startIcon={<DownloadIcon />}>
                         Download
                     </Button>
-                    <Button variant="text" size="small" startIcon={<DeleteIcon />}>
+                    <Button
+                        variant="text"
+                        size="small"
+                        startIcon={<DeleteIcon />}
+                        onClick={handleRemove}>
                         Remove
                     </Button>
                 </Box>
