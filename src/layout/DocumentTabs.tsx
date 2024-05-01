@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { Button, Grid } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import DocumentPane from '../components/DocumentPane';
+import ResumePane from '../components/ResumePane';
 import { collection, query, where } from 'firebase/firestore';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { db } from '../config/firebase';
@@ -96,7 +96,7 @@ const DocumentTabs = () => {
                         const date = new Date(timestamp.seconds * 1000).toLocaleDateString();
                         return (
                             <Grid item xs={12} md={6} key={doc.id}>
-                                <DocumentPane
+                                <ResumePane
                                     docId={doc.id}
                                     name={name}
                                     template={template}

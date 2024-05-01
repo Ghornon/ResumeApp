@@ -4,12 +4,12 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthGuard } from './helpers/AuthGuard';
 import { Spinner } from './components/Spinner';
 import NotFound from './pages/NotFound';
-const SignIn = lazy(()=>import('./pages/SignIn'))
+const SignIn = lazy(() => import('./pages/SignIn'));
 const SignUp = lazy(() => import('./pages/SignUp'));
 const MainLayout = lazy(() => import('./layout/MainLayout'));
-const Dashboard = lazy(()=>import('./pages/Dashboard'))
+const Dashboard = lazy(() => import('./pages/Dashboard'));
 const Profile = lazy(() => import('./pages/Profile'));
-const CVMaker = lazy(() => import('./pages/CVMaker/CVMaker'));
+const CVMaker = lazy(() => import('./pages/Editor/Editor'));
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { purple } from '@mui/material/colors';
 
@@ -37,7 +37,22 @@ const App = () => {
                                 }>
                                 <Route index element={<Dashboard />} />
                                 <Route path="/profile" element={<Profile />} />
-                                <Route path="/cvmaker" element={<CVMaker />} />
+                                <Route
+                                    path="/editor"
+                                    element={
+                                        <AuthGuard check={true}>
+                                            <CVMaker />
+                                        </AuthGuard>
+                                    }
+                                />
+                                <Route
+                                    path="/editor/:resumeId"
+                                    element={
+                                        <AuthGuard check={true}>
+                                            <CVMaker />
+                                        </AuthGuard>
+                                    }
+                                />
                             </Route>
                             <Route
                                 path="/signin"

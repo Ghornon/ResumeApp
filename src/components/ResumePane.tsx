@@ -6,8 +6,9 @@ import DownloadIcon from '@mui/icons-material/Download';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { db } from '../config/firebase';
 import { doc, deleteDoc } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
 
-const DocumentPane = ({
+const ResumePane = ({
     docId,
     name,
     template,
@@ -20,6 +21,7 @@ const DocumentPane = ({
     posterUrl: string;
     date: string;
 }) => {
+    const navigate = useNavigate();
     const handleRemove = async () => {
         await deleteDoc(doc(db, 'resumes', docId));
     };
@@ -36,7 +38,11 @@ const DocumentPane = ({
                 <Typography variant="subtitle1">Template: {template}</Typography>
                 <Typography variant="overline">{date}</Typography>
                 <Box>
-                    <Button variant="text" size="small" startIcon={<ModeEditIcon />}>
+                    <Button
+                        variant="text"
+                        size="small"
+                        startIcon={<ModeEditIcon />}
+                        onClick={() => navigate(`/editor/${docId}`)}>
                         Edit
                     </Button>
                     <Button variant="text" size="small" startIcon={<DownloadIcon />}>
@@ -55,4 +61,4 @@ const DocumentPane = ({
     );
 };
 
-export default DocumentPane;
+export default ResumePane;
