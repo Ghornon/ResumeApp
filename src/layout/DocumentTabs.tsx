@@ -30,11 +30,7 @@ function CustomTabPanel(props: TabPanelProps) {
             id={`simple-tabpanel-${index}`}
             aria-labelledby={`simple-tab-${index}`}
             {...other}>
-            {value === index && (
-                <Box sx={{ p: 3 }}>
-                    <Typography>{children}</Typography>
-                </Box>
-            )}
+            {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
         </div>
     );
 }
@@ -99,9 +95,8 @@ const DocumentTabs = () => {
                         const { name, template, timestamp, posterUrl } = doc.data();
                         const date = new Date(timestamp.seconds * 1000).toLocaleDateString();
                         return (
-                            <Grid item xs={12} md={6}>
+                            <Grid item xs={12} md={6} key={doc.id}>
                                 <DocumentPane
-                                    key={doc.id}
                                     docId={doc.id}
                                     name={name}
                                     template={template}
@@ -118,9 +113,8 @@ const DocumentTabs = () => {
                     {templatesSnapshot?.docs.map((doc) => {
                         const { name, description, posterUrl, tags } = doc.data();
                         return (
-                            <Grid item xs={12} md={6} lg={4}>
+                            <Grid item xs={12} md={6} lg={4} key={doc.id}>
                                 <TemplatePane
-                                    key={doc.id}
                                     templateId={doc.id}
                                     name={name}
                                     description={description}

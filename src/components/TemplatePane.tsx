@@ -80,7 +80,13 @@ const TemplatePane = ({
                             right: 12,
                         }}>
                         {tags.map((tag) => (
-                            <Chip label={tag} color="primary" size="small" variant="outlined" />
+                            <Chip
+                                label={tag}
+                                color="primary"
+                                size="small"
+                                variant="outlined"
+                                key={tag}
+                            />
                         ))}
                     </Stack>
                 ) : (

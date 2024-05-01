@@ -1,11 +1,7 @@
 import DocumentTabs from '../layout/DocumentTabs';
 
 const Dashboard = () => {
-    return (
-        <div>
-            <DocumentTabs />
-        </div>
-    );
+    return <DocumentTabs />;
 };
 
 export default Dashboard;
