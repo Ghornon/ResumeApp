@@ -1,14 +1,18 @@
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 
-const DocumentCard = () => {
+const DocumentCard = ({
+    variant,
+    title,
+    posterUrl,
+}: {
+    variant: string;
+    title: string;
+    posterUrl: string;
+}) => {
     return (
-        <Card sx={{ width: 210 }} variant="outlined">
-            <CardMedia
-                sx={{ height: 297 }}
-                image="https://pivle.com/wp-content/uploads/2019/12/Business-Administrator-Resume-1-1086x1536.jpg"
-                title="Resume"
-            />
+        <Card sx={{ width: 210 }} variant={variant == 'outlined' ? 'outlined' : 'elevation'}>
+            <CardMedia sx={{ width: 210, height: 297 }} image={posterUrl} title={title} />
         </Card>
     );
 };

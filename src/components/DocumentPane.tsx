@@ -11,11 +11,13 @@ const DocumentPane = ({
     docId,
     name,
     template,
+    posterUrl,
     date,
 }: {
     docId: string;
     name: string;
     template: string;
+    posterUrl: string;
     date: string;
 }) => {
     const handleRemove = async () => {
@@ -26,7 +28,7 @@ const DocumentPane = ({
         <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <DocumentCard />
+                    <DocumentCard posterUrl={posterUrl} title={name} variant="outlined" />
                 </Box>
             </Grid>
             <Grid item xs={12} sm={6}>

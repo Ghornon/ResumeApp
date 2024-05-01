@@ -12,6 +12,7 @@ import { db } from '../config/firebase';
 import { Spinner } from '../components/Spinner';
 import ErrorSnackbar from '../components/ErrorSnackbar';
 import { getAuth } from 'firebase/auth';
+import TemplatePane from '../components/TemplatePane';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -55,16 +56,24 @@ const DocumentTabs = () => {
     const auth = getAuth();
     const user = auth.currentUser;
 
-    const [resumesSnapshot, loading, error] = useCollection(
+    const [resumesSnapshot, resumesLoading, resumesError] = useCollection(
         query(collection(db, 'resumes'), where('uid', '==', user?.uid)),
         {
             snapshotListenOptions: { includeMetadataChanges: true },
         },
     );
 
-    if (loading) return <Spinner />;
+    const [templatesSnapshot, rtemplateLoading, tepmlateError] = useCollection(
+        collection(db, 'templates'),
+        {
+            snapshotListenOptions: { includeMetadataChanges: true },
+        },
+    );
 
-    if (error) return <ErrorSnackbar>{error.message}</ErrorSnackbar>;
+    if (resumesLoading || rtemplateLoading) return <Spinner />;
+
+    if (resumesError || tepmlateError)
+        return <ErrorSnackbar>{resumesError?.message || tepmlateError?.message}</ErrorSnackbar>;
 
     return (
         <Box>
@@ -74,7 +83,7 @@ const DocumentTabs = () => {
                     sx={{ textTransform: 'uppercase', color: 'primary', fontWeight: 'bold' }}>
                     Documents
                 </Typography>
-                <Button variant="outlined" startIcon={<AddIcon />}>
+                <Button variant="outlined" startIcon={<AddIcon />} onClick={() => setValue(1)}>
                     Add new
                 </Button>
             </Box>
@@ -87,8 +96,7 @@ const DocumentTabs = () => {
             <CustomTabPanel value={value} index={0}>
                 <Grid container spacing={2}>
                     {resumesSnapshot?.docs.map((doc) => {
-                        const { name, template, timestamp } = doc.data();
-                        console.log(name, template);
+                        const { name, template, timestamp, posterUrl } = doc.data();
                         const date = new Date(timestamp.seconds * 1000).toLocaleDateString();
                         return (
                             <Grid item xs={12} md={6}>
@@ -97,6 +105,7 @@ const DocumentTabs = () => {
                                     docId={doc.id}
                                     name={name}
                                     template={template}
+                                    posterUrl={posterUrl}
                                     date={date}
                                 />
                             </Grid>
@@ -105,7 +114,23 @@ const DocumentTabs = () => {
                 </Grid>
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
-                Item Two
+                <Grid container spacing={2}>
+                    {templatesSnapshot?.docs.map((doc) => {
+                        const { name, description, posterUrl, tags } = doc.data();
+                        return (
+                            <Grid item xs={12} md={6} lg={4}>
+                                <TemplatePane
+                                    key={doc.id}
+                                    templateId={doc.id}
+                                    name={name}
+                                    description={description}
+                                    posterUrl={posterUrl}
+                                    tags={tags}
+                                />
+                            </Grid>
+                        );
+                    })}
+                </Grid>
             </CustomTabPanel>
         </Box>
     );
