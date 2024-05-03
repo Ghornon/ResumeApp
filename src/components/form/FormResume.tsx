@@ -3,26 +3,48 @@ import { useState } from 'react';
 
 const FormResume = () => {
     const [formData, setFormData] = useState({});
-    const handleFormChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-        const { name, value } = event.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
+    const handleFormChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (event) => {
+        console.log(event);
+        // const { name, value } = event.target;
+        // setFormData({
+        //     ...formData,
+        //     [name]: value,
+        // });
     };
 
     return (
         <Box
             component="form"
-            sx={{ display: 'flex', flex: '1 1 0', alignItems: 'center', flexDirection: 'column', overflowY:'scroll', maxHeight: '100vh'}}>
-            <Typography
-                variant="h6"
-                sx={{ textTransform: 'uppercase', color: 'primary', fontWeight: 'bold' }}>
-                Personal Detail
-            </Typography>
-            <Box sx={{width:'100%', display: 'flex', flexDirection:'row', flexWrap:'wrap', gap:'1rem', minHeight:'3000px'}}>
+            sx={{
+                display: 'flex',
+                flex: '1 1 0',
+                flexDirection: 'column',
+                justifyContent: 'flex-start',
+                overflowY: 'scroll',
+                maxHeight: '100vh',
+                p:1
+            }}>
+            <Box
+                sx={{
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    gap: '1rem',
+                    // minHeight: '1000px',
+                }}>
+                <Typography
+                    variant="h6"
+                    sx={{
+                        flex: '1 1 100%',
+                        textTransform: 'uppercase',
+                        color: 'primary',
+                        fontWeight: 'bold',
+                    }}>
+                    Personal Detail
+                </Typography>
                 <TextField
-                    margin="normal"
+                    margin="dense"
                     // required
                     fullWidth
                     id="firstName"
@@ -32,11 +54,12 @@ const FormResume = () => {
                     autoFocus
                     onChange={handleFormChange}
                     sx={{
-                        flex: '1 1 250px',
+                        minWidth: '200px',
+                        flex: '1 1 0',
                     }}
                 />
                 <TextField
-                    margin="normal"
+                    margin="dense"
                     // required
                     fullWidth
                     id="lastName"
@@ -46,8 +69,103 @@ const FormResume = () => {
                     autoFocus
                     onChange={handleFormChange}
                     sx={{
-                        flex: '1 1 250px',
+                        minWidth: '200px',
+                        flex: '1 1 0',
                     }}
+                />
+                <TextField
+                    margin="dense"
+                    // required
+                    fullWidth
+                    id="emal"
+                    label="Email"
+                    name="email"
+                    // autoComplete="email"
+                    autoFocus
+                    onChange={handleFormChange}
+                    sx={{
+                        minWidth: '200px',
+                        flex: '1 1 0',
+                    }}
+                />
+                <TextField
+                    margin="dense"
+                    // required
+                    fullWidth
+                    id="phone"
+                    label="Phone"
+                    name="phone"
+                    // autoComplete="email"
+                    autoFocus
+                    onChange={handleFormChange}
+                    sx={{
+                        minWidth: '200px',
+                        flex: '1 1 0',
+                    }}
+                />
+                <TextField
+                    margin="dense"
+                    // required
+                    fullWidth
+                    id="country"
+                    label="Country"
+                    name="country"
+                    // autoComplete="email"
+                    autoFocus
+                    onChange={handleFormChange}
+                    sx={{
+                        minWidth: '200px',
+                        flex: '1 1 0',
+                    }}
+                />
+                <TextField
+                    margin="dense"
+                    // required
+                    fullWidth
+                    id="city"
+                    label="City"
+                    name="city"
+                    // autoComplete="email"
+                    autoFocus
+                    onChange={handleFormChange}
+                    sx={{
+                        minWidth: '200px',
+                        flex: '1 1 0',
+                    }}
+                />
+            </Box>
+            <Box sx={{my: 3}}></Box>
+            <Box
+                sx={{
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    gap: '1rem',
+                    // minHeight: '1000px',
+                }}>
+                <Typography
+                    variant="h6"
+                    sx={{
+                        flex: '1 1 100%',
+                        textTransform: 'uppercase',
+                        color: 'primary',
+                        fontWeight: 'bold',
+                    }}>
+                    Professional Summary
+                </Typography>
+                <textarea
+                    // margin="dense"
+                    // required
+                    // fullWidth
+                    id="summary"
+                    // label="First Name"
+                    name="sumary"
+                    // autoComplete="email"
+                    autoFocus
+                    onChange={handleFormChange}
+                    style={{flex: '1 1 0'}}
+                    
                 />
             </Box>
         </Box>
