@@ -7,6 +7,8 @@ import NotFound from './pages/NotFound';
 const SignIn = lazy(() => import('./pages/SignIn'));
 const SignUp = lazy(() => import('./pages/SignUp'));
 const MainLayout = lazy(() => import('./layout/MainLayout'));
+const FullPageLayout = lazy(() => import('./layout/FullPageLayout'));
+const Resumes = lazy(() => import('./pages/Resumes'));
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const Profile = lazy(() => import('./pages/Profile'));
 const CVMaker = lazy(() => import('./pages/Editor/Editor'));
@@ -31,33 +33,30 @@ const App = () => {
                             <Route
                                 path="/"
                                 element={
-                                    <AuthGuard check={true}>
+                                    <AuthGuard authorized={true}>
                                         <MainLayout />
                                     </AuthGuard>
                                 }>
                                 <Route index element={<Dashboard />} />
                                 <Route path="/profile" element={<Profile />} />
-                                <Route
-                                    path="/editor"
-                                    element={
-                                        <AuthGuard check={true}>
-                                            <CVMaker />
-                                        </AuthGuard>
-                                    }
-                                />
-                                <Route
-                                    path="/editor/:resumeId"
-                                    element={
-                                        <AuthGuard check={true}>
-                                            <CVMaker />
-                                        </AuthGuard>
-                                    }
-                                />
+                                <Route path="/editor" element={<CVMaker />} />
+                                <Route path="/editor/:resumeId" element={<CVMaker />} />
+                            </Route>
+                            <Route
+                                path="/resumes"
+                                element={
+                                    <AuthGuard authorized={true}>
+                                        <FullPageLayout />
+                                    </AuthGuard>
+                                }>
+                                <Route index element={<div>Not Found Resume</div>} />
+                                <Route path=":resumeId" element={<Resumes />} />
+                                <Route path=":resumeId/edit" element={<Resumes />} />
                             </Route>
                             <Route
                                 path="/signin"
                                 element={
-                                    <AuthGuard check={false}>
+                                    <AuthGuard authorized={false}>
                                         <SignIn />
                                     </AuthGuard>
                                 }
@@ -65,7 +64,7 @@ const App = () => {
                             <Route
                                 path="/signup"
                                 element={
-                                    <AuthGuard check={false}>
+                                    <AuthGuard authorized={false}>
                                         <SignUp />
                                     </AuthGuard>
                                 }

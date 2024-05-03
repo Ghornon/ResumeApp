@@ -20,7 +20,7 @@ const Header = () => {
                 </NavLink>
                 <nav style={{ display: 'flex', gap: '20px' }}>
                     <NavLink to="/">Home</NavLink>
-                    <NavLink to="cvmaker">CV Maker</NavLink>
+                    <NavLink to="resumes/1">CV Maker</NavLink>
                 </nav>
                 <Box sx={{ flexGrow: 1 }} />
                 <HeaderContent />
