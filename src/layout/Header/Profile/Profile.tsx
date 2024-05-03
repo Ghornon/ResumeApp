@@ -9,8 +9,6 @@ const Profile = () => {
     const logout = async () => {
         await signOut(auth);
     };
-
-    console.log(user);
     return (
         <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
             <Link to='/profile'>{user?.displayName ? user.displayName : 'Guest'}</Link>
