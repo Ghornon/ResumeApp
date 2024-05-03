@@ -1,11 +1,17 @@
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { Box, Button, Container, Grid, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const NotFound = () => {
     const navigate = useNavigate();
     return (
-        <Grid spacing={2}>
-            <Grid display="flex" justifyContent="center" alignItems="center" minHeight={'100vh'}>
+        <Container>
+            <Grid
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    minHeight: '100vh',
+                }}>
                 <Box
                     maxWidth="xs"
                     sx={{
@@ -30,7 +36,7 @@ const NotFound = () => {
                     </Button>
                 </Box>
             </Grid>
-        </Grid>
+        </Container>
     );
 };
 
