@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Chip, Stack, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import DocumentCard from './DocumentCard';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
@@ -7,6 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { db } from '../config/firebase';
 import { doc, deleteDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
+import { blueGrey } from '@mui/material/colors';
 
 const ResumePane = ({
     docId,
@@ -29,15 +30,45 @@ const ResumePane = ({
     return (
         <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: 4,
+                        backgroundColor: blueGrey[50],
+                    }}>
                     <DocumentCard posterUrl={posterUrl} title={name} variant="outlined" />
                 </Box>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid
+                item
+                xs={12}
+                sm={6}
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}>
                 <Typography variant="subtitle2">{name}</Typography>
-                <Typography variant="subtitle1">Template: {template}</Typography>
-                <Typography variant="overline">{date}</Typography>
-                <Box>
+                <Stack direction="row">
+                    <Chip
+                        label={`Updated ${date}`}
+                        color="primary"
+                        size="small"
+                        variant="outlined"
+                    />
+                </Stack>
+                {/* <Typography variant="caption">Updated {date}</Typography> */}
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: 1,
+                    }}>
                     <Button
                         variant="text"
                         size="small"
