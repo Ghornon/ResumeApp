@@ -24,7 +24,7 @@ const Editor = () => {
 
     if (resumeSnapshot)
         return (
-            <Stack sx={{ width: '100%', flexDirection: 'row', gap: '1rem', minHeight: '100vh' }}>
+            <Stack sx={{ width: '100%', flexDirection: 'row', minHeight: '100vh' }}>
                 <EditorForms resumeSnapshot={resumeSnapshot} />
                 <PDFView resumeSnapshot={resumeSnapshot} />
             </Stack>
