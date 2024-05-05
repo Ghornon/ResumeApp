@@ -5,7 +5,13 @@ import { Navigate } from 'react-router-dom';
 import { auth } from '../config/firebase';
 import ErrorSnackbar from '../components/ErrorSnackbar';
 
-export const AuthGuard = ({ children, authorized }: { children: React.ReactNode; authorized: boolean }) => {
+export const AuthGuard = ({
+    children,
+    authorized,
+}: {
+    children: React.ReactNode;
+    authorized: boolean;
+}) => {
     const [user, loading, authStateError] = useAuthState(auth);
 
     if (loading) return <Spinner />;

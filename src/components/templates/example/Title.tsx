@@ -1,5 +1,5 @@
-import React from 'react';
 import { Text, StyleSheet } from '@react-pdf/renderer';
+import { ReactNode } from 'react';
 
 const styles = StyleSheet.create({
     title: {
@@ -10,6 +10,8 @@ const styles = StyleSheet.create({
     },
 });
 
-const Title = ({ children }) => <Text style={styles.title}>{children}</Text>;
+const Title = ({ children }: { children: ReactNode }) => (
+    <Text style={styles.title}>{children}</Text>
+);
 
 export default Title;

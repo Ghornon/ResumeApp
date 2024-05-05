@@ -1,4 +1,3 @@
-import React from 'react';
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 
 import Title from './Title';
@@ -59,7 +58,17 @@ const styles = StyleSheet.create({
     },
 });
 
-const ExperienceEntry = ({ company, details, position, date }) => {
+const ExperienceEntry = ({
+    company,
+    details,
+    position,
+    date,
+}: {
+    company: string;
+    details: string[];
+    position: string;
+    date: string;
+}) => {
     const title = `${company} | ${position}`;
     return (
         <View style={styles.entryContainer}>

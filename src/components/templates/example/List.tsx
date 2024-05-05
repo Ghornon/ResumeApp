@@ -1,5 +1,5 @@
-import React from 'react';
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
+import { ReactNode } from 'react';
 
 const styles = StyleSheet.create({
     item: {
@@ -17,9 +17,9 @@ const styles = StyleSheet.create({
     },
 });
 
-const List = ({ children }) => children;
+const List = ({ children }: { children: ReactNode }) => children;
 
-export const Item = ({ children }) => (
+export const Item = ({ children }: { children: ReactNode }) => (
     <View style={styles.item}>
         <Text style={styles.bulletPoint}>•</Text>
         <Text style={styles.itemContent}>{children}</Text>

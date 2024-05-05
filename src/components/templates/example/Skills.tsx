@@ -1,4 +1,3 @@
-import React from 'react';
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 
 import Title from './Title';
@@ -17,7 +16,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const SkillEntry = ({ name, skills }) => (
+const SkillEntry = ({ name, skills }: { name: string; skills: string[] }) => (
     <View>
         <Text style={styles.title}>{name}</Text>
         <List>
