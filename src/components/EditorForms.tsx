@@ -1,4 +1,4 @@
-import { Box, TextField, Typography } from '@mui/material';
+import { Box, Container, TextField, Typography } from '@mui/material';
 import { DocumentSnapshot } from 'firebase/firestore';
 import { useState } from 'react';
 
@@ -16,7 +16,7 @@ const EditorForms = ({ resumeSnapshot }: { resumeSnapshot: DocumentSnapshot }) =
     };
 
     return (
-        <Box
+        <Container
             component="form"
             sx={{
                 display: 'flex',
@@ -170,7 +170,7 @@ const EditorForms = ({ resumeSnapshot }: { resumeSnapshot: DocumentSnapshot }) =
                     style={{ flex: '1 1 0' }}
                 />
             </Box>
-        </Box>
+        </Container>
     );
 };
 
