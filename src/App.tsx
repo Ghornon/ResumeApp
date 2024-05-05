@@ -8,10 +8,9 @@ const SignIn = lazy(() => import('./pages/SignIn'));
 const SignUp = lazy(() => import('./pages/SignUp'));
 const MainLayout = lazy(() => import('./layout/MainLayout'));
 const FullPageLayout = lazy(() => import('./layout/FullPageLayout'));
-const Resumes = lazy(() => import('./pages/Resumes'));
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const Profile = lazy(() => import('./pages/Profile'));
-const CVMaker = lazy(() => import('./pages/Editor/Editor'));
+const Editor = lazy(() => import('./pages/Editor'));
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { purple } from '@mui/material/colors';
 
@@ -39,19 +38,16 @@ const App = () => {
                                 }>
                                 <Route index element={<Dashboard />} />
                                 <Route path="/profile" element={<Profile />} />
-                                <Route path="/editor" element={<CVMaker />} />
-                                <Route path="/editor/:resumeId" element={<CVMaker />} />
                             </Route>
                             <Route
-                                path="/resumes"
+                                path="/editor"
                                 element={
                                     <AuthGuard authorized={true}>
                                         <FullPageLayout />
                                     </AuthGuard>
                                 }>
-                                <Route index element={<div>Not Found Resume</div>} />
-                                <Route path=":resumeId" element={<Resumes />} />
-                                <Route path=":resumeId/edit" element={<Resumes />} />
+                                <Route index element={<NotFound />} />
+                                <Route path=":resumeId" element={<Editor />} />
                             </Route>
                             <Route
                                 path="/signin"

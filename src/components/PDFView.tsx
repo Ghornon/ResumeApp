@@ -1,6 +1,7 @@
 import { Box, Typography } from '@mui/material';
+import { DocumentSnapshot } from 'firebase/firestore';
 
-const ResumeView = () => {
+const PDFView = ({ resumeSnapshot }: { resumeSnapshot: DocumentSnapshot }) => {
     return (
         <Box
             sx={{
@@ -26,4 +27,4 @@ const ResumeView = () => {
     );
 };
 
-export default ResumeView;
+export default PDFView;

@@ -1,7 +1,7 @@
-import DocumentTabs from '../layout/DocumentTabs';
+import DocumentTabPanel from '../components/DocumentTabPanel';
 
 const Dashboard = () => {
-    return <DocumentTabs />;
+    return <DocumentTabPanel />;
 };
 
 export default Dashboard;

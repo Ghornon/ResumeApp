@@ -2,13 +2,13 @@ import { Box, Button, Chip, Stack, Typography } from '@mui/material';
 import { blueGrey } from '@mui/material/colors';
 import { useState } from 'react';
 import CreateIcon from '@mui/icons-material/Create';
-import DocumentCard from './DocumentCard';
+import Poster from './Poster';
 import { Timestamp, addDoc, collection } from 'firebase/firestore';
 import { auth, db } from '../config/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
 
-const TemplatePane = ({
+const TemplateTab = ({
     name,
     description,
     posterUrl,
@@ -55,7 +55,7 @@ const TemplatePane = ({
                     padding: 6,
                     position: 'relative',
                 }}>
-                <DocumentCard posterUrl={posterUrl} title={name} variant="elevation" />
+                <Poster posterUrl={posterUrl} title={name} variant="elevation" />
                 {show ? (
                     <Button
                         variant="contained"
@@ -101,4 +101,4 @@ const TemplatePane = ({
     );
 };
 
-export default TemplatePane;
+export default TemplateTab;

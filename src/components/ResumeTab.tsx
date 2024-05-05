@@ -1,6 +1,6 @@
 import { Box, Button, Chip, Stack, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import DocumentCard from './DocumentCard';
+import Poster from './Poster';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DownloadIcon from '@mui/icons-material/Download';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -9,16 +9,14 @@ import { doc, deleteDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { blueGrey } from '@mui/material/colors';
 
-const ResumePane = ({
+const ResumeTab = ({
     docId,
     name,
-    template,
     posterUrl,
     date,
 }: {
     docId: string;
     name: string;
-    template: string;
     posterUrl: string;
     date: string;
 }) => {
@@ -38,7 +36,7 @@ const ResumePane = ({
                         padding: 4,
                         backgroundColor: blueGrey[50],
                     }}>
-                    <DocumentCard posterUrl={posterUrl} title={name} variant="outlined" />
+                    <Poster posterUrl={posterUrl} title={name} variant="outlined" />
                 </Box>
             </Grid>
             <Grid
@@ -92,4 +90,4 @@ const ResumePane = ({
     );
 };
 
-export default ResumePane;
+export default ResumeTab;

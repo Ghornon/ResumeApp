@@ -5,14 +5,14 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { Button, Grid } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import ResumePane from '../components/ResumePane';
+import ResumeTab from './ResumeTab';
 import { collection, query, where } from 'firebase/firestore';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { db } from '../config/firebase';
-import { Spinner } from '../components/Spinner';
-import ErrorSnackbar from '../components/ErrorSnackbar';
+import { Spinner } from './Spinner';
+import ErrorSnackbar from './ErrorSnackbar';
 import { getAuth } from 'firebase/auth';
-import TemplatePane from '../components/TemplatePane';
+import TemplateTab from './TemplateTab';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -42,7 +42,7 @@ function a11yProps(index: number) {
     };
 }
 
-const DocumentTabs = () => {
+const DocumentTabPanel = () => {
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -59,17 +59,17 @@ const DocumentTabs = () => {
         },
     );
 
-    const [templatesSnapshot, rtemplateLoading, tepmlateError] = useCollection(
+    const [templatesSnapshot, templateLoading, templateError] = useCollection(
         collection(db, 'templates'),
         {
             snapshotListenOptions: { includeMetadataChanges: true },
         },
     );
 
-    if (resumesLoading || rtemplateLoading) return <Spinner />;
+    if (resumesLoading || templateLoading) return <Spinner />;
 
-    if (resumesError || tepmlateError)
-        return <ErrorSnackbar>{resumesError?.message || tepmlateError?.message}</ErrorSnackbar>;
+    if (resumesError || templateError)
+        return <ErrorSnackbar>{resumesError?.message || templateError?.message}</ErrorSnackbar>;
 
     return (
         <Box>
@@ -92,14 +92,13 @@ const DocumentTabs = () => {
             <CustomTabPanel value={value} index={0}>
                 <Grid container spacing={2}>
                     {resumesSnapshot?.docs.map((doc) => {
-                        const { name, template, timestamp, posterUrl } = doc.data();
+                        const { name, timestamp, posterUrl } = doc.data();
                         const date = new Date(timestamp.seconds * 1000).toLocaleDateString();
                         return (
                             <Grid item xs={12} md={6} key={doc.id}>
-                                <ResumePane
+                                <ResumeTab
                                     docId={doc.id}
                                     name={name}
-                                    template={template}
                                     posterUrl={posterUrl}
                                     date={date}
                                 />
@@ -114,7 +113,7 @@ const DocumentTabs = () => {
                         const { name, description, posterUrl, tags } = doc.data();
                         return (
                             <Grid item xs={12} md={6} lg={4} key={doc.id}>
-                                <TemplatePane
+                                <TemplateTab
                                     templateId={doc.id}
                                     name={name}
                                     description={description}
@@ -130,4 +129,4 @@ const DocumentTabs = () => {
     );
 };
 
-export default DocumentTabs;
+export default DocumentTabPanel;

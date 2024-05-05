@@ -1,7 +1,7 @@
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 
-const DocumentCard = ({
+const Poster = ({
     variant,
     title,
     posterUrl,
@@ -17,4 +17,4 @@ const DocumentCard = ({
     );
 };
 
-export default DocumentCard;
+export default Poster;

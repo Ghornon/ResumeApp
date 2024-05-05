@@ -1,9 +1,12 @@
 import { Box, TextField, Typography } from '@mui/material';
+import { DocumentSnapshot } from 'firebase/firestore';
 import { useState } from 'react';
 
-const FormResume = () => {
+const EditorForms = ({ resumeSnapshot }: { resumeSnapshot: DocumentSnapshot }) => {
     const [formData, setFormData] = useState({});
-    const handleFormChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (event) => {
+    const handleFormChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (
+        event,
+    ) => {
         console.log(event);
         // const { name, value } = event.target;
         // setFormData({
@@ -22,7 +25,7 @@ const FormResume = () => {
                 justifyContent: 'flex-start',
                 overflowY: 'scroll',
                 maxHeight: '100vh',
-                p:1
+                p: 1,
             }}>
             <Box
                 sx={{
@@ -77,7 +80,7 @@ const FormResume = () => {
                     margin="dense"
                     // required
                     fullWidth
-                    id="emal"
+                    id="email"
                     label="Email"
                     name="email"
                     // autoComplete="email"
@@ -134,7 +137,7 @@ const FormResume = () => {
                     }}
                 />
             </Box>
-            <Box sx={{my: 3}}></Box>
+            <Box sx={{ my: 3 }}></Box>
             <Box
                 sx={{
                     width: '100%',
@@ -160,16 +163,15 @@ const FormResume = () => {
                     // fullWidth
                     id="summary"
                     // label="First Name"
-                    name="sumary"
+                    name="summary"
                     // autoComplete="email"
                     autoFocus
                     onChange={handleFormChange}
-                    style={{flex: '1 1 0'}}
-                    
+                    style={{ flex: '1 1 0' }}
                 />
             </Box>
         </Box>
     );
 };
 
-export default FormResume;
+export default EditorForms;

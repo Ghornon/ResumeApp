@@ -5,8 +5,14 @@ import { NavLink } from 'react-router-dom';
 
 const Header = () => {
     return (
-        <AppBar component="header" position="fixed" color="inherit" elevation={0} sx={{display: 'flex',alignItems: 'center'}}>
-            <Toolbar sx={{ display: 'flex', maxWidth: '1200px', width: '100%',alignItems: 'center' }}>
+        <AppBar
+            component="header"
+            position="fixed"
+            color="inherit"
+            elevation={0}
+            sx={{ display: 'flex', alignItems: 'center' }}>
+            <Toolbar
+                sx={{ display: 'flex', maxWidth: '1200px', width: '100%', alignItems: 'center' }}>
                 <NavLink
                     to="/"
                     style={{
@@ -20,7 +26,8 @@ const Header = () => {
                 </NavLink>
                 <nav style={{ display: 'flex', gap: '20px' }}>
                     <NavLink to="/">Home</NavLink>
-                    <NavLink to="resumes/1">CV Maker</NavLink>
+                    <NavLink to="/resume-templates">Resume</NavLink>
+                    <NavLink to="/cover-letter-templates">Cover Letter</NavLink>
                 </nav>
                 <Box sx={{ flexGrow: 1 }} />
                 <HeaderContent />

@@ -1,11 +1,11 @@
-import Profile from "./Profile/Profile"
+import Profile from './Profile';
 
 const HeaderContent = () => {
-  return (
-    <>
-      <Profile/>
-    </>
-  )
-}
+    return (
+        <>
+            <Profile />
+        </>
+    );
+};
 
-export default HeaderContent
+export default HeaderContent;
