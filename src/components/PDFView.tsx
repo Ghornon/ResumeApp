@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { pdfjs, Document, Page } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
@@ -9,6 +9,7 @@ import { BlobProvider } from '@react-pdf/renderer';
 import { DocumentSnapshot } from 'firebase/firestore';
 import { Box, Container } from '@mui/material';
 import { blueGrey } from '@mui/material/colors';
+import { Spinner } from './Spinner';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     'pdfjs-dist/build/pdf.worker.min.js',
@@ -59,19 +60,29 @@ const PDFView = ({ resumeSnapshot }: { resumeSnapshot: DocumentSnapshot }) => {
                         borderRadius: 1,
                         overflow: 'hidden',
                         boxShadow: '0 0 10px rgba(0,0,0,0.1)',
+                        background: '#fff',
+                        height: windowSize.innerHeight - 60,
+                        width: (windowSize.innerHeight - 60) * (210 / 297),
                     }}>
                     <BlobProvider document={<ExampleTemplate resumeSnapshot={resumeSnapshot} />}>
-                        {({ url }) => (
-                            <Document file={url} onLoadSuccess={onDocumentLoadSuccess}>
-                                {Array.from(new Array(numPages), (el, index) => (
-                                    <Page
-                                        key={`page_${index + 1}`}
-                                        pageNumber={index + 1}
-                                        height={windowSize.innerHeight - 60}
-                                    />
-                                ))}
-                            </Document>
-                        )}
+                        {({ url, loading, error }) =>
+                            loading || error ? (
+                                <Spinner />
+                            ) : (
+                                <Document
+                                    file={url}
+                                    onLoadSuccess={onDocumentLoadSuccess}
+                                    loading={<Spinner />}>
+                                    {Array.from(new Array(numPages), (el, index) => (
+                                        <Page
+                                            key={`page_${index + 1}`}
+                                            pageNumber={index + 1}
+                                            height={windowSize.innerHeight - 60}
+                                        />
+                                    ))}
+                                </Document>
+                            )
+                        }
                     </BlobProvider>
                 </Box>
             </Container>
