@@ -16,18 +16,15 @@ const EditorForms = ({ resumeSnapshot }: { resumeSnapshot: DocumentSnapshot }) =
     };
 
     return (
-        <Container
+        <Box
             component="form"
             sx={{
-                display: 'flex',
-                flex: '1 1 0',
-                flexDirection: 'column',
-                justifyContent: 'flex-start',
                 overflowY: 'scroll',
                 maxHeight: '100vh',
-                p: 1,
-            }}>
-            <Box
+                paddingY: 2,
+            }}
+            width={{ xs: '100%', md: '50%' }}>
+            <Container
                 sx={{
                     width: '100%',
                     display: 'flex',
@@ -136,9 +133,9 @@ const EditorForms = ({ resumeSnapshot }: { resumeSnapshot: DocumentSnapshot }) =
                         flex: '1 1 0',
                     }}
                 />
-            </Box>
+            </Container>
             <Box sx={{ my: 3 }}></Box>
-            <Box
+            <Container
                 sx={{
                     width: '100%',
                     display: 'flex',
@@ -169,8 +166,8 @@ const EditorForms = ({ resumeSnapshot }: { resumeSnapshot: DocumentSnapshot }) =
                     onChange={handleFormChange}
                     style={{ flex: '1 1 0' }}
                 />
-            </Box>
-        </Container>
+            </Container>
+        </Box>
     );
 };
 

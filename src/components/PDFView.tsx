@@ -49,8 +49,9 @@ const PDFView = ({ resumeSnapshot }: { resumeSnapshot: DocumentSnapshot }) => {
                 justifyContent: 'center',
                 flexDirection: 'column',
                 background: blueGrey[50],
-                width: '50%',
-            }}>
+            }}
+            width={{ xs: '100%', md: '50%' }}
+            paddingY={{ xs: 5, md: 0 }}>
             <Container
                 sx={{
                     width: 'auto',
