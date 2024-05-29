@@ -1,172 +1,191 @@
-import { Box, Container, TextField, Typography } from '@mui/material';
+import {
+    Box,
+    FormControl,
+    Grid,
+    InputLabel,
+    MenuItem,
+    Select,
+    SelectChangeEvent,
+    TextField,
+    Typography,
+} from '@mui/material';
 import { DocumentSnapshot } from 'firebase/firestore';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { ResumeType } from '../types/Resume.types';
 
 const EditorForms = ({ resumeSnapshot }: { resumeSnapshot: DocumentSnapshot }) => {
-    const [formData, setFormData] = useState({});
+    const [formData, setFormData] = useState({
+        personalDetails: {
+            jobTitle: '',
+            photoUrl: '',
+            firstName: '',
+            lastName: '',
+            email: '',
+            phone: '',
+            country: '',
+            city: '',
+        },
+        name: '',
+        summary: '',
+    } as ResumeType);
+
+    const [template, setTemplate] = useState('Default');
+
+    const handleTemplateChange = (event: SelectChangeEvent) => {
+        setTemplate(event.target.value as string);
+        setFormData({
+            ...formData,
+            [template]: event.target.value,
+        });
+    };
+
     const handleFormChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (
         event,
     ) => {
-        console.log(event);
-        // const { name, value } = event.target;
-        // setFormData({
-        //     ...formData,
-        //     [name]: value,
-        // });
+        const { name, value } = event.target;
+
+        const nestedObject = name.split('.');
+
+        if (nestedObject.length > 1) {
+            setFormData({
+                ...formData,
+                [nestedObject[0]]: {
+                    [nestedObject[1]]: value as string,
+                },
+            });
+        } else {
+            setFormData({
+                ...formData,
+                [name]: value as string,
+            });
+        }
+
+        console.log(name, value);
     };
+
+    useEffect(() => {
+        const data = resumeSnapshot.data();
+        setFormData({
+            ...formData,
+            ...data,
+        });
+    }, [formData, resumeSnapshot]);
+
+    const personalDetails = [
+        'jobTitle',
+        'photoUrl',
+        'firstName',
+        'lastName',
+        'email',
+        'phone',
+        'country',
+        'city',
+    ];
 
     return (
         <Box
             component="form"
             sx={{
-                overflowY: 'scroll',
                 maxHeight: '100vh',
                 paddingY: 2,
             }}
             width={{ xs: '100%', md: '50%' }}>
-            <Container
+            <Box
                 sx={{
-                    width: '100%',
                     display: 'flex',
                     flexDirection: 'row',
                     flexWrap: 'wrap',
+                    justifyContent: 'center',
                     gap: '1rem',
-                    // minHeight: '1000px',
+                    paddingX: 10,
+                    paddingY: 2,
                 }}>
-                <Typography
-                    variant="h6"
-                    sx={{
-                        flex: '1 1 100%',
-                        textTransform: 'uppercase',
-                        color: 'primary',
-                        fontWeight: 'bold',
-                    }}>
-                    Personal Detail
+                <Typography variant="h4" component="h4">
+                    Resume name
                 </Typography>
-                <TextField
-                    margin="dense"
-                    // required
-                    fullWidth
-                    id="firstName"
-                    label="First Name"
-                    name="email"
-                    // autoComplete="email"
-                    autoFocus
-                    onChange={handleFormChange}
-                    sx={{
-                        minWidth: '200px',
-                        flex: '1 1 0',
-                    }}
-                />
-                <TextField
-                    margin="dense"
-                    // required
-                    fullWidth
-                    id="lastName"
-                    label="Last Name"
-                    name="lastName"
-                    // autoComplete="email"
-                    autoFocus
-                    onChange={handleFormChange}
-                    sx={{
-                        minWidth: '200px',
-                        flex: '1 1 0',
-                    }}
-                />
-                <TextField
-                    margin="dense"
-                    // required
-                    fullWidth
-                    id="email"
-                    label="Email"
-                    name="email"
-                    // autoComplete="email"
-                    autoFocus
-                    onChange={handleFormChange}
-                    sx={{
-                        minWidth: '200px',
-                        flex: '1 1 0',
-                    }}
-                />
-                <TextField
-                    margin="dense"
-                    // required
-                    fullWidth
-                    id="phone"
-                    label="Phone"
-                    name="phone"
-                    // autoComplete="email"
-                    autoFocus
-                    onChange={handleFormChange}
-                    sx={{
-                        minWidth: '200px',
-                        flex: '1 1 0',
-                    }}
-                />
-                <TextField
-                    margin="dense"
-                    // required
-                    fullWidth
-                    id="country"
-                    label="Country"
-                    name="country"
-                    // autoComplete="email"
-                    autoFocus
-                    onChange={handleFormChange}
-                    sx={{
-                        minWidth: '200px',
-                        flex: '1 1 0',
-                    }}
-                />
-                <TextField
-                    margin="dense"
-                    // required
-                    fullWidth
-                    id="city"
-                    label="City"
-                    name="city"
-                    // autoComplete="email"
-                    autoFocus
-                    onChange={handleFormChange}
-                    sx={{
-                        minWidth: '200px',
-                        flex: '1 1 0',
-                    }}
-                />
-            </Container>
-            <Box sx={{ my: 3 }}></Box>
-            <Container
+                <Grid container spacing={2}>
+                    <Grid item xs={12} sm={6}>
+                        <TextField
+                            fullWidth
+                            label="Resume name"
+                            id="name"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleFormChange}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">Template</InputLabel>
+                            <Select
+                                fullWidth
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={template}
+                                label="Template"
+                                onChange={handleTemplateChange}>
+                                <MenuItem value="Default">Default</MenuItem>
+                                <MenuItem value="Test">Test</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                </Grid>
+            </Box>
+            <Box
                 sx={{
-                    width: '100%',
                     display: 'flex',
                     flexDirection: 'row',
                     flexWrap: 'wrap',
+                    justifyContent: 'center',
                     gap: '1rem',
-                    // minHeight: '1000px',
+                    paddingX: 10,
+                    paddingY: 2,
                 }}>
-                <Typography
-                    variant="h6"
-                    sx={{
-                        flex: '1 1 100%',
-                        textTransform: 'uppercase',
-                        color: 'primary',
-                        fontWeight: 'bold',
-                    }}>
-                    Professional Summary
+                <Typography variant="h4" component="h4">
+                    Personal Details
                 </Typography>
-                <textarea
-                    // margin="dense"
-                    // required
-                    // fullWidth
-                    id="summary"
-                    // label="First Name"
-                    name="summary"
-                    // autoComplete="email"
-                    autoFocus
-                    onChange={handleFormChange}
-                    style={{ flex: '1 1 0' }}
-                />
-            </Container>
+                <Grid container spacing={2}>
+                    {personalDetails.map((element) => (
+                        <Grid item xs={12} sm={6} key={`personalDetails.${element}`}>
+                            <TextField
+                                fullWidth
+                                label={element}
+                                id={`personalDetails.${element}`}
+                                name={`personalDetails.${element}`}
+                                value={formData.personalDetails[element]}
+                                onChange={handleFormChange}
+                            />
+                        </Grid>
+                    ))}
+                </Grid>
+            </Box>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    justifyContent: 'center',
+                    gap: '1rem',
+                    paddingX: 10,
+                    paddingY: 2,
+                }}>
+                <Typography variant="h4" component="h4">
+                    Summary
+                </Typography>
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            id="summary"
+                            name="summary"
+                            label="Summary"
+                            placeholder="Summary"
+                            multiline
+                            onChange={handleFormChange}
+                        />
+                    </Grid>
+                </Grid>
+            </Box>
         </Box>
     );
 };
