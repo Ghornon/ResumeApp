@@ -1,5 +1,6 @@
 import {
     Box,
+    Button,
     FormControl,
     Grid,
     InputLabel,
@@ -9,11 +10,14 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import { DocumentSnapshot } from 'firebase/firestore';
+import { DocumentSnapshot, doc, setDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { ResumeType } from '../types/Resume.types';
+import { db } from '../config/firebase';
+import { useParams } from 'react-router-dom';
 
 const EditorForms = ({ resumeSnapshot }: { resumeSnapshot: DocumentSnapshot }) => {
+    const { resumeId } = useParams();
     const [formData, setFormData] = useState({
         personalDetails: {
             jobTitle: '',
@@ -39,6 +43,15 @@ const EditorForms = ({ resumeSnapshot }: { resumeSnapshot: DocumentSnapshot }) =
         });
     };
 
+    const saveData = async () => {
+        if (resumeId) {
+            const resumeRef = doc(db, 'resumes', resumeId);
+
+            console.log('Saving data', resumeId, formData);
+            await setDoc(resumeRef, formData);
+        }
+    };
+
     const handleFormChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (
         event,
     ) => {
@@ -50,6 +63,7 @@ const EditorForms = ({ resumeSnapshot }: { resumeSnapshot: DocumentSnapshot }) =
             setFormData({
                 ...formData,
                 [nestedObject[0]]: {
+                    ...formData[nestedObject[0]],
                     [nestedObject[1]]: value as string,
                 },
             });
@@ -64,12 +78,13 @@ const EditorForms = ({ resumeSnapshot }: { resumeSnapshot: DocumentSnapshot }) =
     };
 
     useEffect(() => {
+        console.log('Loading');
         const data = resumeSnapshot.data();
         setFormData({
             ...formData,
             ...data,
         });
-    }, [formData, resumeSnapshot]);
+    }, []);
 
     const personalDetails = [
         'jobTitle',
@@ -183,6 +198,24 @@ const EditorForms = ({ resumeSnapshot }: { resumeSnapshot: DocumentSnapshot }) =
                             multiline
                             onChange={handleFormChange}
                         />
+                    </Grid>
+                </Grid>
+            </Box>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    justifyContent: 'center',
+                    gap: '1rem',
+                    paddingX: 10,
+                    paddingY: 2,
+                }}>
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <Button variant="outlined" fullWidth onClick={saveData}>
+                            Save
+                        </Button>
                     </Grid>
                 </Grid>
             </Box>
