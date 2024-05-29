@@ -11,10 +11,11 @@ import {
     Typography,
 } from '@mui/material';
 import { DocumentSnapshot, doc, setDoc } from 'firebase/firestore';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ResumeType } from '../types/Resume.types';
 import { db } from '../config/firebase';
 import { useParams } from 'react-router-dom';
+import debounce from 'lodash.debounce';
 
 const EditorForms = ({ resumeSnapshot }: { resumeSnapshot: DocumentSnapshot }) => {
     const { resumeId } = useParams();
@@ -43,14 +44,19 @@ const EditorForms = ({ resumeSnapshot }: { resumeSnapshot: DocumentSnapshot }) =
         });
     };
 
-    const saveData = async () => {
+    const saveDoc = (formData: ResumeType) => {
         if (resumeId) {
             const resumeRef = doc(db, 'resumes', resumeId);
 
             console.log('Saving data', resumeId, formData);
-            await setDoc(resumeRef, formData);
+            setDoc(resumeRef, { ...formData });
         }
     };
+
+    const debouncedSaveDoc = useCallback(
+        debounce((formData: ResumeType) => saveDoc(formData), 1000),
+        [],
+    );
 
     const handleFormChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (
         event,
@@ -58,23 +64,25 @@ const EditorForms = ({ resumeSnapshot }: { resumeSnapshot: DocumentSnapshot }) =
         const { name, value } = event.target;
 
         const nestedObject = name.split('.');
+        let newData = {} as ResumeType;
 
         if (nestedObject.length > 1) {
-            setFormData({
+            newData = {
                 ...formData,
                 [nestedObject[0]]: {
                     ...formData[nestedObject[0]],
-                    [nestedObject[1]]: value as string,
+                    [nestedObject[1]]: value,
                 },
-            });
+            };
         } else {
-            setFormData({
+            newData = {
                 ...formData,
-                [name]: value as string,
-            });
+                [name]: value,
+            };
         }
 
-        console.log(name, value);
+        setFormData(newData);
+        debouncedSaveDoc(newData);
     };
 
     useEffect(() => {
@@ -198,24 +206,6 @@ const EditorForms = ({ resumeSnapshot }: { resumeSnapshot: DocumentSnapshot }) =
                             multiline
                             onChange={handleFormChange}
                         />
-                    </Grid>
-                </Grid>
-            </Box>
-            <Box
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    flexWrap: 'wrap',
-                    justifyContent: 'center',
-                    gap: '1rem',
-                    paddingX: 10,
-                    paddingY: 2,
-                }}>
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <Button variant="outlined" fullWidth onClick={saveData}>
-                            Save
-                        </Button>
                     </Grid>
                 </Grid>
             </Box>
