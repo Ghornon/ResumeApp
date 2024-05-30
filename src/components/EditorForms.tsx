@@ -1,6 +1,5 @@
 import {
     Box,
-    Button,
     FormControl,
     Grid,
     InputLabel,
@@ -203,6 +202,7 @@ const EditorForms = ({ resumeSnapshot }: { resumeSnapshot: DocumentSnapshot }) =
                             name="summary"
                             label="Summary"
                             placeholder="Summary"
+                            value={formData.summary}
                             multiline
                             onChange={handleFormChange}
                         />

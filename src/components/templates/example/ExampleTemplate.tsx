@@ -4,6 +4,8 @@ import Header from './Header';
 import Education from './Education';
 import Skills from './Skills';
 import Experience from './Experience';
+import { useEffect, useState } from 'react';
+import { ResumeType } from '../../../types/Resume.types';
 
 const styles = StyleSheet.create({
     page: {
@@ -68,9 +70,9 @@ Font.register({
     src: `https://fonts.gstatic.com/s/lato/v16/S6u9w4BMUTPHh6UVSwiPHA.ttf`,
 });
 
-const Resume = (props) => (
-    <Page {...props} style={styles.page}>
-        <Header />
+const Resume = ({ resumeData }: { resumeData: ResumeType }) => (
+    <Page size="A4" style={styles.page}>
+        <Header resumeData={resumeData} />
         <View style={styles.container}>
             <View style={styles.leftColumn}>
                 <Image src="https://react-pdf.org/static/images/luke.jpg" style={styles.image} />
@@ -84,13 +86,21 @@ const Resume = (props) => (
 );
 
 const ExampleTemplate = ({ resumeSnapshot }: { resumeSnapshot: DocumentSnapshot }) => {
+    const [resumeData, setResumeData] = useState(resumeSnapshot.data() as ResumeType);
+
+    useEffect(() => {
+        console.log('Loading resume PDF data');
+        const data = resumeSnapshot.data();
+        setResumeData(data as ResumeType);
+    }, [resumeSnapshot]);
+
     return (
         <Document
-            author="Luke Skywalker"
-            keywords="awesome, resume, start wars"
-            subject="The resume of Luke Skywalker"
-            title="Resume">
-            <Resume size="A4" />
+            author="Resume APP"
+            keywords="awesome, resume"
+            subject={resumeData.name}
+            title={resumeData.name}>
+            <Resume resumeData={resumeData} />
         </Document>
     );
 };
