@@ -9,51 +9,42 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import { DocumentSnapshot, doc, setDoc } from 'firebase/firestore';
-import { useState, useEffect, useCallback } from 'react';
+import { doc, setDoc } from 'firebase/firestore';
+import { useState, useCallback } from 'react';
 import { ResumeType } from '../types/Resume.types';
 import { db } from '../config/firebase';
 import { useParams } from 'react-router-dom';
 import debounce from 'lodash.debounce';
 
-const EditorForms = ({ resumeSnapshot }: { resumeSnapshot: DocumentSnapshot }) => {
+const EditorForms = ({
+    resumeData,
+    setResumeData,
+}: {
+    resumeData: ResumeType;
+    setResumeData: React.Dispatch<React.SetStateAction<ResumeType>>;
+}) => {
     const { resumeId } = useParams();
-    const [formData, setFormData] = useState({
-        personalDetails: {
-            jobTitle: '',
-            photoUrl: '',
-            firstName: '',
-            lastName: '',
-            email: '',
-            phone: '',
-            country: '',
-            city: '',
-        },
-        name: '',
-        summary: '',
-    } as ResumeType);
-
     const [template, setTemplate] = useState('Default');
 
     const handleTemplateChange = (event: SelectChangeEvent) => {
         setTemplate(event.target.value as string);
-        setFormData({
-            ...formData,
+        setResumeData({
+            ...resumeData,
             [template]: event.target.value,
         });
     };
 
-    const saveDoc = (formData: ResumeType) => {
+    const saveDocument = (resumeData: ResumeType) => {
         if (resumeId) {
             const resumeRef = doc(db, 'resumes', resumeId);
 
-            console.log('Saving data', resumeId, formData);
-            setDoc(resumeRef, { ...formData });
+            console.log('Saving data', resumeId, resumeData);
+            setDoc(resumeRef, { ...resumeData });
         }
     };
 
-    const debouncedSaveDoc = useCallback(
-        debounce((formData: ResumeType) => saveDoc(formData), 1000),
+    const debouncedSaveDocument = useCallback(
+        debounce((resumeData: ResumeType) => saveDocument(resumeData), 1000),
         [],
     );
 
@@ -67,31 +58,22 @@ const EditorForms = ({ resumeSnapshot }: { resumeSnapshot: DocumentSnapshot }) =
 
         if (nestedObject.length > 1) {
             newData = {
-                ...formData,
+                ...resumeData,
                 [nestedObject[0]]: {
-                    ...formData[nestedObject[0]],
+                    ...resumeData[nestedObject[0]],
                     [nestedObject[1]]: value,
                 },
             };
         } else {
             newData = {
-                ...formData,
+                ...resumeData,
                 [name]: value,
             };
         }
 
-        setFormData(newData);
-        debouncedSaveDoc(newData);
+        setResumeData(newData);
+        debouncedSaveDocument(newData);
     };
-
-    useEffect(() => {
-        console.log('Loading');
-        const data = resumeSnapshot.data();
-        setFormData({
-            ...formData,
-            ...data,
-        });
-    }, []);
 
     const personalDetails = [
         'jobTitle',
@@ -132,7 +114,7 @@ const EditorForms = ({ resumeSnapshot }: { resumeSnapshot: DocumentSnapshot }) =
                             label="Resume name"
                             id="name"
                             name="name"
-                            value={formData.name}
+                            value={resumeData.name}
                             onChange={handleFormChange}
                         />
                     </Grid>
@@ -174,7 +156,7 @@ const EditorForms = ({ resumeSnapshot }: { resumeSnapshot: DocumentSnapshot }) =
                                 label={element}
                                 id={`personalDetails.${element}`}
                                 name={`personalDetails.${element}`}
-                                value={formData.personalDetails[element]}
+                                value={resumeData.personalDetails[element]}
                                 onChange={handleFormChange}
                             />
                         </Grid>
@@ -202,7 +184,7 @@ const EditorForms = ({ resumeSnapshot }: { resumeSnapshot: DocumentSnapshot }) =
                             name="summary"
                             label="Summary"
                             placeholder="Summary"
-                            value={formData.summary}
+                            value={resumeData.summary}
                             multiline
                             onChange={handleFormChange}
                         />

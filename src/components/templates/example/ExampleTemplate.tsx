@@ -1,10 +1,8 @@
-import { DocumentSnapshot } from 'firebase/firestore';
 import { Text, Font, Page, View, Image, Document, StyleSheet } from '@react-pdf/renderer';
 import Header from './Header';
 import Education from './Education';
 import Skills from './Skills';
 import Experience from './Experience';
-import { useEffect, useState } from 'react';
 import { ResumeType } from '../../../types/Resume.types';
 
 const styles = StyleSheet.create({
@@ -85,15 +83,7 @@ const Resume = ({ resumeData }: { resumeData: ResumeType }) => (
     </Page>
 );
 
-const ExampleTemplate = ({ resumeSnapshot }: { resumeSnapshot: DocumentSnapshot }) => {
-    const [resumeData, setResumeData] = useState(resumeSnapshot.data() as ResumeType);
-
-    useEffect(() => {
-        console.log('Loading resume PDF data');
-        const data = resumeSnapshot.data();
-        setResumeData(data as ResumeType);
-    }, [resumeSnapshot]);
-
+const ExampleTemplate = ({ resumeData }: { resumeData: ResumeType }) => {
     return (
         <Document
             author="Resume APP"

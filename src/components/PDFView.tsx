@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { pdfjs, Document, Page } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
@@ -6,10 +6,11 @@ import 'react-pdf/dist/esm/Page/TextLayer.css';
 import type { PDFDocumentProxy } from 'pdfjs-dist';
 import ExampleTemplate from './templates/example/ExampleTemplate';
 import { BlobProvider } from '@react-pdf/renderer';
-import { DocumentSnapshot } from 'firebase/firestore';
 import { Box, Container } from '@mui/material';
 import { blueGrey } from '@mui/material/colors';
 import { Spinner } from './Spinner';
+import { ResumeType } from '../types/Resume.types';
+import debounce from 'lodash.debounce';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     'pdfjs-dist/build/pdf.worker.min.js',
@@ -21,13 +22,16 @@ function getWindowSize() {
     return { innerWidth, innerHeight };
 }
 
-const PDFView = ({ resumeSnapshot }: { resumeSnapshot: DocumentSnapshot }) => {
+const PDFView = ({ resumeData }: { resumeData: ResumeType }) => {
     const [numPages, setNumPages] = useState<number>();
     const [windowSize, setWindowSize] = useState(getWindowSize());
+    const [documentTemplate, setDocumentTemplate] = useState(
+        <ExampleTemplate resumeData={resumeData} />,
+    );
 
-    function onDocumentLoadSuccess({ numPages: nextNumPages }: PDFDocumentProxy): void {
+    const onDocumentLoadSuccess = ({ numPages: nextNumPages }: PDFDocumentProxy): void => {
         setNumPages(nextNumPages);
-    }
+    };
 
     useEffect(() => {
         function handleWindowResize() {
@@ -40,6 +44,19 @@ const PDFView = ({ resumeSnapshot }: { resumeSnapshot: DocumentSnapshot }) => {
             window.removeEventListener('resize', handleWindowResize);
         };
     }, []);
+
+    const debouncedDocumentGenerate = useCallback(
+        debounce(
+            (resumeData: ResumeType) =>
+                setDocumentTemplate(<ExampleTemplate resumeData={resumeData} />),
+            500,
+        ),
+        [],
+    );
+
+    useEffect(() => {
+        debouncedDocumentGenerate(resumeData);
+    }, [debouncedDocumentGenerate, resumeData]);
 
     return (
         <Box
@@ -65,7 +82,7 @@ const PDFView = ({ resumeSnapshot }: { resumeSnapshot: DocumentSnapshot }) => {
                         height: windowSize.innerHeight - 60,
                         width: (windowSize.innerHeight - 60) * (210 / 297),
                     }}>
-                    <BlobProvider document={<ExampleTemplate resumeSnapshot={resumeSnapshot} />}>
+                    <BlobProvider document={documentTemplate}>
                         {({ url, loading, error }) =>
                             loading || error ? (
                                 <Spinner />
