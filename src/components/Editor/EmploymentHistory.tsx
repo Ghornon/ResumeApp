@@ -156,13 +156,18 @@ export const EmploymentHistory = ({
                             <AccordionDetails>
                                 <Grid container spacing={2}>
                                     {Object.entries(employmentHistoryFields).map(([key, value]) => (
-                                        <Grid item xs={12} sm={6} key={`${index}.${key}`}>
+                                        <Grid
+                                            item
+                                            xs={12}
+                                            sm={key == 'description' ? 12 : 6}
+                                            key={`${index}.${key}`}>
                                             {key == 'startDate' || key == 'endDate' ? (
                                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                                                     <DemoContainer components={['DatePicker']}>
                                                         <DatePicker
                                                             label={value}
                                                             name={`${index}.${key}`}
+                                                            sx={{ width: '100%' }}
                                                             onChange={(newValue) =>
                                                                 handleEmploymentHistoryChange({
                                                                     target: {
@@ -189,6 +194,7 @@ export const EmploymentHistory = ({
                                                     name={`${index}.${key}`}
                                                     onChange={handleEmploymentHistoryChange}
                                                     value={employmentHistoryItem[key]}
+                                                    multiline={key == 'description' ? true : false}
                                                 />
                                             )}
                                         </Grid>
