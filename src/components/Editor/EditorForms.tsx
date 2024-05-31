@@ -11,10 +11,12 @@ import {
 } from '@mui/material';
 import { doc, setDoc } from 'firebase/firestore';
 import { useState, useCallback } from 'react';
-import { ResumeType } from '../types/Resume.types';
-import { db } from '../config/firebase';
+import { ResumeType } from '../../types/Resume.types';
+import { db } from '../../config/firebase';
 import { useParams } from 'react-router-dom';
 import debounce from 'lodash.debounce';
+import { PersonalDetails } from './PersonalDetails';
+import { EmploymentHistory } from './EmploymentHistory';
 
 const EditorForms = ({
     resumeData,
@@ -48,43 +50,39 @@ const EditorForms = ({
         [],
     );
 
-    const handleFormChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (
-        event,
-    ) => {
+    const handleFormChange:
+        | React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
+        | { target: { name: string; value: string } } = (event) => {
         const { name, value } = event.target;
 
-        const nestedObject = name.split('.');
-        let newData = {} as ResumeType;
+        const path = name.split('.');
+        const finalProp = path.pop();
 
-        if (nestedObject.length > 1) {
-            newData = {
-                ...resumeData,
-                [nestedObject[0]]: {
-                    ...resumeData[nestedObject[0]],
-                    [nestedObject[1]]: value,
-                },
-            };
-        } else {
-            newData = {
-                ...resumeData,
-                [name]: value,
-            };
+        const newData = {
+            ...resumeData,
+        };
+
+        let pointer: {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            [index: string]: any;
+        } = newData;
+
+        path.forEach((element) => {
+            pointer[element] = { ...pointer[element] };
+            pointer = pointer[element];
+        });
+
+        try {
+            const jsonObject = JSON.parse(value);
+
+            if (finalProp) pointer[finalProp] = jsonObject;
+        } catch (error) {
+            if (finalProp) pointer[finalProp] = value;
         }
 
         setResumeData(newData);
         debouncedSaveDocument(newData);
     };
-
-    const personalDetails = [
-        'jobTitle',
-        'photoUrl',
-        'firstName',
-        'lastName',
-        'email',
-        'phone',
-        'country',
-        'city',
-    ];
 
     return (
         <Box
@@ -92,6 +90,7 @@ const EditorForms = ({
             sx={{
                 maxHeight: '100vh',
                 paddingY: 2,
+                overflowY: 'scroll',
             }}
             width={{ xs: '100%', md: '50%' }}>
             <Box
@@ -135,34 +134,9 @@ const EditorForms = ({
                     </Grid>
                 </Grid>
             </Box>
-            <Box
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    flexWrap: 'wrap',
-                    justifyContent: 'center',
-                    gap: '1rem',
-                    paddingX: 10,
-                    paddingY: 2,
-                }}>
-                <Typography variant="h4" component="h4">
-                    Personal Details
-                </Typography>
-                <Grid container spacing={2}>
-                    {personalDetails.map((element) => (
-                        <Grid item xs={12} sm={6} key={`personalDetails.${element}`}>
-                            <TextField
-                                fullWidth
-                                label={element}
-                                id={`personalDetails.${element}`}
-                                name={`personalDetails.${element}`}
-                                value={resumeData.personalDetails[element]}
-                                onChange={handleFormChange}
-                            />
-                        </Grid>
-                    ))}
-                </Grid>
-            </Box>
+
+            <PersonalDetails resumeData={resumeData} handleFormChange={handleFormChange} />
+
             <Box
                 sx={{
                     display: 'flex',
@@ -191,6 +165,8 @@ const EditorForms = ({
                     </Grid>
                 </Grid>
             </Box>
+
+            <EmploymentHistory resumeData={resumeData} handleFormChange={handleFormChange} />
         </Box>
     );
 };

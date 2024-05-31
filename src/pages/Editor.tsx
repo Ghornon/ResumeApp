@@ -5,8 +5,8 @@ import { doc } from 'firebase/firestore';
 import { Spinner } from '../components/Spinner';
 import ErrorSnackbar from '../components/ErrorSnackbar';
 import { Stack } from '@mui/material';
-import EditorForms from '../components/EditorForms';
-import PDFView from '../components/PDFView';
+import EditorForms from '../components/Editor/EditorForms';
+import PDFView from '../components/Editor/PDFView';
 import { useEffect, useState } from 'react';
 import { ResumeType } from '../types/Resume.types';
 
@@ -28,6 +28,7 @@ const Editor = () => {
             country: '',
             city: '',
         },
+        employmentHistory: [],
         name: '',
         summary: '',
     } as ResumeType);

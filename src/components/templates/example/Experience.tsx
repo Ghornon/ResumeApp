@@ -81,8 +81,8 @@ const ExperienceEntry = ({
                 </View>
             </View>
             <List>
-                {details.map((detail) => (
-                    <Item key={detail.company}>{detail}</Item>
+                {details.map((detail, index) => (
+                    <Item key={`${detail.company}-${index}`}>{detail}</Item>
                 ))}
             </List>
         </View>

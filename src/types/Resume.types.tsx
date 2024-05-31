@@ -9,12 +9,45 @@ enum languageLevel {
     C2,
 }
 
+export type EmploymentHistoryItem = {
+    [index: string]: string | Timestamp;
+    companyName: string;
+    jobTitle: string;
+    employer: string;
+    startDate: Timestamp;
+    endDate: Timestamp;
+    city: string;
+    description: string;
+};
+
+export type SkillItem = {
+    [index: string]: string | number;
+    skillName: string;
+    level: number;
+};
+
+export type EducationHistoryItem = {
+    [index: string]: string | Timestamp;
+    schoolName: string;
+    degree: string;
+    startDate: Timestamp;
+    endDate: Timestamp;
+    city: string;
+    description: string;
+};
+
+export type LanguageItem = {
+    language: string;
+    level: languageLevel;
+};
+
 export type ResumeType = {
     uid: string;
     name: string;
     template: string;
     timestamp: Timestamp;
     personalDetails: {
+        [index: string]: string;
         jobTitle: string;
         photoUrl: string;
         firstName: string;
@@ -25,32 +58,8 @@ export type ResumeType = {
         city: string;
     };
     summary: string;
-    employmentHistory: [
-        {
-            companyName: string;
-            jobTitle: string;
-            employer: string;
-            startDate: Timestamp;
-            endDate: Timestamp;
-            city: string;
-            description: string;
-        },
-    ];
-    educationHistory: [
-        {
-            schoolName: string;
-            degree: string;
-            startDate: Timestamp;
-            endDate: Timestamp;
-            city: string;
-            description: string;
-        },
-    ];
-    skills: [{ skillName: string; level: number }];
-    languages: [
-        {
-            language: string;
-            level: languageLevel;
-        },
-    ];
+    employmentHistory: [EmploymentHistoryItem];
+    educationHistory: [EducationHistoryItem];
+    skills: [SkillItem];
+    languages: [LanguageItem];
 };

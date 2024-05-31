@@ -4,12 +4,12 @@ import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 
 import type { PDFDocumentProxy } from 'pdfjs-dist';
-import ExampleTemplate from './templates/example/ExampleTemplate';
+import ExampleTemplate from '../templates/example/ExampleTemplate';
 import { BlobProvider } from '@react-pdf/renderer';
 import { Box, Container } from '@mui/material';
 import { blueGrey } from '@mui/material/colors';
-import { Spinner } from './Spinner';
-import { ResumeType } from '../types/Resume.types';
+import { Spinner } from '../Spinner';
+import { ResumeType } from '../../types/Resume.types';
 import debounce from 'lodash.debounce';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
