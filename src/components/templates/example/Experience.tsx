@@ -1,7 +1,9 @@
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 
 import Title from './Title';
-import List, { Item } from './List';
+import { Timestamp } from 'firebase/firestore';
+import { timestampToDate } from '../../../helpers/timestampToDate';
+import { ResumeType } from '../../../types/Resume.types';
 
 const styles = StyleSheet.create({
     container: {
@@ -59,17 +61,21 @@ const styles = StyleSheet.create({
 });
 
 const ExperienceEntry = ({
-    company,
-    details,
-    position,
-    date,
+    jobTitle,
+    employer,
+    startDate,
+    endDate,
+    city,
+    description,
 }: {
-    company: string;
-    details: string[];
-    position: string;
-    date: string;
+    jobTitle: string;
+    employer: string;
+    startDate: Timestamp;
+    endDate: Timestamp;
+    city: string;
+    description: string;
 }) => {
-    const title = `${company} | ${position}`;
+    const title = `${employer} | ${jobTitle}`;
     return (
         <View style={styles.entryContainer}>
             <View style={styles.headerContainer}>
@@ -77,73 +83,36 @@ const ExperienceEntry = ({
                     <Text style={styles.title}>{title}</Text>
                 </View>
                 <View style={styles.rightColumn}>
-                    <Text style={styles.date}>{date}</Text>
+                    <Text style={styles.date}>
+                        {timestampToDate(startDate)} to {timestampToDate(endDate)}
+                    </Text>
                 </View>
             </View>
-            <List>
-                {details.map((detail, index) => (
-                    <Item key={`${detail.company}-${index}`}>{detail}</Item>
-                ))}
-            </List>
+            <View style={styles.headerContainer}>
+                <View style={styles.rightColumn}>
+                    <Text style={styles.date}>{city}</Text>
+                </View>
+            </View>
+            <Text style={styles.details}>{description}</Text>
         </View>
     );
 };
 
-const experienceData = [
-    {
-        company: 'Jedi Temple, Coruseant',
-        date: 'A long time ago...',
-        details: [
-            'Started a new Jedi Temple in order to train the next generation of Jedi Masters',
-            'Discovered and trained a new generation of Jedi Knights, which he recruited from within the New Republic',
-            'Communicates with decesased Jedi Masters such as Anakin Skywalker, Yoda, Obi-Wan Kenobi in order to learn the secrets of the Jedi Order',
-        ],
-        position: 'Head Jedi Master',
-    },
-    {
-        company: 'Rebel Alliance',
-        date: 'A long time ago...',
-        details: [
-            'Lead legions of troops into battle while demonstrating bravery, competence and honor',
-            'Created complicated battle plans in conjunction with other Rebel leaders in order to ensure the greatest chance of success',
-            'Defeated Darth Vader in single-combat, and convinced him to betray his mentor, the Emperor',
-        ],
-        position: 'General',
-    },
-    {
-        company: 'Rebel Alliance',
-        date: 'A long time ago...',
-        details: [
-            'Destroyed the Death Star by using the force to find its only weakness and delivering a torpedo into the center of the ship',
-            'Commanded of squadron of X-Wings into battle',
-            'Defeated an enemy AT-AT single handedly after his ship was destroyed',
-            'Awarded a medal for valor and bravery in battle for his successful destruction of the Death Star',
-        ],
-        position: 'Lieutenant Commander',
-    },
-    {
-        company: 'Tatooine Moisture Refinery',
-        date: 'A long time ago...',
-        details: [
-            'Replaced damaged power converters',
-            'Performed menial labor thoughout the farm in order to ensure its continued operation',
-        ],
-        position: 'Moisture Farmer',
-    },
-];
-
-const Experience = () => (
+const Experience = ({ resumeData }: { resumeData: ResumeType }) => (
     <View style={styles.container}>
         <Title>Experience</Title>
-        {experienceData.map(({ company, date, details, position }) => (
-            <ExperienceEntry
-                company={company}
-                date={date}
-                details={details}
-                key={company + position}
-                position={position}
-            />
-        ))}
+        {resumeData.employmentHistory.map(
+            ({ jobTitle, employer, startDate, endDate, city, description }) => (
+                <ExperienceEntry
+                    jobTitle={jobTitle}
+                    employer={employer}
+                    startDate={startDate}
+                    endDate={endDate}
+                    city={city}
+                    description={description}
+                />
+            ),
+        )}
     </View>
 );
 

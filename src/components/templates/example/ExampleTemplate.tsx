@@ -77,7 +77,7 @@ const Resume = ({ resumeData }: { resumeData: ResumeType }) => (
                 <Education />
                 <Skills />
             </View>
-            <Experience />
+            <Experience resumeData={resumeData} />
         </View>
         <Text style={styles.footer}>This IS the candidate you are looking for</Text>
     </Page>
