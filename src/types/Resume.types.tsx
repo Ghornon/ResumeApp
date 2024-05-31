@@ -11,7 +11,6 @@ enum languageLevel {
 
 export type EmploymentHistoryItem = {
     [index: string]: string | Timestamp;
-    companyName: string;
     jobTitle: string;
     employer: string;
     startDate: Timestamp;
