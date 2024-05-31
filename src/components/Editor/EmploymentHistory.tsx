@@ -17,7 +17,6 @@ import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
 import { EmploymentHistoryItem, ResumeType } from '../../types/Resume.types';
 import { useEffect, useState } from 'react';
 import { timestampToDate } from '../../helpers/timestampToDate';
-import { Spinner } from '../Spinner';
 import { Timestamp } from 'firebase/firestore';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -60,7 +59,7 @@ export const EmploymentHistory = ({
 
         setEmploymentHistory(newData);
 
-        handleFormChange({ target: { name: 'employmentHistory', value: JSON.stringify(newData) } });
+        handleFormChange({ target: { name: 'employmentHistory', value: newData } });
     };
 
     const removeHistoryItem = (index: number) => {
@@ -68,7 +67,10 @@ export const EmploymentHistory = ({
         const updatedEmploymentHistory = employmentHistory.filter((element, i) => i != index);
         setEmploymentHistory(updatedEmploymentHistory);
         handleFormChange({
-            target: { name: 'employmentHistory', value: JSON.stringify(updatedEmploymentHistory) },
+            target: {
+                name: 'employmentHistory',
+                value: updatedEmploymentHistory,
+            },
         });
     };
 
@@ -84,7 +86,7 @@ export const EmploymentHistory = ({
 
         setEmploymentHistory(updatedEmploymentHistory);
         handleFormChange({
-            target: { name: 'employmentHistory', value: JSON.stringify(updatedEmploymentHistory) },
+            target: { name: 'employmentHistory', value: updatedEmploymentHistory },
         });
     };
 
@@ -100,6 +102,8 @@ export const EmploymentHistory = ({
         };
 
         setEmploymentHistory([...employmentHistory, newEmployment]);
+
+        setExpanded(`panel.${employmentHistory.length}`);
     };
 
     const employmentHistoryFields = {

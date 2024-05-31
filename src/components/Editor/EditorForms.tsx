@@ -50,9 +50,9 @@ const EditorForms = ({
         [],
     );
 
-    const handleFormChange:
-        | React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
-        | { target: { name: string; value: string } } = (event) => {
+    const handleFormChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (
+        event,
+    ) => {
         const { name, value } = event.target;
 
         const path = name.split('.');
@@ -72,13 +72,7 @@ const EditorForms = ({
             pointer = pointer[element];
         });
 
-        try {
-            const jsonObject = JSON.parse(value);
-
-            if (finalProp) pointer[finalProp] = jsonObject;
-        } catch (error) {
-            if (finalProp) pointer[finalProp] = value;
-        }
+        if (finalProp) pointer[finalProp] = value;
 
         setResumeData(newData);
         debouncedSaveDocument(newData);
