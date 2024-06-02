@@ -178,6 +178,7 @@ export const EmploymentHistory = ({
                                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                                                     <DemoContainer components={['DatePicker']}>
                                                         <DatePicker
+                                                            views={['month', 'year']}
                                                             label={value}
                                                             name={`${index}.${key}`}
                                                             sx={{ width: '100%' }}
