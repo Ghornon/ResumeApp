@@ -29,7 +29,18 @@ export const EmploymentHistory = ({
     handleFormChange,
 }: {
     resumeData: ResumeType;
-    handleFormChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    handleFormChange<
+        T extends
+            | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+            | {
+                  target: {
+                      name: string;
+                      value: EmploymentHistoryItem[];
+                  };
+              },
+    >(
+        event: T,
+    ): void;
 }) => {
     const [expanded, setExpanded] = useState<string | false>(false);
     const [employmentHistory, setEmploymentHistory] = useState([] as Array<EmploymentHistoryItem>);
@@ -43,17 +54,19 @@ export const EmploymentHistory = ({
         setEmploymentHistory([...resumeData.employmentHistory]);
     }, [resumeData.employmentHistory]);
 
-    const handleEmploymentHistoryChange: React.ChangeEventHandler<
-        HTMLInputElement | HTMLTextAreaElement
-    > = (event) => {
+    const handleEmploymentHistoryChange = <
+        T extends
+            | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+            | { target: { name: string; value: Timestamp } },
+    >(
+        event: T,
+    ) => {
         const { name, value } = event.target;
         const path = name.split('.');
         const finalProp = path.pop();
         const index = parseInt(path[0]);
 
         const newData: EmploymentHistoryItem[] = [...employmentHistory];
-
-        console.log(name, value);
 
         if (!isNaN(index) && finalProp) newData[index][finalProp] = value;
 
@@ -173,7 +186,11 @@ export const EmploymentHistory = ({
                                                                     target: {
                                                                         name: `${index}.${key}`,
                                                                         value: Timestamp.fromDate(
-                                                                            new Date(newValue),
+                                                                            new Date(
+                                                                                dayjs(
+                                                                                    newValue,
+                                                                                ).toDate(),
+                                                                            ),
                                                                         ),
                                                                     },
                                                                 })

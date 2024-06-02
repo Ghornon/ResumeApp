@@ -11,7 +11,13 @@ import {
 } from '@mui/material';
 import { doc, setDoc } from 'firebase/firestore';
 import { useState, useCallback } from 'react';
-import { ResumeType } from '../../types/Resume.types';
+import {
+    EducationHistoryItem,
+    EmploymentHistoryItem,
+    LanguageItem,
+    ResumeType,
+    SkillItem,
+} from '../../types/Resume.types';
 import { db } from '../../config/firebase';
 import { useParams } from 'react-router-dom';
 import debounce from 'lodash.debounce';
@@ -50,8 +56,21 @@ const EditorForms = ({
         [],
     );
 
-    const handleFormChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (
-        event,
+    const handleFormChange = <
+        T extends
+            | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+            | {
+                  target: {
+                      name: string;
+                      value:
+                          | EmploymentHistoryItem[]
+                          | SkillItem[]
+                          | EducationHistoryItem[]
+                          | LanguageItem[];
+                  };
+              },
+    >(
+        event: T,
     ) => {
         const { name, value } = event.target;
 
