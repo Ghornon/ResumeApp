@@ -4,7 +4,6 @@ import { HistoryItem } from './HistoryItem';
 import EditorFieldBox from './EditorFieldBox';
 import BaseResumeData from './BaseResumeData';
 import Summary from './Summary';
-import EditorFirestore from './EditorFirestore';
 
 const EditorForm = () => {
     return (

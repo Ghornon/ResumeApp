@@ -1,15 +1,30 @@
-import { doc, setDoc } from 'firebase/firestore';
 import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
-import { ResumeType } from '../types/Resume.types';
-import debounce from 'lodash.debounce';
-import { db } from '../config/firebase';
+import {
+    EducationHistoryItem,
+    EmploymentHistoryItem,
+    LanguageItem,
+    ResumeType,
+    SkillItem,
+} from '../types/Resume.types';
+import { Timestamp } from 'firebase/firestore';
 
-export const useResumeStore = create((set) => ({
+interface IResumeStore extends ResumeType {
+    setName: (newState: string) => void;
+    setTemplate: (newState: string) => void;
+    setSummary: (newState: string) => void;
+    setPersonalDetails: (newState: ResumeType['personalDetails']) => void;
+    setEmploymentHistory: (newState: Array<EmploymentHistoryItem>) => void;
+    setEducationHistory: (newState: Array<EducationHistoryItem>) => void;
+    setSkills: (newState: Array<SkillItem>) => void;
+    setLanguages: (newState: Array<LanguageItem>) => void;
+    setData: (data: ResumeType) => void;
+}
+
+export const useResumeStore = create<IResumeStore>((set) => ({
     uid: '',
     name: 'New resume',
     template: '',
-    timestamp: '',
+    timestamp: Timestamp.now(),
     summary: '',
     personalDetails: {
         jobTitle: '',
@@ -33,8 +48,7 @@ export const useResumeStore = create((set) => ({
     setEducationHistory: (newState) => set({ educationHistory: newState }),
     setSkills: (newState) => set({ skills: newState }),
     setLanguages: (newState) => set({ languages: newState }),
-    setDocId: (newState) => set({ docId: newState }),
-    setData: (data) => set((state) => ({ ...state, ...data })),
+    setData: (data) => set((state: ResumeType) => ({ ...state, ...data })),
 }));
 
 /* 

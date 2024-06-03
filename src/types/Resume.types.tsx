@@ -57,8 +57,8 @@ export type ResumeType = {
         city: string;
     };
     summary: string;
-    employmentHistory: [EmploymentHistoryItem];
-    educationHistory: [EducationHistoryItem];
-    skills: [SkillItem];
-    languages: [LanguageItem];
+    employmentHistory: Array<EmploymentHistoryItem>;
+    educationHistory: Array<EducationHistoryItem>;
+    skills: Array<SkillItem>;
+    languages: Array<LanguageItem>;
 };

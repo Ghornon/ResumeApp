@@ -1,5 +1,5 @@
 import AddIcon from '@mui/icons-material/Add';
-import { EducationHistoryItem, EmploymentHistoryItem, ResumeType } from '../../types/Resume.types';
+import { EducationHistoryItem, EmploymentHistoryItem } from '../../types/Resume.types';
 import { useCallback, useState } from 'react';
 import { Timestamp, doc, updateDoc } from 'firebase/firestore';
 import {
@@ -48,7 +48,7 @@ export const HistoryItem = ({ type }: { type: string }) => {
         return [];
     };
     const { resumeId } = useParams();
-    const saveDocument = (resumeData: ResumeType) => {
+    const saveDocument = (resumeData: Array<EmploymentHistoryItem | EducationHistoryItem>) => {
         if (resumeId) {
             const resumeRef = doc(db, 'resumes', resumeId);
 
@@ -64,18 +64,22 @@ export const HistoryItem = ({ type }: { type: string }) => {
     };
 
     const debouncedSaveDocument = useCallback(
-        debounce((resumeData: ResumeType) => saveDocument(resumeData), 1000),
+        debounce(
+            (resumeData: Array<EmploymentHistoryItem | EducationHistoryItem>) =>
+                saveDocument(resumeData),
+            1000,
+        ),
         [],
     );
 
     const setState = (newState: Array<EmploymentHistoryItem | EducationHistoryItem>) => {
         if (type == 'employmentHistory') {
-            setEmploymentHistory(newState);
+            setEmploymentHistory(newState as Array<EmploymentHistoryItem>);
             debouncedSaveDocument(newState);
         }
 
         if (type == 'educationHistory') {
-            setEducationHistory(newState);
+            setEducationHistory(newState as Array<EducationHistoryItem>);
             debouncedSaveDocument(newState);
         }
     };
@@ -207,49 +211,55 @@ export const HistoryItem = ({ type }: { type: string }) => {
                     </AccordionSummary>
                     <AccordionDetails>
                         <Grid container spacing={2}>
-                            {Object.entries(historyMap.get(type).fields).map(([key, value]) => (
-                                <Grid
-                                    item
-                                    xs={12}
-                                    sm={key == 'description' ? 12 : 6}
-                                    key={`${index}.${key}`}>
-                                    {key == 'startDate' || key == 'endDate' ? (
-                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                            <DemoContainer components={['DatePicker']}>
-                                                <DatePicker
-                                                    views={['month', 'year']}
-                                                    label={value}
-                                                    name={`${index}.${key}`}
-                                                    sx={{ width: '100%' }}
-                                                    onChange={(newValue) =>
-                                                        handleHistoryItemChange({
-                                                            target: {
-                                                                name: `${index}.${key}`,
-                                                                value: Timestamp.fromDate(
-                                                                    new Date(
-                                                                        dayjs(newValue).toDate(),
+                            {Object.entries(historyMap.get(type)?.fields || {}).map(
+                                ([key, value]) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        sm={key == 'description' ? 12 : 6}
+                                        key={`${index}.${key}`}>
+                                        {key == 'startDate' || key == 'endDate' ? (
+                                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                <DemoContainer components={['DatePicker']}>
+                                                    <DatePicker
+                                                        views={['month', 'year']}
+                                                        label={value}
+                                                        name={`${index}.${key}`}
+                                                        sx={{ width: '100%' }}
+                                                        onChange={(newValue) =>
+                                                            handleHistoryItemChange({
+                                                                target: {
+                                                                    name: `${index}.${key}`,
+                                                                    value: Timestamp.fromDate(
+                                                                        new Date(
+                                                                            dayjs(
+                                                                                newValue,
+                                                                            ).toDate(),
+                                                                        ),
                                                                     ),
-                                                                ),
-                                                            },
-                                                        })
-                                                    }
-                                                    value={dayjs(timestampToDate(historyItem[key]))}
-                                                />
-                                            </DemoContainer>
-                                        </LocalizationProvider>
-                                    ) : (
-                                        <TextField
-                                            fullWidth
-                                            label={value}
-                                            id={`${index}.${key}`}
-                                            name={`${index}.${key}`}
-                                            onChange={handleHistoryItemChange}
-                                            value={historyItem[key]}
-                                            multiline={key == 'description' ? true : false}
-                                        />
-                                    )}
-                                </Grid>
-                            ))}
+                                                                },
+                                                            })
+                                                        }
+                                                        value={dayjs(
+                                                            timestampToDate(historyItem[key]),
+                                                        )}
+                                                    />
+                                                </DemoContainer>
+                                            </LocalizationProvider>
+                                        ) : (
+                                            <TextField
+                                                fullWidth
+                                                label={value}
+                                                id={`${index}.${key}`}
+                                                name={`${index}.${key}`}
+                                                onChange={handleHistoryItemChange}
+                                                value={historyItem[key]}
+                                                multiline={key == 'description' ? true : false}
+                                            />
+                                        )}
+                                    </Grid>
+                                ),
+                            )}
                         </Grid>
                     </AccordionDetails>
                     <AccordionActions>
@@ -278,7 +288,7 @@ export const HistoryItem = ({ type }: { type: string }) => {
                 sx={{ marginTop: 2 }}
                 startIcon={<AddIcon />}
                 onClick={addNewHistoryItem}>
-                {historyMap.get(type).buttonText}
+                {historyMap.get(type)?.buttonText}
             </Button>
         </Grid>
     );

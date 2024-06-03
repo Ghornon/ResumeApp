@@ -9,6 +9,7 @@ import EditorForm from '../components/Editor/EditorForm';
 import PDFView from '../components/Editor/PDFView';
 import { useEffect } from 'react';
 import { useResumeStore } from '../store/ResumeStore';
+import { ResumeType } from '../types/Resume.types';
 
 const Editor = () => {
     const { resumeId } = useParams();
@@ -18,15 +19,13 @@ const Editor = () => {
     );
 
     const setData = useResumeStore((state) => state.setData);
-    const setDocId = useResumeStore((state) => state.setDocId);
 
     useEffect(() => {
         if (!resumeLoading && !resumeError) {
             const data = resumeSnapshot?.data();
-            setDocId(resumeId);
-            setData(data);
+            if (data) setData(data as ResumeType);
         }
-    }, [resumeSnapshot, resumeLoading, resumeError]);
+    }, [resumeSnapshot, resumeLoading, resumeError, setData]);
 
     if (resumeLoading) return <Spinner />;
 

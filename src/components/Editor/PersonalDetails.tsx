@@ -32,7 +32,7 @@ export const PersonalDetails = () => {
     };
 
     const { resumeId } = useParams();
-    const saveDocument = (resumeData: ResumeType) => {
+    const saveDocument = (resumeData: ResumeType['personalDetails']) => {
         if (resumeId) {
             const resumeRef = doc(db, 'resumes', resumeId);
 
@@ -42,7 +42,7 @@ export const PersonalDetails = () => {
     };
 
     const debouncedSaveDocument = useCallback(
-        debounce((resumeData: ResumeType) => saveDocument(resumeData), 1000),
+        debounce((resumeData: ResumeType['personalDetails']) => saveDocument(resumeData), 1000),
         [],
     );
 

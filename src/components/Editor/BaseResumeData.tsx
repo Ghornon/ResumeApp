@@ -11,7 +11,6 @@ import {
 import EditorFieldBox from './EditorFieldBox';
 import { useResumeStore } from '../../store/ResumeStore';
 import { db } from '../../config/firebase';
-import { ResumeType } from '../../types/Resume.types';
 import { useParams } from 'react-router-dom';
 import { useCallback } from 'react';
 import { doc, updateDoc } from 'firebase/firestore';
@@ -35,7 +34,7 @@ const BaseResumeData = () => {
     };
 
     const { resumeId } = useParams();
-    const saveDocument = (resumeData: ResumeType) => {
+    const saveDocument = (resumeData: string) => {
         if (resumeId) {
             const resumeRef = doc(db, 'resumes', resumeId);
 
@@ -45,7 +44,7 @@ const BaseResumeData = () => {
     };
 
     const debouncedSaveDocument = useCallback(
-        debounce((resumeData: ResumeType) => saveDocument(resumeData), 1000),
+        debounce((resumeData: string) => saveDocument(resumeData), 1000),
         [],
     );
 
