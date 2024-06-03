@@ -4,6 +4,8 @@ import { HistoryItem } from './HistoryItem';
 import EditorFieldBox from './EditorFieldBox';
 import BaseResumeData from './BaseResumeData';
 import Summary from './Summary';
+import { Skills } from './SkillIs';
+import { Languages } from './Languages';
 
 const EditorForm = () => {
     return (
@@ -31,6 +33,14 @@ const EditorForm = () => {
 
             <EditorFieldBox title="Education History">
                 <HistoryItem type={'educationHistory'} />
+            </EditorFieldBox>
+
+            <EditorFieldBox title="Skills">
+                <Skills />
+            </EditorFieldBox>
+
+            <EditorFieldBox title="Languages">
+                <Languages />
             </EditorFieldBox>
         </Box>
     );
