@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
     subtitle: {
         fontSize: 10,
         justifySelf: 'flex-end',
+        textAlign: 'justify',
         fontFamily: 'Lato',
     },
     link: {

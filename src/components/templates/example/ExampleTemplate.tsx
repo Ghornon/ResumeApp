@@ -4,6 +4,7 @@ import Education from './Education';
 import Skills from './Skills';
 import Experience from './Experience';
 import { ResumeType } from '../../../types/Resume.types';
+import Languages from './Languages';
 
 const styles = StyleSheet.create({
     page: {
@@ -34,8 +35,8 @@ const styles = StyleSheet.create({
         },
     },
     footer: {
-        fontSize: 12,
-        fontFamily: 'Lato Bold',
+        fontSize: 8,
+        fontFamily: 'Lato',
         textAlign: 'center',
         marginTop: 15,
         paddingTop: 5,
@@ -74,12 +75,13 @@ const Resume = ({ resumeData }: { resumeData: ResumeType }) => (
         <View style={styles.container}>
             <View style={styles.leftColumn}>
                 {/* <Image src="https://react-pdf.org/static/images/luke.jpg" style={styles.image} /> */}
-                <Education />
-                <Skills />
+                <Education resumeData={resumeData} />
+                <Skills resumeData={resumeData} />
+                <Languages resumeData={resumeData} />
             </View>
             <Experience resumeData={resumeData} />
         </View>
-        <Text style={styles.footer}>This IS the candidate you are looking for</Text>
+        <Text style={styles.footer}>Resume footer</Text>
     </Page>
 );
 

@@ -1,6 +1,7 @@
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 
 import Title from './Title';
+import { timestampToDate } from '../../../helpers/timestampToDate';
 
 const styles = StyleSheet.create({
     container: {
@@ -13,6 +14,7 @@ const styles = StyleSheet.create({
     degree: {
         fontFamily: 'Lato',
         fontSize: 10,
+        textAlign: 'justify',
     },
     candidate: {
         fontFamily: 'Lato Italic',
@@ -20,12 +22,21 @@ const styles = StyleSheet.create({
     },
 });
 
-const Education = () => (
+const Education = ({ resumeData }: { resumeData: ResumeType }) => (
     <View style={styles.container}>
         <Title>Education</Title>
-        <Text style={styles.school}>Jedi Academy</Text>
-        <Text style={styles.degree}>Jedi Master</Text>
-        <Text style={styles.candidate}>A long, long time ago</Text>
+        {resumeData.educationHistory.map((education) => (
+            <>
+                <Text style={styles.school}>
+                    {education.schoolName} | {education.city}
+                </Text>
+                <Text style={styles.degree}>Degree: {education.degree}</Text>
+                <Text style={styles.candidate}>
+                    {timestampToDate(education.startDate)} to {timestampToDate(education.endDate)}
+                </Text>
+                <Text style={styles.degree}>{education.description}</Text>
+            </>
+        ))}
     </View>
 );
 

@@ -2,7 +2,6 @@ import { Text, View, StyleSheet } from '@react-pdf/renderer';
 
 import Title from './Title';
 import List, { Item } from './List';
-import { ResumeType } from '../../../types/Resume.types';
 
 const styles = StyleSheet.create({
     title: {
@@ -17,21 +16,23 @@ const styles = StyleSheet.create({
     },
 });
 
-const SkillEntry = ({ skills }: { skills: [] }) => (
+const LanguageEntry = ({ languages }: { languages: [] }) => (
     <View>
         <List>
-            {skills.map((skill) => (
-                <Item key={skill.skillName}>{skill.skillName}</Item>
+            {languages.map((language) => (
+                <Item key={language}>
+                    {language.language} {language.level}
+                </Item>
             ))}
         </List>
     </View>
 );
 
-const Skills = ({ resumeData }: { resumeData: ResumeType }) => (
+const Languages = ({ resumeData }: { resumeData: ResumeType }) => (
     <View>
-        <Title>Skills</Title>
-        <SkillEntry name="Skills" skills={resumeData.skills} />
+        <Title>Languages</Title>
+        <LanguageEntry name="Languages" languages={resumeData.languages} />
     </View>
 );
 
-export default Skills;
+export default Languages;
