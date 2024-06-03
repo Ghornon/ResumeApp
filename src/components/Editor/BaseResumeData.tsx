@@ -70,8 +70,9 @@ const BaseResumeData = () => {
                         value={template}
                         label="Template"
                         onChange={handleTemplateChange}>
-                        <MenuItem value="Default">Default</MenuItem>
                         <MenuItem value="Test">Test</MenuItem>
+                        <MenuItem value="Test 2">Test 2</MenuItem>
+                        <MenuItem value="Template 3">Template 3</MenuItem>
                     </Select>
                 </FormControl>
             </Grid>
