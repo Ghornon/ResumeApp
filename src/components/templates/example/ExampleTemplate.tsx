@@ -73,7 +73,7 @@ const Resume = ({ resumeData }: { resumeData: ResumeType }) => (
         <Header resumeData={resumeData} />
         <View style={styles.container}>
             <View style={styles.leftColumn}>
-                <Image src="https://react-pdf.org/static/images/luke.jpg" style={styles.image} />
+                {/* <Image src="https://react-pdf.org/static/images/luke.jpg" style={styles.image} /> */}
                 <Education />
                 <Skills />
             </View>

@@ -5,10 +5,10 @@ import { doc } from 'firebase/firestore';
 import { Spinner } from '../components/Spinner';
 import ErrorSnackbar from '../components/ErrorSnackbar';
 import { Stack } from '@mui/material';
-import EditorForms from '../components/Editor/EditorForms';
+import EditorForm from '../components/Editor/EditorForm';
 import PDFView from '../components/Editor/PDFView';
-import { useEffect, useState } from 'react';
-import { ResumeType } from '../types/Resume.types';
+import { useEffect } from 'react';
+import { useResumeStore } from '../store/ResumeStore';
 
 const Editor = () => {
     const { resumeId } = useParams();
@@ -17,32 +17,16 @@ const Editor = () => {
         doc(db, 'resumes', resumeId || ''),
     );
 
-    const [resumeData, setResumeData] = useState({
-        personalDetails: {
-            jobTitle: '',
-            photoUrl: '',
-            firstName: '',
-            lastName: '',
-            email: '',
-            phone: '',
-            country: '',
-            city: '',
-        },
-        employmentHistory: [],
-        name: '',
-        summary: '',
-    } as ResumeType);
+    const setData = useResumeStore((state) => state.setData);
+    const setDocId = useResumeStore((state) => state.setDocId);
 
     useEffect(() => {
-        console.log('Loading data from firestore');
-        if (!resumeLoading) {
+        if (!resumeLoading && !resumeError) {
             const data = resumeSnapshot?.data();
-            setResumeData({
-                ...resumeData,
-                ...data,
-            });
+            setDocId(resumeId);
+            setData(data);
         }
-    }, [resumeSnapshot]);
+    }, [resumeSnapshot, resumeLoading, resumeError]);
 
     if (resumeLoading) return <Spinner />;
 
@@ -51,8 +35,8 @@ const Editor = () => {
     if (resumeSnapshot)
         return (
             <Stack sx={{ minHeight: '100vh' }} direction={{ sm: 'column', md: 'row' }}>
-                <EditorForms resumeData={resumeData} setResumeData={setResumeData} />
-                <PDFView resumeData={resumeData} />
+                <EditorForm />
+                <PDFView />
             </Stack>
         );
 };

@@ -11,6 +11,7 @@ import { blueGrey } from '@mui/material/colors';
 import { Spinner } from '../Spinner';
 import { ResumeType } from '../../types/Resume.types';
 import debounce from 'lodash.debounce';
+import { useResumeStore } from '../../store/ResumeStore';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     'pdfjs-dist/build/pdf.worker.min.js',
@@ -22,7 +23,8 @@ function getWindowSize() {
     return { innerWidth, innerHeight };
 }
 
-const PDFView = ({ resumeData }: { resumeData: ResumeType }) => {
+const PDFView = () => {
+    const resumeData = useResumeStore((state) => state);
     const [numPages, setNumPages] = useState<number>();
     const [windowSize, setWindowSize] = useState(getWindowSize());
     const [documentTemplate, setDocumentTemplate] = useState(

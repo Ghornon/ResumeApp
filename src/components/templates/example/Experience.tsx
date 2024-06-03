@@ -102,8 +102,9 @@ const Experience = ({ resumeData }: { resumeData: ResumeType }) => (
     <View style={styles.container}>
         <Title>Experience</Title>
         {resumeData.employmentHistory.map(
-            ({ jobTitle, employer, startDate, endDate, city, description }) => (
+            ({ jobTitle, employer, startDate, endDate, city, description }, index) => (
                 <ExperienceEntry
+                    key={`expierience${index}`}
                     jobTitle={jobTitle}
                     employer={employer}
                     startDate={startDate}

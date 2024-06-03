@@ -27,7 +27,10 @@
         "react-dom": "^18.3.1",
         "react-firebase-hooks": "^5.1.1",
         "react-pdf": "^8.0.0",
-        "react-router-dom": "^6.23.0"
+        "react-router-dom": "^6.23.0",
+        "scheduler": "^0.23.2",
+        "use-context-selector": "^2.0.0",
+        "zustand": "^4.5.2"
     },
     "devDependencies": {
         "@types/lodash.debounce": "^4.0.9",

@@ -1,0 +1,83 @@
+import {
+    FormControl,
+    Grid,
+    InputLabel,
+    MenuItem,
+    Select,
+    SelectChangeEvent,
+    TextField,
+    debounce,
+} from '@mui/material';
+import EditorFieldBox from './EditorFieldBox';
+import { useResumeStore } from '../../store/ResumeStore';
+import { db } from '../../config/firebase';
+import { ResumeType } from '../../types/Resume.types';
+import { useParams } from 'react-router-dom';
+import { useCallback } from 'react';
+import { doc, updateDoc } from 'firebase/firestore';
+
+const BaseResumeData = () => {
+    console.log('BaseResumeData');
+
+    const name = useResumeStore((state) => state.name);
+    const setName = useResumeStore((state) => state.setName);
+    const template = useResumeStore((state) => state.template);
+    const setTemplate = useResumeStore((state) => state.setTemplate);
+
+    const handleFormChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { value } = event.target;
+        setName(value);
+        debouncedSaveDocument(value);
+    };
+
+    const handleTemplateChange = (event: SelectChangeEvent) => {
+        setTemplate(event.target.value as string);
+    };
+
+    const { resumeId } = useParams();
+    const saveDocument = (resumeData: ResumeType) => {
+        if (resumeId) {
+            const resumeRef = doc(db, 'resumes', resumeId);
+
+            console.log('Saving data', resumeId, resumeData);
+            updateDoc(resumeRef, { name: resumeData });
+        }
+    };
+
+    const debouncedSaveDocument = useCallback(
+        debounce((resumeData: ResumeType) => saveDocument(resumeData), 1000),
+        [],
+    );
+
+    return (
+        <EditorFieldBox title={name || 'New Resume'}>
+            <Grid item xs={12} sm={6}>
+                <TextField
+                    fullWidth
+                    label="Resume name"
+                    id="name"
+                    name="name"
+                    value={name}
+                    onChange={handleFormChange}
+                />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Template</InputLabel>
+                    <Select
+                        fullWidth
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={template}
+                        label="Template"
+                        onChange={handleTemplateChange}>
+                        <MenuItem value="Default">Default</MenuItem>
+                        <MenuItem value="Test">Test</MenuItem>
+                    </Select>
+                </FormControl>
+            </Grid>
+        </EditorFieldBox>
+    );
+};
+
+export default BaseResumeData;
