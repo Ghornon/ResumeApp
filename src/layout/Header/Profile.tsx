@@ -12,13 +12,15 @@ import {
     Divider,
     Typography,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Settings, Logout } from '@mui/icons-material';
 
 const Profile = () => {
     const [user] = useAuthState(auth);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
+
+    const navigate = useNavigate();
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -30,6 +32,11 @@ const Profile = () => {
 
     const handleLogout = async () => {
         await signOut(auth);
+    };
+
+    const handleGoToProfile = async () => {
+        await handleClose();
+        navigate('/profile');
     };
 
     return (
@@ -89,7 +96,7 @@ const Profile = () => {
                 }}
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}>
-                <MenuItem onClick={handleClose} component={Link} to="/profile">
+                <MenuItem onClick={handleGoToProfile}>
                     <Avatar src={user?.photoURL || ''} alt={user?.displayName || 'User Avatar'} />
                     <Typography sx={{ ml: 1 }}>Profile</Typography>
                 </MenuItem>
