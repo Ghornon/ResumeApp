@@ -95,7 +95,7 @@ const DocumentTabPanel = () => {
                         const { name, timestamp, posterUrl } = doc.data();
                         const date = new Date(timestamp.seconds * 1000).toLocaleDateString();
                         return (
-                            <Grid item xs={12} md={6} key={doc.id}>
+                            <Grid item xs={12} md={4} key={doc.id}>
                                 <ResumeTab
                                     docId={doc.id}
                                     name={name}

@@ -1,9 +1,11 @@
-import { Box, Button, Chip, Stack, Typography } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Button, Chip, Stack, Typography, Menu, MenuItem, IconButton } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Poster from './Poster';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DownloadIcon from '@mui/icons-material/Download';
 import DeleteIcon from '@mui/icons-material/Delete';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { db } from '../config/firebase';
 import { doc, deleteDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
@@ -21,71 +23,104 @@ const ResumeTab = ({
     date: string;
 }) => {
     const navigate = useNavigate();
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+
+    const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
+
     const handleRemove = async () => {
         await deleteDoc(doc(db, 'resumes', docId));
+        handleMenuClose();
     };
 
     return (
-        <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        padding: 4,
-                        backgroundColor: blueGrey[50],
-                    }}>
-                    <Poster posterUrl={posterUrl} title={name} variant="outlined" />
-                </Box>
-            </Grid>
-            <Grid
+        <Grid container>
+            <Box
+                component={Grid}
                 item
                 xs={12}
-                sm={6}
+                sm={12}
                 sx={{
                     display: 'flex',
-                    flexDirection: 'column',
                     alignItems: 'center',
+                    width: '100%',
                     justifyContent: 'center',
+                    padding: 4,
+                    backgroundColor: blueGrey[50],
+                    boxShadow: 'inset 0 -100px 100px -80px rgb(217, 217, 217)',
+                    position: 'relative',
                 }}>
-                <Typography variant="subtitle2">{name}</Typography>
-                <Stack direction="row">
+                <Poster posterUrl={posterUrl} title={name} variant="outlined" />
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        bottom: 10,
+                        left: 10,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'flex-start',
+                    }}>
+                    <Typography variant="subtitle2">{name}</Typography>
                     <Chip
                         label={`Updated ${date}`}
                         color="primary"
                         size="small"
                         variant="outlined"
+                        sx={{ mt: 1 }}
                     />
-                </Stack>
-                {/* <Typography variant="caption">Updated {date}</Typography> */}
+                </Box>
                 <Box
                     sx={{
+                        position: 'absolute',
+                        bottom: 10,
+                        right: 10,
                         display: 'flex',
-                        flexDirection: 'column',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        padding: 1,
                     }}>
-                    <Button
-                        variant="text"
-                        size="small"
-                        startIcon={<ModeEditIcon />}
-                        onClick={() => navigate(`/editor/${docId}`)}>
-                        Edit
-                    </Button>
-                    <Button variant="text" size="small" startIcon={<DownloadIcon />}>
-                        Download
-                    </Button>
-                    <Button
-                        variant="text"
-                        size="small"
-                        startIcon={<DeleteIcon />}
-                        onClick={handleRemove}>
-                        Remove
-                    </Button>
+                    <IconButton
+                        aria-controls={open ? 'menu' : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={open ? 'true' : undefined}
+                        onClick={handleMenuClick}>
+                        <MoreVertIcon />
+                    </IconButton>
+                    <Menu
+                        id="menu"
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleMenuClose}
+                        PaperProps={{
+                            elevation: 4,
+                            sx: {
+                                overflow: 'visible',
+                                mt: 1.5,
+                            },
+                        }}
+                        transformOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                        anchorOrigin={{ horizontal: 'right', vertical: 'top' }}>
+                        <MenuItem
+                            onClick={() => {
+                                navigate(`/editor/${docId}`);
+                                handleMenuClose();
+                            }}>
+                            <ModeEditIcon sx={{ mr: 1 }} /> Edit
+                        </MenuItem>
+                        <MenuItem onClick={handleMenuClose}>
+                            <DownloadIcon sx={{ mr: 1 }} /> Download
+                        </MenuItem>
+                        <MenuItem onClick={handleRemove}>
+                            <DeleteIcon sx={{ mr: 1 }} /> Remove
+                        </MenuItem>
+                    </Menu>
                 </Box>
-            </Grid>
+            </Box>
         </Grid>
     );
 };
