@@ -5,9 +5,9 @@ import Header from './Header/Header';
 
 const MainLayout = () => {
     return (
-        <Box sx={{ display: 'flex', width: '100%' }}>
+        <Box sx={{ display: 'flex', width: '100%', minWidth: '320px' }}>
             <Header />
-            <Box component="main" sx={{ width: '100%', flexGrow: 1, p: { xs: 1, sm: 2 } }}>
+            <Box component="main" sx={{ width: '100%', flexGrow: 1, pb: '50px', pt: '10px' }}>
                 <Toolbar />
                 <Container sx={{ width: '100%', maxWidth: '1200px' }}>
                     <Outlet />

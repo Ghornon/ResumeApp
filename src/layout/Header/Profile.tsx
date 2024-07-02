@@ -12,7 +12,7 @@ import {
     Divider,
     Typography,
 } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Settings, Logout } from '@mui/icons-material';
 
 const Profile = () => {

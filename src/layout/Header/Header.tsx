@@ -35,9 +35,20 @@ const Header = () => {
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <img src={logo} alt="Logo" style={{ width: '40px', height: 'auto' }} />
                     </Box>
-                    <Box sx={{ ml: 2, textAlign: 'right' }}>
-                        <Typography variant="h5" sx={{ whiteSpace: 'nowrap' }}>
-                            CV Maker
+                    <Box sx={{ ml: 1, textAlign: 'right' }}>
+                        <Typography
+                            variant="h5"
+                            sx={{
+                                whiteSpace: 'nowrap',
+                                fontWeight: 800,
+                                // color: '#4bd2d2',
+                                textShadow: '1px 3px 3px rgba(198, 198, 198, 0.3)',
+                                background: 'linear-gradient(to right, #4bd2d2, #3ca8a8)',
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent',
+                                display: 'inline-block',
+                            }}>
+                            resucraft
                         </Typography>
                         <Typography
                             variant="subtitle2"
