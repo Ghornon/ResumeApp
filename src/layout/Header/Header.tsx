@@ -13,7 +13,7 @@ import HeaderContent from './HeaderContent';
 import logo from '../../../public/idea.png';
 
 const Header = () => {
-    const isMobile = useMediaQuery('(max-width:960px)');
+    const isMobile = useMediaQuery('(max-width:720px)');
 
     return (
         <AppBar
