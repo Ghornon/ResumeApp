@@ -52,7 +52,7 @@ const Header = () => {
                     <BottomNavigation
                         value={false}
                         onChange={() => {}}
-                        sx={{ width: '100%', position: 'fixed', bottom: 0 }}
+                        sx={{ width: '100%', position: 'fixed', bottom: 0, left: 0 }}
                         showLabels
                         component="nav">
                         <BottomNavigationAction
