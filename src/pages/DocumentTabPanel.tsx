@@ -5,14 +5,14 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { Button, Grid } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import ResumeTab from './ResumeTab';
+import ResumeTab from '../components/ResumeTab';
 import { collection, query, where } from 'firebase/firestore';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { db } from '../config/firebase';
-import { Spinner } from './Spinner';
-import ErrorSnackbar from './ErrorSnackbar';
+import { Spinner } from '../components/Spinner';
+import ErrorSnackbar from '../components/ErrorSnackbar';
 import { getAuth } from 'firebase/auth';
-import TemplateTab from './TemplateTab';
+import TemplateTab from '../components/TemplateTab';
 
 interface TabPanelProps {
     children?: React.ReactNode;

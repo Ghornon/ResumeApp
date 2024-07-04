@@ -9,6 +9,7 @@ const SignUp = lazy(() => import('./pages/SignUp'));
 const MainLayout = lazy(() => import('./layout/MainLayout'));
 const FullPageLayout = lazy(() => import('./layout/FullPageLayout'));
 const Dashboard = lazy(() => import('./pages/Dashboard'));
+const DocumentTabPanel = lazy(() => import('./pages/DocumentTabPanel'));
 const Profile = lazy(() => import('./pages/Profile'));
 const Editor = lazy(() => import('./pages/Editor'));
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -37,6 +38,7 @@ const App = () => {
                                     </AuthGuard>
                                 }>
                                 <Route index element={<Dashboard />} />
+                                <Route path="/resumes" element={<DocumentTabPanel />} />
                                 <Route path="/profile" element={<Profile />} />
                             </Route>
                             <Route

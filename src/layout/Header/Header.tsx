@@ -76,7 +76,7 @@ const Header = () => {
                             label="Resume"
                             icon={<InsertDriveFile />}
                             component={NavLink}
-                            to="/resume-templates"
+                            to="/resumes"
                         />
                         <BottomNavigationAction
                             label="Cover Letter"
@@ -88,7 +88,7 @@ const Header = () => {
                 ) : (
                     <Box component="nav" sx={{ display: 'flex', flexGrow: 1, gap: 2 }}>
                         <NavLink to="/">Home</NavLink>
-                        <NavLink to="/resume-templates">Resume</NavLink>
+                        <NavLink to="/resumes">Resume</NavLink>
                         <NavLink to="/cover-letter-templates">Cover Letter</NavLink>
                     </Box>
                 )}
