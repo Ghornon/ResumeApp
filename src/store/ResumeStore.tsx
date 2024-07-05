@@ -18,9 +18,10 @@ interface IResumeStore extends ResumeType {
     setSkills: (newState: Array<SkillItem>) => void;
     setLanguages: (newState: Array<LanguageItem>) => void;
     setData: (data: ResumeType) => void;
+    reset: () => void;
 }
 
-export const useResumeStore = create<IResumeStore>((set) => ({
+const initialState: ResumeType = {
     uid: '',
     name: 'New resume',
     template: '',
@@ -40,6 +41,10 @@ export const useResumeStore = create<IResumeStore>((set) => ({
     educationHistory: [],
     skills: [],
     languages: [],
+};
+
+export const useResumeStore = create<IResumeStore>((set) => ({
+    ...initialState,
     setName: (newState) => set({ name: newState }),
     setTemplate: (newState) => set({ template: newState }),
     setSummary: (newState) => set({ summary: newState }),
@@ -49,6 +54,9 @@ export const useResumeStore = create<IResumeStore>((set) => ({
     setSkills: (newState) => set({ skills: newState }),
     setLanguages: (newState) => set({ languages: newState }),
     setData: (data) => set((state: ResumeType) => ({ ...state, ...data })),
+    reset: () => {
+        set(initialState);
+    },
 }));
 
 /* 

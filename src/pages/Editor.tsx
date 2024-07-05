@@ -19,13 +19,15 @@ const Editor = () => {
     );
 
     const setData = useResumeStore((state) => state.setData);
+    const resetState = useResumeStore((state) => state.reset);
 
     useEffect(() => {
         if (!resumeLoading && !resumeError) {
             const data = resumeSnapshot?.data();
+            resetState();
             if (data) setData(data as ResumeType);
         }
-    }, [resumeSnapshot, resumeLoading, resumeError, setData]);
+    }, [resumeSnapshot, resumeLoading, resumeError, setData, resetState]);
 
     if (resumeLoading) return <Spinner />;
 
