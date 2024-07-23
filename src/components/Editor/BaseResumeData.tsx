@@ -49,7 +49,7 @@ const BaseResumeData = () => {
     );
 
     return (
-        <EditorFieldBox title={name || 'New Resume'}>
+        <EditorFieldBox title={'Template options'}>
             <Grid item xs={12} sm={6}>
                 <TextField
                     fullWidth
