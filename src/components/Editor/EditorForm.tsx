@@ -6,6 +6,7 @@ import BaseResumeData from './BaseResumeData';
 import Summary from './Summary';
 import { Skills } from './SkillIs';
 import { Languages } from './Languages';
+import Navbar from './Navbar';
 
 const EditorForm = () => {
     return (
@@ -17,6 +18,7 @@ const EditorForm = () => {
                 overflowY: 'scroll',
             }}
             width={{ xs: '100%', md: '50%' }}>
+            <Navbar />
             <BaseResumeData />
 
             <EditorFieldBox title="Personal Details">
