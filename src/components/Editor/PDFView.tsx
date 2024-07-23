@@ -97,7 +97,7 @@ const PDFView = () => {
             top={{ xs: 'auto', lg: 0 }}
             left={{ xs: 'auto', lg: '50%' }}
             position={{ xs: 'relative', lg: 'fixed' }}
-            zIndex={{ xs: 'auto', lg: -1 }}
+            // zIndex={{ xs: 'auto', lg: -1 }}
             width={{ xs: '100%', lg: '50%' }}>
             <Box
                 sx={{
