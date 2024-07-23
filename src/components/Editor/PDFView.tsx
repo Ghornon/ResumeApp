@@ -92,12 +92,12 @@ const PDFView = () => {
                 flexDirection: 'column',
                 background: blueGrey[50],
                 minHeight: '100vh',
+                maxHeight: '100vh',
                 margin: '0 auto',
             }}
             top={{ xs: 'auto', lg: 0 }}
             left={{ xs: 'auto', lg: '50%' }}
-            position={{ xs: 'relative', lg: 'fixed' }}
-            // zIndex={{ xs: 'auto', lg: -1 }}
+            position={{ xs: 'relative', lg: 'sticky' }}
             width={{ xs: '100%', lg: '50%' }}>
             <Box
                 sx={{
