@@ -13,11 +13,11 @@ const EditorForm = () => {
         <Box
             component="form"
             sx={{
-                maxHeight: '100vh',
+                minHeight: '100vh',
                 paddingY: 2,
-                overflowY: 'scroll',
             }}
-            width={{ xs: '100%', md: '50%' }}>
+            width={{ xs: '100%', lg: '50%' }}
+            paddingX={{ xs: 3, md: 5, xl: 10 }}>
             <Navbar />
             <BaseResumeData />
 

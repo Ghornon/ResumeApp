@@ -35,7 +35,7 @@ const Editor = () => {
 
     if (resumeSnapshot)
         return (
-            <Stack sx={{ minHeight: '100vh' }} direction={{ sm: 'column', md: 'row' }}>
+            <Stack direction={{ sm: 'column', lg: 'row' }}>
                 <EditorForm />
                 <PDFView />
             </Stack>

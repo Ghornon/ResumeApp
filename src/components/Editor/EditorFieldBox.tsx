@@ -4,7 +4,7 @@ const EditorFieldBox = ({ title, children }: { title: string; children: React.Re
     console.log('editor field box');
     return (
         <>
-            <Divider sx={{ paddingX: 10, paddingY: 2 }}>
+            <Divider sx={{ paddingY: 2 }}>
                 <Chip
                     label={title}
                     variant="outlined"
@@ -19,7 +19,6 @@ const EditorFieldBox = ({ title, children }: { title: string; children: React.Re
                     flexWrap: 'wrap',
                     justifyContent: 'center',
                     gap: '1rem',
-                    paddingX: 10,
                     paddingY: 2,
                 }}>
                 <Grid container spacing={2}>

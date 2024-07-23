@@ -49,7 +49,7 @@ const BaseResumeData = () => {
     );
 
     return (
-        <EditorFieldBox title={'Template options'}>
+        <EditorFieldBox title={'Template Options'}>
             <Grid item xs={12} sm={6}>
                 <TextField
                     fullWidth

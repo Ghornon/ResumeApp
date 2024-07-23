@@ -6,7 +6,7 @@ import 'react-pdf/dist/esm/Page/TextLayer.css';
 import type { PDFDocumentProxy } from 'pdfjs-dist';
 import ExampleTemplate from '../templates/example/ExampleTemplate';
 import { BlobProvider, PDFDownloadLink } from '@react-pdf/renderer';
-import { Box, Button, Container, Pagination } from '@mui/material';
+import { Box, Button, Pagination } from '@mui/material';
 import { blueGrey } from '@mui/material/colors';
 import { Spinner } from '../Spinner';
 import { ResumeType } from '../../types/Resume.types';
@@ -21,7 +21,24 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 
 function getWindowSize() {
     const { innerWidth, innerHeight } = window;
-    return { innerWidth, innerHeight };
+
+    //Standard A4 ratio calculated by height
+    let documentWidth = (innerHeight - 60 - 80) * (210 / 297);
+    let documentHeight = innerHeight - 60 - 80;
+
+    // If smaller device
+    if (innerWidth < documentWidth) {
+        //A4 ratio calculated by width
+        documentWidth = innerWidth - 60;
+        documentHeight = documentWidth * (297 / 210);
+    }
+
+    return {
+        innerWidth,
+        innerHeight,
+        documentWidth,
+        documentHeight,
+    };
 }
 
 const PDFView = () => {
@@ -59,7 +76,7 @@ const PDFView = () => {
                 setDocumentTemplate(<ExampleTemplate resumeData={resumeData} />),
             500,
         ),
-        [],
+        [debounce],
     );
 
     useEffect(() => {
@@ -67,82 +84,80 @@ const PDFView = () => {
     }, [debouncedDocumentGenerate, resumeData]);
 
     return (
-        <>
+        <Box
+            sx={{
+                display: 'flex',
+                alignContent: 'center',
+                justifyContent: 'center',
+                flexDirection: 'column',
+                background: blueGrey[50],
+                minHeight: '100vh',
+                margin: '0 auto',
+            }}
+            top={{ xs: 'auto', lg: 0 }}
+            left={{ xs: 'auto', lg: '50%' }}
+            position={{ xs: 'relative', lg: 'fixed' }}
+            zIndex={{ xs: 'auto', lg: -1 }}
+            width={{ xs: '100%', lg: '50%' }}>
             <Box
                 sx={{
+                    height: 40,
+                    margin: '0 auto',
                     display: 'flex',
-                    alignContent: 'center',
-                    justifyContent: 'center',
-                    flexDirection: 'column',
-                    background: blueGrey[50],
-                }}
-                width={{ xs: '100%', md: '50%' }}
-                paddingY={{ xs: 5, md: 0 }}>
-                <Container
-                    sx={{
-                        width: 'auto',
-                    }}>
-                    <Box
-                        sx={{
-                            height: 40,
-                            margin: '0 auto',
-                            width: (windowSize.innerHeight - 60 - 80) * (210 / 297),
-                            display: 'flex',
-                            justifyContent: 'flex-end',
-                        }}>
-                        <PDFDownloadLink
-                            document={documentTemplate}
-                            fileName={`${resumeData.name}.pdf`}>
-                            {() => (
-                                <Button variant="outlined" size="small" sx={{ marginRight: 1 }}>
-                                    Download PDF
-                                </Button>
-                            )}
-                        </PDFDownloadLink>
-                        <PDFViewMenu />
-                    </Box>
-                    <Box
-                        sx={{
-                            position: 'relative',
-                            borderRadius: 1,
-                            boxShadow: '0 0 10px rgba(0,0,0,0.1)',
-                            background: '#fff',
-                            height: windowSize.innerHeight - 60 - 80,
-                            width: (windowSize.innerHeight - 60 - 80) * (210 / 297),
-                            overflow: 'hidden',
-                        }}>
-                        <BlobProvider document={documentTemplate}>
-                            {({ url, loading, error }) =>
-                                loading || error ? (
-                                    <Spinner />
-                                ) : (
-                                    <Document
-                                        file={url}
-                                        onLoadSuccess={onDocumentLoadSuccess}
-                                        loading={<Spinner />}>
-                                        <Page
-                                            key={`page_${page}`}
-                                            pageNumber={page}
-                                            height={windowSize.innerHeight - 60 - 80}
-                                        />
-                                    </Document>
-                                )
-                            }
-                        </BlobProvider>
-                    </Box>
-                    <Box
-                        sx={{
-                            height: 40,
-                            width: '100%',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                        }}>
-                        <Pagination count={numPages} size="small" onChange={handlePageChange} />
-                    </Box>
-                </Container>
+                    justifyContent: 'flex-end',
+                    width: windowSize.documentWidth,
+                }}>
+                <PDFDownloadLink document={documentTemplate} fileName={`${resumeData.name}.pdf`}>
+                    {() => (
+                        <Button variant="outlined" size="small" sx={{ marginRight: 1 }}>
+                            Download PDF
+                        </Button>
+                    )}
+                </PDFDownloadLink>
+                <PDFViewMenu />
             </Box>
-        </>
+            <Box
+                sx={{
+                    position: 'relative',
+                    borderRadius: 1,
+                    boxShadow: '0 0 10px rgba(0,0,0,0.1)',
+                    background: '#fff',
+                    width: windowSize.documentWidth,
+                    height: windowSize.documentHeight,
+                    overflow: 'hidden',
+                    margin: '0 auto',
+                }}>
+                <BlobProvider document={documentTemplate}>
+                    {({ url, loading, error }) =>
+                        loading || error ? (
+                            <Spinner />
+                        ) : (
+                            <Document
+                                file={url}
+                                onLoadSuccess={onDocumentLoadSuccess}
+                                loading={<Spinner />}>
+                                <Page
+                                    key={`page_${page}`}
+                                    pageNumber={page}
+                                    width={windowSize.documentWidth}
+                                    height={windowSize.documentHeight}
+                                />
+                            </Document>
+                        )
+                    }
+                </BlobProvider>
+            </Box>
+            <Box
+                sx={{
+                    height: 40,
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                <Pagination count={numPages} size="small" onChange={handlePageChange} />
+            </Box>
+        </Box>
     );
 };
 
