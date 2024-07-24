@@ -6,7 +6,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { useState } from 'react';
 
-const PDFViewMenu = () => {
+const PDFPreviewMenu = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -57,4 +57,4 @@ const PDFViewMenu = () => {
     );
 };
 
-export default PDFViewMenu;
+export default PDFPreviewMenu;

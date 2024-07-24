@@ -1,6 +1,6 @@
 import AddIcon from '@mui/icons-material/Add';
 import { SkillItem } from '../../types/Resume.types';
-import { useCallback, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { doc, updateDoc } from 'firebase/firestore';
 import {
     Accordion,
@@ -34,23 +34,26 @@ export const Skills = () => {
     const setSkills = useResumeStore((state) => state.setSkills);
 
     const { resumeId } = useParams();
-    const saveDocument = (resumeData: Array<SkillItem>) => {
-        if (resumeId) {
-            const resumeRef = doc(db, 'resumes', resumeId);
+    const saveDocument = useMemo(
+        () => (resumeData: Array<SkillItem>) => {
+            if (resumeId) {
+                const resumeRef = doc(db, 'resumes', resumeId);
 
-            console.log('Saving data', resumeId, resumeData);
+                console.log('Saving data', resumeId, resumeData);
 
-            updateDoc(resumeRef, { skills: resumeData });
-        }
-    };
+                updateDoc(resumeRef, { skills: resumeData });
+            }
+        },
+        [resumeId],
+    );
 
-    const debouncedSaveDocument = useCallback(
-        debounce((resumeData: Array<SkillItem>) => saveDocument(resumeData), 1000),
-        [],
+    const debouncedSaveDocument = useMemo(
+        () => debounce((resumeData: Array<SkillItem>) => saveDocument(resumeData), 1000),
+        [saveDocument],
     );
 
     const handleAccordionChange =
-        (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+        (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
             setExpanded(isExpanded ? panel : false);
         };
 
@@ -74,7 +77,7 @@ export const Skills = () => {
 
     const removeSkill = (index: number) => {
         console.log('Removing item');
-        const updatedHistory = skills.filter((element, i) => i != index);
+        const updatedHistory = skills.filter((_element, i) => i != index);
         setSkills(updatedHistory as Array<SkillItem>);
         debouncedSaveDocument(updatedHistory);
     };

@@ -1,6 +1,6 @@
 import AddIcon from '@mui/icons-material/Add';
 import { EducationHistoryItem, EmploymentHistoryItem } from '../../types/Resume.types';
-import { useCallback, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Timestamp, doc, updateDoc } from 'firebase/firestore';
 import {
     Accordion,
@@ -48,28 +48,32 @@ export const HistoryItem = ({ type }: { type: string }) => {
         return [];
     };
     const { resumeId } = useParams();
-    const saveDocument = (resumeData: Array<EmploymentHistoryItem | EducationHistoryItem>) => {
-        if (resumeId) {
-            const resumeRef = doc(db, 'resumes', resumeId);
+    const saveDocument = useMemo(
+        () => (resumeData: Array<EmploymentHistoryItem | EducationHistoryItem>) => {
+            if (resumeId) {
+                const resumeRef = doc(db, 'resumes', resumeId);
 
-            console.log('Saving data', resumeId, resumeData);
-            if (type == 'employmentHistory') {
-                updateDoc(resumeRef, { employmentHistory: resumeData });
+                console.log('Saving data', resumeId, resumeData);
+                if (type == 'employmentHistory') {
+                    updateDoc(resumeRef, { employmentHistory: resumeData });
+                }
+
+                if (type == 'educationHistory') {
+                    updateDoc(resumeRef, { educationHistory: resumeData });
+                }
             }
+        },
+        [resumeId, type],
+    );
 
-            if (type == 'educationHistory') {
-                updateDoc(resumeRef, { educationHistory: resumeData });
-            }
-        }
-    };
-
-    const debouncedSaveDocument = useCallback(
-        debounce(
-            (resumeData: Array<EmploymentHistoryItem | EducationHistoryItem>) =>
-                saveDocument(resumeData),
-            1000,
-        ),
-        [],
+    const debouncedSaveDocument = useMemo(
+        () =>
+            debounce(
+                (resumeData: Array<EmploymentHistoryItem | EducationHistoryItem>) =>
+                    saveDocument(resumeData),
+                1000,
+            ),
+        [saveDocument],
     );
 
     const setState = (newState: Array<EmploymentHistoryItem | EducationHistoryItem>) => {
@@ -85,7 +89,7 @@ export const HistoryItem = ({ type }: { type: string }) => {
     };
 
     const handleAccordionChange =
-        (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+        (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
             setExpanded(isExpanded ? panel : false);
         };
 
@@ -110,7 +114,7 @@ export const HistoryItem = ({ type }: { type: string }) => {
 
     const removeHistoryItem = (index: number) => {
         console.log('Removing item');
-        const updatedHistory = getState().filter((element, i) => i != index);
+        const updatedHistory = getState().filter((_element, i) => i != index);
         setState(updatedHistory);
     };
 

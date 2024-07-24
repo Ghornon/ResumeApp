@@ -1,6 +1,6 @@
 import AddIcon from '@mui/icons-material/Add';
 import { LanguageItem, languageLevel } from '../../types/Resume.types';
-import { useCallback, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { doc, updateDoc } from 'firebase/firestore';
 import {
     Accordion,
@@ -34,23 +34,26 @@ export const Languages = () => {
     const setLanguage = useResumeStore((state) => state.setLanguages);
 
     const { resumeId } = useParams();
-    const saveDocument = (resumeData: Array<LanguageItem>) => {
-        if (resumeId) {
-            const resumeRef = doc(db, 'resumes', resumeId);
+    const saveDocument = useMemo(
+        () => (resumeData: Array<LanguageItem>) => {
+            if (resumeId) {
+                const resumeRef = doc(db, 'resumes', resumeId);
 
-            console.log('Saving data', resumeId, resumeData);
+                console.log('Saving data', resumeId, resumeData);
 
-            updateDoc(resumeRef, { languages: resumeData });
-        }
-    };
+                updateDoc(resumeRef, { languages: resumeData });
+            }
+        },
+        [resumeId],
+    );
 
-    const debouncedSaveDocument = useCallback(
-        debounce((resumeData: Array<LanguageItem>) => saveDocument(resumeData), 1000),
-        [],
+    const debouncedSaveDocument = useMemo(
+        () => debounce((resumeData: Array<LanguageItem>) => saveDocument(resumeData), 1000),
+        [saveDocument],
     );
 
     const handleAccordionChange =
-        (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+        (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
             setExpanded(isExpanded ? panel : false);
         };
 
@@ -76,7 +79,7 @@ export const Languages = () => {
 
     const removeLanguage = (index: number) => {
         console.log('Removing item');
-        const updatedHistory = languages.filter((element, i) => i != index);
+        const updatedHistory = languages.filter((_element, i) => i != index);
         setLanguage(updatedHistory as Array<LanguageItem>);
         debouncedSaveDocument(updatedHistory);
     };

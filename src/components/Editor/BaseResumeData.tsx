@@ -12,7 +12,7 @@ import EditorFieldBox from './EditorFieldBox';
 import { useResumeStore } from '../../store/ResumeStore';
 import { db } from '../../config/firebase';
 import { useParams } from 'react-router-dom';
-import { useCallback } from 'react';
+import { useMemo } from 'react';
 import { doc, updateDoc } from 'firebase/firestore';
 
 const BaseResumeData = () => {
@@ -34,18 +34,21 @@ const BaseResumeData = () => {
     };
 
     const { resumeId } = useParams();
-    const saveDocument = (resumeData: string) => {
-        if (resumeId) {
-            const resumeRef = doc(db, 'resumes', resumeId);
+    const saveDocument = useMemo(
+        () => (resumeData: string) => {
+            if (resumeId) {
+                const resumeRef = doc(db, 'resumes', resumeId);
 
-            console.log('Saving data', resumeId, resumeData);
-            updateDoc(resumeRef, { name: resumeData });
-        }
-    };
+                console.log('Saving data', resumeId, resumeData);
+                updateDoc(resumeRef, { name: resumeData });
+            }
+        },
+        [resumeId],
+    );
 
-    const debouncedSaveDocument = useCallback(
-        debounce((resumeData: string) => saveDocument(resumeData), 1000),
-        [],
+    const debouncedSaveDocument = useMemo(
+        () => debounce((resumeData: string) => saveDocument(resumeData), 1000),
+        [saveDocument],
     );
 
     return (

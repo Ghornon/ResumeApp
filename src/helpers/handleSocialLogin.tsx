@@ -8,7 +8,9 @@ import { UserCredential } from 'firebase/auth';
 const handleSocialLogin = async (
     signInProvider: () => Promise<UserCredential | undefined>,
     validationErrors: SignInType | SignUpType,
-    setValidationErrors: React.Dispatch<React.SetStateAction<SignInType | SignUpType>>,
+    setValidationErrors:
+        | React.Dispatch<React.SetStateAction<SignInType>>
+        | React.Dispatch<React.SetStateAction<SignUpType>>,
 ) => {
     try {
         const res = await signInProvider();
@@ -39,7 +41,7 @@ const handleSocialLogin = async (
     } catch (e) {
         const error = e instanceof FirebaseError;
         if (error) {
-            setValidationErrors({ ...validationErrors, firebase: e.message });
+            setValidationErrors({ ...validationErrors, firebase: e.message } as SignUpType);
             console.error(e.code);
         }
     }

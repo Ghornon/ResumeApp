@@ -3,7 +3,7 @@ import { useResumeStore } from '../../store/ResumeStore';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import { useParams } from 'react-router-dom';
-import { useCallback } from 'react';
+import { useMemo } from 'react';
 
 const Summary = () => {
     console.log('Summary');
@@ -18,18 +18,21 @@ const Summary = () => {
         debouncedSaveDocument(value);
     };
 
-    const saveDocument = (resumeData: string) => {
-        if (resumeId) {
-            const resumeRef = doc(db, 'resumes', resumeId);
+    const saveDocument = useMemo(
+        () => (resumeData: string) => {
+            if (resumeId) {
+                const resumeRef = doc(db, 'resumes', resumeId);
 
-            console.log('Saving data', resumeId, resumeData);
-            updateDoc(resumeRef, { summary: resumeData });
-        }
-    };
+                console.log('Saving data', resumeId, resumeData);
+                updateDoc(resumeRef, { summary: resumeData });
+            }
+        },
+        [resumeId],
+    );
 
-    const debouncedSaveDocument = useCallback(
-        debounce((resumeData: string) => saveDocument(resumeData), 1000),
-        [],
+    const debouncedSaveDocument = useMemo(
+        () => debounce((resumeData: string) => saveDocument(resumeData), 1000),
+        [saveDocument],
     );
 
     return (

@@ -1,4 +1,4 @@
-import { Text, Font, Page, View, Image, Document, StyleSheet } from '@react-pdf/renderer';
+import { Text, Font, Page, View, Document, StyleSheet } from '@react-pdf/renderer';
 import Header from './Header';
 import Education from './Education';
 import Skills from './Skills';

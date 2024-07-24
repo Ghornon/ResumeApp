@@ -1,7 +1,7 @@
 import { Grid, TextField, debounce } from '@mui/material';
 import { useResumeStore } from '../../store/ResumeStore';
 import { doc, updateDoc } from 'firebase/firestore';
-import { useCallback } from 'react';
+import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { db } from '../../config/firebase';
 import { ResumeType } from '../../types/Resume.types';
@@ -32,18 +32,22 @@ export const PersonalDetails = () => {
     };
 
     const { resumeId } = useParams();
-    const saveDocument = (resumeData: ResumeType['personalDetails']) => {
-        if (resumeId) {
-            const resumeRef = doc(db, 'resumes', resumeId);
+    const saveDocument = useMemo(
+        () => (resumeData: ResumeType['personalDetails']) => {
+            if (resumeId) {
+                const resumeRef = doc(db, 'resumes', resumeId);
 
-            console.log('Saving data', resumeId, resumeData);
-            updateDoc(resumeRef, { personalDetails: resumeData });
-        }
-    };
+                console.log('Saving data', resumeId, resumeData);
+                updateDoc(resumeRef, { personalDetails: resumeData });
+            }
+        },
+        [resumeId],
+    );
 
-    const debouncedSaveDocument = useCallback(
-        debounce((resumeData: ResumeType['personalDetails']) => saveDocument(resumeData), 1000),
-        [],
+    const debouncedSaveDocument = useMemo(
+        () =>
+            debounce((resumeData: ResumeType['personalDetails']) => saveDocument(resumeData), 1000),
+        [saveDocument],
     );
 
     return (

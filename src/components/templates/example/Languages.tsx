@@ -1,26 +1,14 @@
-import { Text, View, StyleSheet } from '@react-pdf/renderer';
+import { View } from '@react-pdf/renderer';
 
 import Title from './Title';
 import List, { Item } from './List';
+import { LanguageItem, ResumeType } from '../../../types/Resume.types';
 
-const styles = StyleSheet.create({
-    title: {
-        fontFamily: 'Lato Bold',
-        fontSize: 11,
-        marginBottom: 10,
-    },
-    skills: {
-        fontFamily: 'Lato',
-        fontSize: 10,
-        marginBottom: 10,
-    },
-});
-
-const LanguageEntry = ({ languages }: { languages: [] }) => (
+const LanguageEntry = ({ languages }: { languages: LanguageItem[] }) => (
     <View>
         <List>
             {languages.map((language) => (
-                <Item key={language}>
+                <Item key={`language-${language.language}`}>
                     {language.language} {language.level}
                 </Item>
             ))}
@@ -31,7 +19,7 @@ const LanguageEntry = ({ languages }: { languages: [] }) => (
 const Languages = ({ resumeData }: { resumeData: ResumeType }) => (
     <View>
         <Title>Languages</Title>
-        <LanguageEntry name="Languages" languages={resumeData.languages} />
+        <LanguageEntry languages={resumeData.languages} />
     </View>
 );
 

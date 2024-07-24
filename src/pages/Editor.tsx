@@ -6,7 +6,7 @@ import { Spinner } from '../components/Spinner';
 import ErrorSnackbar from '../components/ErrorSnackbar';
 import { Stack } from '@mui/material';
 import EditorForm from '../components/Editor/EditorForm';
-import PDFView from '../components/Editor/PDFView';
+import PDFPreview from '../components/PDFPreview/PDFPreview';
 import { useEffect } from 'react';
 import { useResumeStore } from '../store/ResumeStore';
 import { ResumeType } from '../types/Resume.types';
@@ -37,7 +37,7 @@ const Editor = () => {
         return (
             <Stack direction={{ sm: 'column', lg: 'row' }}>
                 <EditorForm />
-                <PDFView />
+                <PDFPreview />
             </Stack>
         );
 };

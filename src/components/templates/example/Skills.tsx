@@ -1,23 +1,10 @@
-import { Text, View, StyleSheet } from '@react-pdf/renderer';
+import { View } from '@react-pdf/renderer';
 
 import Title from './Title';
 import List, { Item } from './List';
-import { ResumeType } from '../../../types/Resume.types';
+import { ResumeType, SkillItem } from '../../../types/Resume.types';
 
-const styles = StyleSheet.create({
-    title: {
-        fontFamily: 'Lato Bold',
-        fontSize: 11,
-        marginBottom: 10,
-    },
-    skills: {
-        fontFamily: 'Lato',
-        fontSize: 10,
-        marginBottom: 10,
-    },
-});
-
-const SkillEntry = ({ skills }: { skills: [] }) => (
+const SkillEntry = ({ skills }: { skills: SkillItem[] }) => (
     <View>
         <List>
             {skills.map((skill) => (
@@ -30,7 +17,7 @@ const SkillEntry = ({ skills }: { skills: [] }) => (
 const Skills = ({ resumeData }: { resumeData: ResumeType }) => (
     <View>
         <Title>Skills</Title>
-        <SkillEntry name="Skills" skills={resumeData.skills} />
+        <SkillEntry skills={resumeData.skills} />
     </View>
 );
 

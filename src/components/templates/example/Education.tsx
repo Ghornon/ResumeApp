@@ -2,6 +2,7 @@ import { Text, View, StyleSheet } from '@react-pdf/renderer';
 
 import Title from './Title';
 import { timestampToDate } from '../../../helpers/timestampToDate';
+import { ResumeType } from '../../../types/Resume.types';
 
 const styles = StyleSheet.create({
     container: {

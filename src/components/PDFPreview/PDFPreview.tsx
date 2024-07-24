@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { pdfjs, Document, Page } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
@@ -12,7 +12,7 @@ import { Spinner } from '../Spinner';
 import { ResumeType } from '../../types/Resume.types';
 import debounce from 'lodash.debounce';
 import { useResumeStore } from '../../store/ResumeStore';
-import PDFViewMenu from './PDFViewMenu';
+import PDFPreviewMenu from './PDFPreviewMenu';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     'pdfjs-dist/build/pdf.worker.min.js',
@@ -41,7 +41,7 @@ function getWindowSize() {
     };
 }
 
-const PDFView = () => {
+const PDFPreview = () => {
     const resumeData = useResumeStore((state) => state);
     const [numPages, setNumPages] = useState<number>(1);
     const [page, setPage] = useState<number>(1);
@@ -54,7 +54,7 @@ const PDFView = () => {
         setNumPages(nextNumPages);
     };
 
-    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value);
     };
 
@@ -70,13 +70,14 @@ const PDFView = () => {
         };
     }, []);
 
-    const debouncedDocumentGenerate = useCallback(
-        debounce(
-            (resumeData: ResumeType) =>
-                setDocumentTemplate(<ExampleTemplate resumeData={resumeData} />),
-            500,
-        ),
-        [debounce],
+    const debouncedDocumentGenerate = useMemo(
+        () =>
+            debounce(
+                (resumeData: ResumeType) =>
+                    setDocumentTemplate(<ExampleTemplate resumeData={resumeData} />),
+                500,
+            ),
+        [],
     );
 
     useEffect(() => {
@@ -114,7 +115,7 @@ const PDFView = () => {
                         </Button>
                     )}
                 </PDFDownloadLink>
-                <PDFViewMenu />
+                <PDFPreviewMenu />
             </Box>
             <Box
                 sx={{
@@ -161,4 +162,4 @@ const PDFView = () => {
     );
 };
 
-export default PDFView;
+export default PDFPreview;
