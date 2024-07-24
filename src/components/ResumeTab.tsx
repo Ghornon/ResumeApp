@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, Chip, Stack, Typography, Menu, MenuItem, IconButton } from '@mui/material';
+import { Box, Chip, Typography, Menu, MenuItem, IconButton } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Poster from './Poster';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
@@ -51,7 +51,7 @@ const ResumeTab = ({
                     alignItems: 'center',
                     width: '100%',
                     justifyContent: 'center',
-                    padding: 4,
+                    padding: 6,
                     backgroundColor: blueGrey[50],
                     boxShadow: 'inset 0 -100px 100px -80px rgb(217, 217, 217)',
                     position: 'relative',
@@ -60,15 +60,25 @@ const ResumeTab = ({
                 <Box
                     sx={{
                         position: 'absolute',
-                        bottom: 10,
-                        left: 10,
+                        top: 12,
+                        left: 12,
                         display: 'flex',
                         flexDirection: 'column',
-                        alignItems: 'flex-start',
+                        alignItems: 'center',
+                        width: '100%',
                     }}>
                     <Typography variant="subtitle2">{name}</Typography>
+                </Box>
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        bottom: 12,
+                        left: 12,
+                        display: 'flex',
+                        flexDirection: 'row',
+                    }}>
                     <Chip
-                        label={`Updated ${date}`}
+                        label={`Last update ${date}`}
                         color="primary"
                         size="small"
                         variant="outlined"

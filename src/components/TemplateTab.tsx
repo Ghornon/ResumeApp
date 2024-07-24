@@ -54,6 +54,7 @@ const TemplateTab = ({
                     alignItems: 'center',
                     padding: 6,
                     position: 'relative',
+                    boxShadow: 'inset 0 -100px 100px -80px rgb(217, 217, 217)',
                 }}>
                 <Poster posterUrl={posterUrl} title={name} variant="elevation" />
                 {show ? (
