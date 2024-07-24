@@ -28,7 +28,6 @@ import { useParams } from 'react-router-dom';
 import { db } from '../../config/firebase';
 
 export const HistoryItem = ({ type }: { type: string }) => {
-    console.log('Rebuilding HistoryItem');
     const [expanded, setExpanded] = useState<string | false>(false);
 
     const employmentHistory = useResumeStore((state) => state.employmentHistory);

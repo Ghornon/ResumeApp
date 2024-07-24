@@ -1,7 +1,6 @@
 import { Box, Chip, Divider, Grid } from '@mui/material';
 
 const EditorFieldBox = ({ title, children }: { title: string; children: React.ReactNode }) => {
-    console.log('editor field box');
     return (
         <>
             <Divider sx={{ paddingY: 2 }}>

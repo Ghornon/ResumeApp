@@ -27,7 +27,6 @@ import { useParams } from 'react-router-dom';
 import { db } from '../../config/firebase';
 
 export const Languages = () => {
-    console.log('Rebuilding Skills');
     const [expanded, setExpanded] = useState<string | false>(false);
 
     const languages = useResumeStore((state) => state.languages);
@@ -64,9 +63,6 @@ export const Languages = () => {
         const path = name.split('.');
         const finalProp = path.pop();
         const index = parseInt(path[0]);
-
-        console.log(index, finalProp);
-
         const newData: Array<LanguageItem> = [...languages];
 
         if (!isNaN(index) && finalProp)

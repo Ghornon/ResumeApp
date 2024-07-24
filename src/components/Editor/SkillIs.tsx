@@ -27,7 +27,6 @@ import { useParams } from 'react-router-dom';
 import { db } from '../../config/firebase';
 
 export const Skills = () => {
-    console.log('Rebuilding Skills');
     const [expanded, setExpanded] = useState<string | false>(false);
 
     const skills = useResumeStore((state) => state.skills);
@@ -64,9 +63,6 @@ export const Skills = () => {
         const path = name.split('.');
         const finalProp = path.pop();
         const index = parseInt(path[0]);
-
-        console.log(index, finalProp);
-
         const newData: Array<SkillItem> = [...skills];
 
         if (!isNaN(index) && finalProp) newData[index][finalProp] = value;

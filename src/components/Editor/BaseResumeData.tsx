@@ -16,8 +16,6 @@ import { useMemo } from 'react';
 import { doc, updateDoc } from 'firebase/firestore';
 
 const BaseResumeData = () => {
-    console.log('BaseResumeData');
-
     const name = useResumeStore((state) => state.name);
     const setName = useResumeStore((state) => state.setName);
     const template = useResumeStore((state) => state.template);

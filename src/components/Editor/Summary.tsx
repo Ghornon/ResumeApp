@@ -6,7 +6,6 @@ import { useParams } from 'react-router-dom';
 import { useMemo } from 'react';
 
 const Summary = () => {
-    console.log('Summary');
     const { resumeId } = useParams();
 
     const summary = useResumeStore((state) => state.summary);

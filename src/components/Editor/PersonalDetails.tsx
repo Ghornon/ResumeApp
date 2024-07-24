@@ -7,7 +7,6 @@ import { db } from '../../config/firebase';
 import { ResumeType } from '../../types/Resume.types';
 
 export const PersonalDetails = () => {
-    console.log('Rebuilding personal details');
     const personalDetails = useResumeStore((state) => state.personalDetails);
     const setPersonalDetails = useResumeStore((state) => state.setPersonalDetails);
 
