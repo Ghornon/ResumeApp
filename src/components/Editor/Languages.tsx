@@ -1,7 +1,7 @@
 import AddIcon from '@mui/icons-material/Add';
 import { LanguageItem, languageLevel } from '../../types/Resume.types';
 import { useMemo, useState } from 'react';
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, Timestamp, updateDoc } from 'firebase/firestore';
 import {
     Accordion,
     AccordionDetails,
@@ -40,7 +40,7 @@ export const Languages = () => {
 
                 console.log('Saving data', resumeId, resumeData);
 
-                updateDoc(resumeRef, { languages: resumeData });
+                updateDoc(resumeRef, { languages: resumeData, timestamp: Timestamp.now() });
             }
         },
         [resumeId],

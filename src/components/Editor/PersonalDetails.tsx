@@ -1,6 +1,6 @@
 import { Grid, TextField, debounce } from '@mui/material';
 import { useResumeStore } from '../../store/ResumeStore';
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, Timestamp, updateDoc } from 'firebase/firestore';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { db } from '../../config/firebase';
@@ -37,7 +37,7 @@ export const PersonalDetails = () => {
                 const resumeRef = doc(db, 'resumes', resumeId);
 
                 console.log('Saving data', resumeId, resumeData);
-                updateDoc(resumeRef, { personalDetails: resumeData });
+                updateDoc(resumeRef, { personalDetails: resumeData, timestamp: Timestamp.now() });
             }
         },
         [resumeId],

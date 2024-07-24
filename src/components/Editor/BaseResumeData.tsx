@@ -13,7 +13,7 @@ import { useResumeStore } from '../../store/ResumeStore';
 import { db } from '../../config/firebase';
 import { useParams } from 'react-router-dom';
 import { useMemo } from 'react';
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, Timestamp, updateDoc } from 'firebase/firestore';
 
 const BaseResumeData = () => {
     const name = useResumeStore((state) => state.name);
@@ -38,7 +38,7 @@ const BaseResumeData = () => {
                 const resumeRef = doc(db, 'resumes', resumeId);
 
                 console.log('Saving data', resumeId, resumeData);
-                updateDoc(resumeRef, { name: resumeData });
+                updateDoc(resumeRef, { name: resumeData, timestamp: Timestamp.now() });
             }
         },
         [resumeId],

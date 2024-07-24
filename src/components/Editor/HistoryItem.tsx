@@ -54,11 +54,17 @@ export const HistoryItem = ({ type }: { type: string }) => {
 
                 console.log('Saving data', resumeId, resumeData);
                 if (type == 'employmentHistory') {
-                    updateDoc(resumeRef, { employmentHistory: resumeData });
+                    updateDoc(resumeRef, {
+                        employmentHistory: resumeData,
+                        timestamp: Timestamp.now(),
+                    });
                 }
 
                 if (type == 'educationHistory') {
-                    updateDoc(resumeRef, { educationHistory: resumeData });
+                    updateDoc(resumeRef, {
+                        educationHistory: resumeData,
+                        timestamp: Timestamp.now(),
+                    });
                 }
             }
         },
