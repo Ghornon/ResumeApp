@@ -145,7 +145,7 @@ export const Languages = () => {
                                         label="Template"
                                         onChange={handleChange}>
                                         {Object.keys(languageLevel).map((key) => (
-                                            <MenuItem value={key}>
+                                            <MenuItem value={key} key={key}>
                                                 {languageLevel[key as keyof typeof languageLevel]}
                                             </MenuItem>
                                         ))}

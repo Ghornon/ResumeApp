@@ -26,8 +26,8 @@ const styles = StyleSheet.create({
 const Education = ({ resumeData }: { resumeData: ResumeType }) => (
     <View style={styles.container}>
         <Title>Education</Title>
-        {resumeData.educationHistory.map((education) => (
-            <>
+        {resumeData.educationHistory.map((education, index) => (
+            <View key={`education-${index}`}>
                 <Text style={styles.school}>
                     {education.schoolName} | {education.city}
                 </Text>
@@ -36,7 +36,7 @@ const Education = ({ resumeData }: { resumeData: ResumeType }) => (
                     {timestampToDate(education.startDate)} to {timestampToDate(education.endDate)}
                 </Text>
                 <Text style={styles.degree}>{education.description}</Text>
-            </>
+            </View>
         ))}
     </View>
 );
