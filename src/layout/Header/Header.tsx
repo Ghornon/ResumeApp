@@ -6,14 +6,22 @@ import {
     BottomNavigation,
     BottomNavigationAction,
     useMediaQuery,
+    Tabs,
+    Tab,
 } from '@mui/material';
 import { InsertDriveFile, Home, Email } from '@mui/icons-material';
 import { NavLink } from 'react-router-dom';
 import HeaderContent from './HeaderContent';
 import logo from '../../../public/idea.png';
+import { useState } from 'react';
 
 const Header = () => {
+    const [nav, setNav] = useState(location.pathname);
     const isMobile = useMediaQuery('(max-width:720px)');
+
+    const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
+        setNav(newValue);
+    };
 
     return (
         <AppBar
@@ -61,8 +69,8 @@ const Header = () => {
                 <Box sx={{ flexGrow: 1 }} />
                 {isMobile ? (
                     <BottomNavigation
-                        value={false}
-                        onChange={() => {}}
+                        value={nav}
+                        onChange={handleChange}
                         sx={{ width: '100%', position: 'fixed', bottom: 0, left: 0 }}
                         showLabels
                         component="nav">
@@ -70,26 +78,41 @@ const Header = () => {
                             label="Home"
                             icon={<Home />}
                             component={NavLink}
+                            value="/"
                             to="/"
                         />
                         <BottomNavigationAction
                             label="Resume"
                             icon={<InsertDriveFile />}
                             component={NavLink}
+                            value="/resumes"
                             to="/resumes"
                         />
                         <BottomNavigationAction
                             label="Cover Letter"
                             icon={<Email />}
                             component={NavLink}
+                            value="/cover-letter-templates"
                             to="/cover-letter-templates"
                         />
                     </BottomNavigation>
                 ) : (
                     <Box component="nav" sx={{ display: 'flex', flexGrow: 1, gap: 2 }}>
-                        <NavLink to="/">Home</NavLink>
-                        <NavLink to="/resumes">Resume</NavLink>
-                        <NavLink to="/cover-letter-templates">Cover Letter</NavLink>
+                        <Tabs aria-label="Nav" value={nav} onChange={handleChange}>
+                            <Tab label="Home" value="/" component={NavLink} to="/" />
+                            <Tab
+                                label="Resumes"
+                                value="/resumes"
+                                component={NavLink}
+                                to="/resumes"
+                            />
+                            <Tab
+                                label="Cover Letter"
+                                value="/cover-letter-templates"
+                                component={NavLink}
+                                to="/cover-letter-templates"
+                            />
+                        </Tabs>
                     </Box>
                 )}
                 <HeaderContent />
