@@ -7,8 +7,8 @@ import { LanguageItem, ResumeType } from '../../../types/Resume.types';
 const LanguageEntry = ({ languages }: { languages: LanguageItem[] }) => (
     <View>
         <List>
-            {languages.map((language) => (
-                <Item key={`language-${language.language}`}>
+            {languages.map((language, index) => (
+                <Item key={`language-${index}`}>
                     {language.language} {language.level}
                 </Item>
             ))}

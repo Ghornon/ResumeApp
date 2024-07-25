@@ -2,17 +2,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { EducationHistoryItem, EmploymentHistoryItem } from '../../types/Resume.types';
 import { useMemo, useState } from 'react';
 import { Timestamp, doc, updateDoc } from 'firebase/firestore';
-import {
-    Accordion,
-    AccordionDetails,
-    AccordionSummary,
-    Grid,
-    Typography,
-    Button,
-    AccordionActions,
-    TextField,
-    debounce,
-} from '@mui/material';
+import { Grid, Typography, Button, TextField, debounce, IconButton, Tooltip } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
@@ -26,6 +16,7 @@ import dayjs from 'dayjs';
 import { useResumeStore } from '../../store/ResumeStore';
 import { useParams } from 'react-router-dom';
 import { db } from '../../config/firebase';
+import { Accordion, AccordionActions, AccordionDetails, AccordionSummary } from './Accordion';
 
 export const HistoryItem = ({ type }: { type: string }) => {
     const [expanded, setExpanded] = useState<string | false>(false);
@@ -134,6 +125,7 @@ export const HistoryItem = ({ type }: { type: string }) => {
         updatedHistory.splice(pointer, 0, element);
 
         setState(updatedHistory);
+        setExpanded(`panel.${pointer}`);
     };
 
     const addNewHistoryItem = () => {
@@ -272,22 +264,30 @@ export const HistoryItem = ({ type }: { type: string }) => {
                         </Grid>
                     </AccordionDetails>
                     <AccordionActions>
-                        <Button
-                            startIcon={<DeleteOutlineIcon />}
-                            onClick={() => removeHistoryItem(index)}
-                            color="error">
-                            Remove
-                        </Button>
-                        <Button
-                            startIcon={<ArrowCircleUpIcon />}
-                            onClick={() => moveHistoryItem(index, -1)}>
-                            Move Up
-                        </Button>
-                        <Button
-                            startIcon={<ArrowCircleDownIcon />}
-                            onClick={() => moveHistoryItem(index, 1)}>
-                            Move Down
-                        </Button>
+                        <Tooltip title="Remove">
+                            <IconButton
+                                aria-label="Remove"
+                                onClick={() => removeHistoryItem(index)}
+                                color="error">
+                                <DeleteOutlineIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Move Up">
+                            <IconButton
+                                aria-label="Move Up"
+                                onClick={() => moveHistoryItem(index, -1)}
+                                color="primary">
+                                <ArrowCircleUpIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Move Down">
+                            <IconButton
+                                aria-label="Move Down"
+                                onClick={() => moveHistoryItem(index, 1)}
+                                color="primary">
+                                <ArrowCircleDownIcon />
+                            </IconButton>
+                        </Tooltip>
                     </AccordionActions>
                 </Accordion>
             ))}

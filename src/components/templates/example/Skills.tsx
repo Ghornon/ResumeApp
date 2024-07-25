@@ -7,8 +7,8 @@ import { ResumeType, SkillItem } from '../../../types/Resume.types';
 const SkillEntry = ({ skills }: { skills: SkillItem[] }) => (
     <View>
         <List>
-            {skills.map((skill) => (
-                <Item key={skill.skillName}>{skill.skillName}</Item>
+            {skills.map((skill, index) => (
+                <Item key={`skill-${index}`}>{skill.skillName}</Item>
             ))}
         </List>
     </View>

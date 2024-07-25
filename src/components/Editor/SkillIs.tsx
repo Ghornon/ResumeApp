@@ -3,13 +3,9 @@ import { SkillItem } from '../../types/Resume.types';
 import { useMemo, useState } from 'react';
 import { doc, Timestamp, updateDoc } from 'firebase/firestore';
 import {
-    Accordion,
-    AccordionDetails,
-    AccordionSummary,
     Grid,
     Typography,
     Button,
-    AccordionActions,
     TextField,
     debounce,
     FormControl,
@@ -17,6 +13,8 @@ import {
     Select,
     MenuItem,
     SelectChangeEvent,
+    Tooltip,
+    IconButton,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
@@ -25,6 +23,7 @@ import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
 import { useResumeStore } from '../../store/ResumeStore';
 import { useParams } from 'react-router-dom';
 import { db } from '../../config/firebase';
+import { Accordion, AccordionActions, AccordionDetails, AccordionSummary } from './Accordion';
 
 export const Skills = () => {
     const [expanded, setExpanded] = useState<string | false>(false);
@@ -90,6 +89,8 @@ export const Skills = () => {
 
         setSkills(updatedHistory as Array<SkillItem>);
         debouncedSaveDocument(updatedHistory);
+
+        setExpanded(`panel.${pointer}`);
     };
 
     const addNewSkill = () => {
@@ -149,22 +150,30 @@ export const Skills = () => {
                         </Grid>
                     </AccordionDetails>
                     <AccordionActions>
-                        <Button
-                            startIcon={<DeleteOutlineIcon />}
-                            onClick={() => removeSkill(index)}
-                            color="error">
-                            Remove
-                        </Button>
-                        <Button
-                            startIcon={<ArrowCircleUpIcon />}
-                            onClick={() => moveSkill(index, -1)}>
-                            Move Up
-                        </Button>
-                        <Button
-                            startIcon={<ArrowCircleDownIcon />}
-                            onClick={() => moveSkill(index, 1)}>
-                            Move Down
-                        </Button>
+                        <Tooltip title="Remove">
+                            <IconButton
+                                aria-label="Remove"
+                                onClick={() => removeSkill(index)}
+                                color="error">
+                                <DeleteOutlineIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Move Up">
+                            <IconButton
+                                aria-label="Move Up"
+                                onClick={() => moveSkill(index, -1)}
+                                color="primary">
+                                <ArrowCircleUpIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Move Down">
+                            <IconButton
+                                aria-label="Move Down"
+                                onClick={() => moveSkill(index, 1)}
+                                color="primary">
+                                <ArrowCircleDownIcon />
+                            </IconButton>
+                        </Tooltip>
                     </AccordionActions>
                 </Accordion>
             ))}
