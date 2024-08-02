@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../config/firebase';
 import { signOut } from 'firebase/auth/cordova';
@@ -18,9 +18,11 @@ import { Settings, Logout } from '@mui/icons-material';
 const Profile = () => {
     const [user] = useAuthState(auth);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const isClosingRef = useRef(false);
+    const navigate = useNavigate();
     const open = Boolean(anchorEl);
 
-    const navigate = useNavigate();
+    console.log(user);
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -34,10 +36,17 @@ const Profile = () => {
         await signOut(auth);
     };
 
-    const handleGoToProfile = async () => {
-        await handleClose();
-        navigate('/profile');
+    const handleGoToProfile = () => {
+        isClosingRef.current = true;
+        handleClose();
     };
+
+    useEffect(() => {
+        if (!anchorEl && isClosingRef.current) {
+            isClosingRef.current = false;
+            navigate('/profile');
+        }
+    }, [anchorEl, navigate]);
 
     return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
