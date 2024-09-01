@@ -2,11 +2,11 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import PrintOutlinedIcon from '@mui/icons-material/PrintOutlined';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { useState } from 'react';
+import printJS from 'print-js';
 
-const PDFPreviewMenu = () => {
+const PDFPreviewMenu = ({ downloadUrl }: { downloadUrl: string }) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -44,13 +44,12 @@ const PDFPreviewMenu = () => {
                 MenuListProps={{
                     'aria-labelledby': 'PDFViewMenu',
                 }}>
-                <MenuItem onClick={handleClose}>
+                <MenuItem
+                    onClick={() => {
+                        printJS(downloadUrl);
+                    }}>
                     <PrintOutlinedIcon />
                     Print
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                    <DeleteOutlineIcon />
-                    Remove
                 </MenuItem>
             </Menu>
         </div>

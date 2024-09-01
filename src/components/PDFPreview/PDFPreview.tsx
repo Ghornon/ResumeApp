@@ -115,7 +115,10 @@ const PDFPreview = () => {
                         </Button>
                     )}
                 </PDFDownloadLink>
-                <PDFPreviewMenu />
+
+                <BlobProvider document={documentTemplate}>
+                    {({ url }) => (url ? <PDFPreviewMenu downloadUrl={url} /> : '')}
+                </BlobProvider>
             </Box>
             <Box
                 sx={{
