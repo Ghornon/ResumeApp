@@ -41,13 +41,21 @@ function getWindowSize() {
     };
 }
 
+const DocumentTemplate = ({ resumeData }: { resumeData: ResumeType }) => {
+    if (resumeData && resumeData.template == 'Test')
+        return <ExampleTemplate resumeData={resumeData} />;
+
+    return <ExampleTemplate resumeData={resumeData} />;
+};
+
 const PDFPreview = () => {
     const resumeData = useResumeStore((state) => state);
     const [numPages, setNumPages] = useState<number>(1);
     const [page, setPage] = useState<number>(1);
     const [windowSize, setWindowSize] = useState(getWindowSize());
+
     const [documentTemplate, setDocumentTemplate] = useState(
-        <ExampleTemplate resumeData={resumeData} />,
+        <DocumentTemplate resumeData={resumeData} />,
     );
 
     const onDocumentLoadSuccess = ({ numPages: nextNumPages }: PDFDocumentProxy): void => {
@@ -74,7 +82,7 @@ const PDFPreview = () => {
         () =>
             debounce(
                 (resumeData: ResumeType) =>
-                    setDocumentTemplate(<ExampleTemplate resumeData={resumeData} />),
+                    setDocumentTemplate(<DocumentTemplate resumeData={resumeData} />),
                 500,
             ),
         [],

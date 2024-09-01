@@ -21,31 +21,36 @@ const BaseResumeData = () => {
     const template = useResumeStore((state) => state.template);
     const setTemplate = useResumeStore((state) => state.setTemplate);
 
-    const handleFormChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { value } = event.target;
-        setName(value);
-        debouncedSaveDocument(value);
-    };
+    const handleFormChange = (
+        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent,
+    ) => {
+        const { name, value } = event.target;
 
-    const handleTemplateChange = (event: SelectChangeEvent) => {
-        setTemplate(event.target.value as string);
+        if (name == 'name') setName(value);
+        if (name == 'template') setTemplate(value);
+
+        debouncedSaveDocument(name, value);
     };
 
     const { resumeId } = useParams();
     const saveDocument = useMemo(
-        () => (resumeData: string) => {
+        () => (name: string, value: string) => {
             if (resumeId) {
                 const resumeRef = doc(db, 'resumes', resumeId);
 
-                console.log('Saving data', resumeId, resumeData);
-                updateDoc(resumeRef, { name: resumeData, timestamp: Timestamp.now() });
+                console.log('Saving data', resumeId, value);
+
+                if (name == 'name')
+                    updateDoc(resumeRef, { name: value, timestamp: Timestamp.now() });
+                if (name == 'template')
+                    updateDoc(resumeRef, { template: value, timestamp: Timestamp.now() });
             }
         },
         [resumeId],
     );
 
     const debouncedSaveDocument = useMemo(
-        () => debounce((resumeData: string) => saveDocument(resumeData), 1000),
+        () => debounce((name: string, value: string) => saveDocument(name, value), 1000),
         [saveDocument],
     );
 
@@ -69,8 +74,9 @@ const BaseResumeData = () => {
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
                         value={template}
+                        name="template"
                         label="Template"
-                        onChange={handleTemplateChange}>
+                        onChange={handleFormChange}>
                         <MenuItem value="Test">Test</MenuItem>
                         <MenuItem value="Test 2">Test 2</MenuItem>
                         <MenuItem value="Template 3">Template 3</MenuItem>

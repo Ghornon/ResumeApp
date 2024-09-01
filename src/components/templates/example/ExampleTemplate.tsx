@@ -78,7 +78,9 @@ const Resume = ({ resumeData }: { resumeData: ResumeType }) => (
             </View>
             <Experience resumeData={resumeData} />
         </View>
-        {resumeData.footer.length > 0 ? <Text style={styles.footer}>{resumeData.footer}</Text> : ''}
+        {resumeData.footer.length > 0 ? (
+            <Text style={styles.footer}>{resumeData.footer}</Text>
+        ) : null}
     </Page>
 );
 
