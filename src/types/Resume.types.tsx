@@ -61,4 +61,5 @@ export type ResumeType = {
     educationHistory: Array<EducationHistoryItem>;
     skills: Array<SkillItem>;
     languages: Array<LanguageItem>;
+    footer: string;
 };

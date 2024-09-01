@@ -7,6 +7,7 @@ import Summary from './Summary';
 import { Skills } from './SkillIs';
 import { Languages } from './Languages';
 import Navbar from './Navbar';
+import Footer from './Footer';
 
 const EditorForm = () => {
     return (
@@ -43,6 +44,10 @@ const EditorForm = () => {
 
             <EditorFieldBox title="Languages">
                 <Languages />
+            </EditorFieldBox>
+
+            <EditorFieldBox title="Footer">
+                <Footer />
             </EditorFieldBox>
         </Box>
     );

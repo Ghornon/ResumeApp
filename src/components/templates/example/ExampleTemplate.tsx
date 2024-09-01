@@ -40,9 +40,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 15,
         paddingTop: 5,
-        borderWidth: 3,
-        borderColor: 'gray',
-        borderStyle: 'dashed',
         '@media orientation: landscape': {
             marginTop: 10,
         },
@@ -81,7 +78,7 @@ const Resume = ({ resumeData }: { resumeData: ResumeType }) => (
             </View>
             <Experience resumeData={resumeData} />
         </View>
-        <Text style={styles.footer}>Resume footer</Text>
+        {resumeData.footer.length > 0 ? <Text style={styles.footer}>{resumeData.footer}</Text> : ''}
     </Page>
 );
 

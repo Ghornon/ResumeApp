@@ -17,6 +17,7 @@ interface IResumeStore extends ResumeType {
     setEducationHistory: (newState: Array<EducationHistoryItem>) => void;
     setSkills: (newState: Array<SkillItem>) => void;
     setLanguages: (newState: Array<LanguageItem>) => void;
+    setFooter: (newState: string) => void;
     setData: (data: ResumeType) => void;
     reset: () => void;
 }
@@ -41,6 +42,7 @@ const initialState: ResumeType = {
     educationHistory: [],
     skills: [],
     languages: [],
+    footer: '',
 };
 
 export const useResumeStore = create<IResumeStore>((set) => ({
@@ -53,6 +55,7 @@ export const useResumeStore = create<IResumeStore>((set) => ({
     setEducationHistory: (newState) => set({ educationHistory: newState }),
     setSkills: (newState) => set({ skills: newState }),
     setLanguages: (newState) => set({ languages: newState }),
+    setFooter: (newState) => set({ footer: newState }),
     setData: (data) => set((state: ResumeType) => ({ ...state, ...data })),
     reset: () => {
         set(initialState);
