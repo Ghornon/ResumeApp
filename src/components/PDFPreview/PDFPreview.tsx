@@ -1,18 +1,19 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { pdfjs, Document, Page } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
-
 import type { PDFDocumentProxy } from 'pdfjs-dist';
 import ExampleTemplate from '../templates/example/ExampleTemplate';
-import { BlobProvider, PDFDownloadLink } from '@react-pdf/renderer';
+import { pdf } from '@react-pdf/renderer';
 import { Box, Button, Pagination } from '@mui/material';
 import { blueGrey } from '@mui/material/colors';
 import { Spinner } from '../Spinner';
 import { ResumeType } from '../../types/Resume.types';
-import debounce from 'lodash.debounce';
 import { useResumeStore } from '../../store/ResumeStore';
 import PDFPreviewMenu from './PDFPreviewMenu';
+import { useAsync } from 'react-use';
+import { Link } from 'react-router-dom';
+import './PDFView.scss';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     'pdfjs-dist/build/pdf.worker.min.js',
@@ -51,20 +52,34 @@ const DocumentTemplate = ({ resumeData }: { resumeData: ResumeType }) => {
 const PDFPreview = () => {
     const resumeData = useResumeStore((state) => state);
     const [numPages, setNumPages] = useState<number>(1);
-    const [page, setPage] = useState<number>(1);
+    const [currentPage, setCurrentPage] = useState<number>(1);
     const [windowSize, setWindowSize] = useState(getWindowSize());
 
-    const [documentTemplate, setDocumentTemplate] = useState(
-        <DocumentTemplate resumeData={resumeData} />,
-    );
+    const [previousRenderValue, setPreviousRenderValue] = useState<string | null | undefined>(null);
 
     const onDocumentLoadSuccess = ({ numPages: nextNumPages }: PDFDocumentProxy): void => {
         setNumPages(nextNumPages);
     };
 
     const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
-        setPage(value);
+        setCurrentPage(value);
     };
+
+    const render = useAsync(async () => {
+        if (!resumeData) return null;
+
+        const blob = await pdf(<DocumentTemplate resumeData={resumeData} />).toBlob();
+        const url = URL.createObjectURL(blob);
+
+        return url;
+    }, [resumeData]);
+
+    const isFirstRendering = !previousRenderValue;
+
+    const isLatestValueRendered = previousRenderValue === render.value;
+    const isBusy = render.loading || !isLatestValueRendered;
+
+    const shouldShowPreviousDocument = !isFirstRendering && isBusy;
 
     useEffect(() => {
         function handleWindowResize() {
@@ -78,20 +93,6 @@ const PDFPreview = () => {
         };
     }, []);
 
-    const debouncedDocumentGenerate = useMemo(
-        () =>
-            debounce(
-                (resumeData: ResumeType) =>
-                    setDocumentTemplate(<DocumentTemplate resumeData={resumeData} />),
-                500,
-            ),
-        [],
-    );
-
-    useEffect(() => {
-        debouncedDocumentGenerate(resumeData);
-    }, [debouncedDocumentGenerate, resumeData]);
-
     return (
         <Box
             sx={{
@@ -103,6 +104,7 @@ const PDFPreview = () => {
                 minHeight: '100vh',
                 maxHeight: '100vh',
                 margin: '0 auto',
+                padding: 4,
             }}
             top={{ xs: 'auto', lg: 0 }}
             left={{ xs: 'auto', lg: '50%' }}
@@ -116,18 +118,19 @@ const PDFPreview = () => {
                     justifyContent: 'flex-end',
                     width: windowSize.documentWidth,
                 }}>
-                <PDFDownloadLink document={documentTemplate} fileName={`${resumeData.name}.pdf`}>
-                    {() => (
-                        <Button variant="outlined" size="small" sx={{ marginRight: 1 }}>
-                            Download PDF
-                        </Button>
-                    )}
-                </PDFDownloadLink>
+                <Link
+                    to={render.value ? render.value : ''}
+                    download={`${resumeData.name}.pdf`}
+                    target="_blank"
+                    rel="noreferrer">
+                    <Button variant="outlined" size="small" sx={{ marginRight: 1 }}>
+                        Download PDF
+                    </Button>
+                </Link>
 
-                <BlobProvider document={documentTemplate}>
-                    {({ url }) => (url ? <PDFPreviewMenu downloadUrl={url} /> : '')}
-                </BlobProvider>
+                <PDFPreviewMenu url={render.value} />
             </Box>
+
             <Box
                 sx={{
                     position: 'relative',
@@ -139,25 +142,39 @@ const PDFPreview = () => {
                     overflow: 'hidden',
                     margin: '0 auto',
                 }}>
-                <BlobProvider document={documentTemplate}>
-                    {({ url, loading, error }) =>
-                        loading || error ? (
-                            <Spinner />
-                        ) : (
-                            <Document
-                                file={url}
-                                onLoadSuccess={onDocumentLoadSuccess}
-                                loading={<Spinner />}>
-                                <Page
-                                    key={`page_${page}`}
-                                    pageNumber={page}
-                                    width={windowSize.documentWidth}
-                                    height={windowSize.documentHeight}
-                                />
-                            </Document>
-                        )
-                    }
-                </BlobProvider>
+                {shouldShowPreviousDocument && previousRenderValue ? (
+                    <Document
+                        key={previousRenderValue}
+                        className="previous-document"
+                        file={previousRenderValue}
+                        loading={null}>
+                        <Page
+                            key={`page_${currentPage}`}
+                            pageNumber={currentPage}
+                            width={windowSize.documentWidth}
+                            height={windowSize.documentHeight}
+                        />
+                    </Document>
+                ) : null}
+
+                {render.loading ? (
+                    <Spinner />
+                ) : (
+                    <Document
+                        key={render.value}
+                        className={shouldShowPreviousDocument ? 'rendering-document' : null}
+                        file={render.value}
+                        loading={isFirstRendering ? <Spinner /> : null}
+                        onLoadSuccess={onDocumentLoadSuccess}>
+                        <Page
+                            key={`page_${currentPage}`}
+                            pageNumber={currentPage}
+                            width={windowSize.documentWidth}
+                            height={windowSize.documentHeight}
+                            onRenderSuccess={() => setPreviousRenderValue(render.value)}
+                        />
+                    </Document>
+                )}
             </Box>
             <Box
                 sx={{

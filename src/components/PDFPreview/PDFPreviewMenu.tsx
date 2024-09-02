@@ -6,7 +6,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { useState } from 'react';
 import printJS from 'print-js';
 
-const PDFPreviewMenu = ({ downloadUrl }: { downloadUrl: string }) => {
+const PDFPreviewMenu = ({ url }: { url: string | null | undefined }) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -46,7 +46,7 @@ const PDFPreviewMenu = ({ downloadUrl }: { downloadUrl: string }) => {
                 }}>
                 <MenuItem
                     onClick={() => {
-                        printJS(downloadUrl);
+                        printJS(url ? url : '');
                     }}>
                     <PrintOutlinedIcon />
                     Print
