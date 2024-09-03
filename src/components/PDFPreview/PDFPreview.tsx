@@ -14,6 +14,7 @@ import PDFPreviewMenu from './PDFPreviewMenu';
 import { useAsync } from 'react-use';
 import { Link } from 'react-router-dom';
 import './PDFView.scss';
+import SimpleTemplate from '../templates/Simple';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     'pdfjs-dist/build/pdf.worker.min.js',
@@ -45,6 +46,9 @@ function getWindowSize() {
 const DocumentTemplate = ({ resumeData }: { resumeData: ResumeType }) => {
     if (resumeData && resumeData.template == 'Test')
         return <ExampleTemplate resumeData={resumeData} />;
+
+    if (resumeData && resumeData.template == 'Simple')
+        return <SimpleTemplate resumeData={resumeData} />;
 
     return <ExampleTemplate resumeData={resumeData} />;
 };

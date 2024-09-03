@@ -79,7 +79,7 @@ const BaseResumeData = () => {
                         onChange={handleFormChange}>
                         <MenuItem value="Test">Test</MenuItem>
                         <MenuItem value="Test 2">Test 2</MenuItem>
-                        <MenuItem value="Template 3">Template 3</MenuItem>
+                        <MenuItem value="Simple">Simple</MenuItem>
                     </Select>
                 </FormControl>
             </Grid>
