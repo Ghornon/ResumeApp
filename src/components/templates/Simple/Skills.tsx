@@ -8,6 +8,9 @@ const styles = StyleSheet.create({
         width: 170,
         gap: 5,
         paddingBottom: 10,
+        display: 'flex',
+        flexWrap: 'wrap',
+        flexDirection: 'row',
     },
     skill: {
         paddingHorizontal: 10,
