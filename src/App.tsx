@@ -4,8 +4,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthGuard } from './helpers/AuthGuard';
 import { Spinner } from './components/Spinner';
 import NotFound from './pages/NotFound';
-const SignIn = lazy(() => import('./pages/SignIn'));
-const SignUp = lazy(() => import('./pages/SignUp'));
+// const SignIn = lazy(() => import('./pages/SignIn'));
+// const SignUp = lazy(() => import('./pages/SignUp'));
+const AuthForms = lazy(() => import('./pages/AuthForm/AuthForms'));
 const MainLayout = lazy(() => import('./layout/MainLayout'));
 const FullPageLayout = lazy(() => import('./layout/FullPageLayout'));
 const Dashboard = lazy(() => import('./pages/Dashboard'));
@@ -55,7 +56,8 @@ const App = () => {
                                 path="/signin"
                                 element={
                                     <AuthGuard authorized={false}>
-                                        <SignIn />
+                                        {/* <SignIn/> */}
+                                        <AuthForms />
                                     </AuthGuard>
                                 }
                             />
@@ -63,7 +65,8 @@ const App = () => {
                                 path="/signup"
                                 element={
                                     <AuthGuard authorized={false}>
-                                        <SignUp />
+                                        {/* <SignUp/> */}
+                                        <AuthForms />
                                     </AuthGuard>
                                 }
                             />
