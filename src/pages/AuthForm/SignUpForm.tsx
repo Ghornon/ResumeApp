@@ -94,46 +94,52 @@ const SignUpForm = () => {
     };
 
     return (
-        <Paper elevation={3} sx={{display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyItems: 'center', padding: '20px', textAlign: 'center', boxShadow: 'none' }}>
-
-    <Box
-            style={{
-                width: '100%',
+        <Paper
+            elevation={3}
+            sx={{
                 display: 'flex',
-                alignItems: 'left',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyItems: 'center',
+                padding: '20px',
+                textAlign: 'center',
+                boxShadow: 'none',
             }}>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <img src={logo} alt="Logo" style={{ width: '40px', height: 'auto' }} />
+            <Box
+                style={{
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'left',
+                }}>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <img src={logo} alt="Logo" style={{ width: '40px', height: 'auto' }} />
+                </Box>
+                <Box sx={{ ml: 1, textAlign: 'right' }}>
+                    <Typography
+                        variant="h5"
+                        sx={{
+                            whiteSpace: 'nowrap',
+                            fontWeight: 800,
+                            textShadow: '1px 3px 3px rgba(198, 198, 198, 0.3)',
+                            background: 'linear-gradient(to right, #4bd2d2, #3ca8a8)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            display: 'inline-block',
+                        }}>
+                        resucraft
+                    </Typography>
+                    <Typography variant="subtitle2" color="gray" sx={{ fontSize: '10px', mt: -1 }}>
+                        by Dreamteam
+                    </Typography>
+                </Box>
             </Box>
-            <Box sx={{ ml: 1, textAlign: 'right' }}>
-                <Typography
-                    variant="h5"
-                    sx={{
-                        whiteSpace: 'nowrap',
-                        fontWeight: 800,
-                        textShadow: '1px 3px 3px rgba(198, 198, 198, 0.3)',
-                        background: 'linear-gradient(to right, #4bd2d2, #3ca8a8)',
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        display: 'inline-block',
-                    }}>
-                    resucraft
-                </Typography>
-                <Typography
-                    variant="subtitle2"
-                    color="gray"
-                    sx={{ fontSize: '10px', mt: -1 }}>
-                    by Dreamteam
-                </Typography>
-            </Box>
-        </Box>
-        <Typography component="h1" variant="h5" sx={{width: '100%', textAlign: 'left', fontWeight: 500, mt:2}}>
-            Create your Account
-        </Typography>
-        <Box
+            <Typography
+                component="h1"
+                variant="h5"
+                sx={{ width: '100%', textAlign: 'left', fontWeight: 500, mt: 2 }}>
+                Create your Account
+            </Typography>
+            <Box
                 sx={{
                     marginTop: 1,
                     display: 'flex',
@@ -145,11 +151,7 @@ const SignUpForm = () => {
                     color="inherit"
                     aria-label="Sign in with Google account"
                     onClick={() =>
-                        handleSocialLogin(
-                            signInWithGoogle,
-                            validationErrors,
-                            setValidationErrors,
-                        )
+                        handleSocialLogin(signInWithGoogle, validationErrors, setValidationErrors)
                     }>
                     <GoogleIcon />
                 </IconButton>
@@ -158,117 +160,117 @@ const SignUpForm = () => {
                     color="inherit"
                     aria-label="Sign in with GitHub account"
                     onClick={() =>
-                        handleSocialLogin(
-                            signInWithGithub,
-                            validationErrors,
-                            setValidationErrors,
-                        )
+                        handleSocialLogin(signInWithGithub, validationErrors, setValidationErrors)
                     }>
                     <GitHubIcon />
                 </IconButton>
             </Box>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                    <TextField
-                        autoComplete="given-name"
-                        name="firstName"
-                        required
-                        fullWidth
-                        id="firstName"
-                        label="First Name"
-                        autoFocus
-                        onChange={handleChange}
-                        error={validationErrors.firstName ? true : false}
-                        helperText={
-                            validationErrors.firstName ? validationErrors.firstName : ''
-                        }
-                    />
+                <Grid container spacing={2}>
+                    <Grid item xs={12} sm={6}>
+                        <TextField
+                            autoComplete="given-name"
+                            name="firstName"
+                            required
+                            fullWidth
+                            id="firstName"
+                            label="First Name"
+                            autoFocus
+                            onChange={handleChange}
+                            error={validationErrors.firstName ? true : false}
+                            helperText={
+                                validationErrors.firstName ? validationErrors.firstName : ''
+                            }
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField
+                            required
+                            fullWidth
+                            id="lastName"
+                            label="Last Name"
+                            name="lastName"
+                            autoComplete="family-name"
+                            onChange={handleChange}
+                            error={validationErrors.lastName ? true : false}
+                            helperText={validationErrors.lastName ? validationErrors.lastName : ''}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            required
+                            fullWidth
+                            id="email"
+                            label="Email Address"
+                            name="email"
+                            autoComplete="email"
+                            onChange={handleChange}
+                            error={validationErrors.email ? true : false}
+                            helperText={validationErrors.email ? validationErrors.email : ''}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            required
+                            fullWidth
+                            name="password"
+                            label="Password"
+                            type="password"
+                            id="password"
+                            autoComplete="new-password"
+                            onChange={handleChange}
+                            error={validationErrors.password ? true : false}
+                            helperText={validationErrors.password ? validationErrors.password : ''}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            required
+                            fullWidth
+                            name="retype"
+                            label="Retype password"
+                            type="password"
+                            id="retype"
+                            autoComplete="new-password"
+                            onChange={handleChange}
+                            error={validationErrors.retype ? true : false}
+                            helperText={validationErrors.retype ? validationErrors.retype : ''}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sx={{ textAlign: 'start' }}>
+                        <FormControlLabel
+                            control={<Checkbox value="allowExtraEmails" color="primary" />}
+                            label="Receive updates, promotions, and inspiration via email."
+                        />
+                    </Grid>
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                    <TextField
-                        required
-                        fullWidth
-                        id="lastName"
-                        label="Last Name"
-                        name="lastName"
-                        autoComplete="family-name"
-                        onChange={handleChange}
-                        error={validationErrors.lastName ? true : false}
-                        helperText={
-                            validationErrors.lastName ? validationErrors.lastName : ''
-                        }
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        required
-                        fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
-                        onChange={handleChange}
-                        error={validationErrors.email ? true : false}
-                        helperText={validationErrors.email ? validationErrors.email : ''}
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        autoComplete="new-password"
-                        onChange={handleChange}
-                        error={validationErrors.password ? true : false}
-                        helperText={
-                            validationErrors.password ? validationErrors.password : ''
-                        }
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        required
-                        fullWidth
-                        name="retype"
-                        label="Retype password"
-                        type="password"
-                        id="retype"
-                        autoComplete="new-password"
-                        onChange={handleChange}
-                        error={validationErrors.retype ? true : false}
-                        helperText={validationErrors.retype ? validationErrors.retype : ''}
-                    />
-                </Grid>
-                <Grid item xs={12} sx={{textAlign: 'start' }}>
-                    <FormControlLabel
-                        control={<Checkbox value="allowExtraEmails" color="primary" />}
-                        label="Receive updates, promotions, and inspiration via email."
-                    />
-                </Grid>
-            </Grid>
-            <Button type="submit" fullWidth variant="contained" sx={{ mt: 2, mb: 2,height:'50px',
-                background: 'linear-gradient(to right, #4bd2d2, #3ca8a8)' }}>
-                Sign Up
-            </Button>
-        </Box>
-        {validationErrors.firebase ? (
-            <Box
-                sx={{
-                    marginTop: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                }}>
-                <Alert severity="error">{validationErrors.firebase}</Alert>
+                <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{
+                        mt: 2,
+                        mb: 2,
+                        height: '50px',
+                        background: 'linear-gradient(to right, #4bd2d2, #3ca8a8)',
+                    }}>
+                    Sign Up
+                </Button>
             </Box>
-        ) : (
-            ''
-        )}
-  </Paper>
+            {validationErrors.firebase ? (
+                <Box
+                    sx={{
+                        marginTop: 2,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}>
+                    <Alert severity="error">{validationErrors.firebase}</Alert>
+                </Box>
+            ) : (
+                ''
+            )}
+        </Paper>
     );
 };
 

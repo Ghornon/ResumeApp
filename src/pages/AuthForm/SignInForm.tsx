@@ -66,53 +66,88 @@ const SignInForm = () => {
         } catch (e) {
             const error = e instanceof FirebaseError;
             if (error) {
-                setValidationErrors({ ...validationErrors, firebase: e.message });
+                setValidationErrors({
+                    ...validationErrors,
+                    firebase: e.message,
+                });
                 console.error(e);
             }
         }
     };
 
     return (
-        <Paper elevation={3} sx={{display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyItems: 'center', padding: '20px', textAlign: 'center', boxShadow: 'none'}}>
-
-    <Box
-            style={{
-                width: '100%',
+        <Paper
+            elevation={3}
+            sx={{
                 display: 'flex',
-                alignItems: 'left',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyItems: 'center',
+                padding: '20px',
+                textAlign: 'center',
+                boxShadow: 'none',
             }}>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <img src={logo} alt="Logo" style={{ width: '40px', height: 'auto' }} />
-            </Box>
-            <Box sx={{ ml: 1, textAlign: 'right' }}>
-                <Typography
-                    variant="h5"
+            <Box
+                style={{
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'left',
+                }}>
+                <Box
                     sx={{
-                        whiteSpace: 'nowrap',
-                        fontWeight: 800,
-                        textShadow: '1px 3px 3px rgba(198, 198, 198, 0.3)',
-                        background: 'linear-gradient(to right, #4bd2d2, #3ca8a8)',
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        display: 'inline-block',
+                        display: 'flex',
+                        alignItems: 'center',
                     }}>
-                    resucraft
-                </Typography>
-                <Typography
-                    variant="subtitle2"
-                    color="gray"
-                    sx={{ fontSize: '10px', mt: -1 }}>
-                    by Dreamteam
-                </Typography>
+                    <img
+                        src={logo}
+                        alt="Logo"
+                        style={{
+                            width: '40px',
+                            height: 'auto',
+                        }}
+                    />
+                </Box>
+                <Box
+                    sx={{
+                        ml: 1,
+                        textAlign: 'right',
+                    }}>
+                    <Typography
+                        variant="h5"
+                        sx={{
+                            whiteSpace: 'nowrap',
+                            fontWeight: 800,
+                            textShadow: '1px 3px 3px rgba(198, 198, 198, 0.3)',
+                            background: 'linear-gradient(to right, #4bd2d2, #3ca8a8)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            display: 'inline-block',
+                        }}>
+                        resucraft
+                    </Typography>
+                    <Typography
+                        variant="subtitle2"
+                        color="gray"
+                        sx={{
+                            fontSize: '10px',
+                            mt: -1,
+                        }}>
+                        by Dreamteam
+                    </Typography>
+                </Box>
             </Box>
-        </Box>
-        <Typography component="h1" variant="h5" sx={{width: '100%', textAlign: 'left', fontWeight: 500, mt:2}}>
-            Sign in your Account
-        </Typography>
-        <Box
+            <Typography
+                component="h1"
+                variant="h5"
+                sx={{
+                    width: '100%',
+                    textAlign: 'left',
+                    fontWeight: 500,
+                    mt: 2,
+                }}>
+                Sign in your Account
+            </Typography>
+            <Box
                 sx={{
                     marginTop: 1,
                     display: 'flex',
@@ -124,11 +159,7 @@ const SignInForm = () => {
                     color="inherit"
                     aria-label="Sign in with Google account"
                     onClick={() =>
-                        handleSocialLogin(
-                            signInWithGoogle,
-                            validationErrors,
-                            setValidationErrors,
-                        )
+                        handleSocialLogin(signInWithGoogle, validationErrors, setValidationErrors)
                     }>
                     <GoogleIcon />
                 </IconButton>
@@ -137,77 +168,87 @@ const SignInForm = () => {
                     color="inherit"
                     aria-label="Sign in with GitHub account"
                     onClick={() =>
-                        handleSocialLogin(
-                            signInWithGithub,
-                            validationErrors,
-                            setValidationErrors,
-                        )
+                        handleSocialLogin(signInWithGithub, validationErrors, setValidationErrors)
                     }>
                     <GitHubIcon />
                 </IconButton>
             </Box>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 0 }}>
-            <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                autoFocus
-                onChange={handleChange}
-                error={validationErrors.email ? true : false}
-                helperText={validationErrors.email ? validationErrors.email : ''}
-            />
-            <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                onChange={handleChange}
-                error={validationErrors.password ? true : false}
-                helperText={validationErrors.password ? validationErrors.password : ''}
-            />
-            <FormControlLabel
-            sx={{
-                width: '100%',
-                textAlign: 'left'}}
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-            />
-            <Button type="submit" fullWidth variant="contained" sx={{ mt: 2, mb: 2,height:'50px',
-                background: 'linear-gradient(to right, #4bd2d2, #3ca8a8)'
-             }}>
-                Sign In
-            </Button>
-            <Grid container>
-                <Grid item xs>
-                    <Link href="#" variant="body2">
-                        Forgot password?
-                    </Link>
-                </Grid>
-            </Grid>
-            
-            {validationErrors.firebase ? (
-                <Box
+            <Box
+                component="form"
+                onSubmit={handleSubmit}
+                noValidate
+                sx={{
+                    mt: 0,
+                }}>
+                <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="email"
+                    label="Email Address"
+                    name="email"
+                    autoComplete="email"
+                    autoFocus
+                    onChange={handleChange}
+                    error={validationErrors.email ? true : false}
+                    helperText={validationErrors.email ? validationErrors.email : ''}
+                />
+                <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    autoComplete="current-password"
+                    onChange={handleChange}
+                    error={validationErrors.password ? true : false}
+                    helperText={validationErrors.password ? validationErrors.password : ''}
+                />
+                <FormControlLabel
                     sx={{
-                        marginTop: 2,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
+                        width: '100%',
+                        textAlign: 'left',
+                    }}
+                    control={<Checkbox value="remember" color="primary" />}
+                    label="Remember me"
+                />
+                <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{
+                        mt: 2,
+                        mb: 2,
+                        height: '50px',
+                        background: 'linear-gradient(to right, #4bd2d2, #3ca8a8)',
                     }}>
-                    <Alert severity="error">{validationErrors.firebase}</Alert>
-                </Box>
-            ) : (
-                ''
-            )}
-        </Box>
-  </Paper>
+                    Sign In
+                </Button>
+                <Grid container>
+                    <Grid item xs>
+                        <Link href="#" variant="body2">
+                            Forgot password?
+                        </Link>
+                    </Grid>
+                </Grid>
+
+                {validationErrors.firebase ? (
+                    <Box
+                        sx={{
+                            marginTop: 2,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}>
+                        <Alert severity="error">{validationErrors.firebase}</Alert>
+                    </Box>
+                ) : (
+                    ''
+                )}
+            </Box>
+        </Paper>
     );
 };
 
