@@ -49,7 +49,6 @@ const Header = () => {
                             sx={{
                                 whiteSpace: 'nowrap',
                                 fontWeight: 800,
-                                // color: '#4bd2d2',
                                 textShadow: '1px 3px 3px rgba(198, 198, 198, 0.3)',
                                 background: 'linear-gradient(to right, #4bd2d2, #3ca8a8)',
                                 WebkitBackgroundClip: 'text',
