@@ -14,27 +14,43 @@ import { db } from '../../config/firebase';
 import { useParams } from 'react-router-dom';
 import { useMemo } from 'react';
 import { doc, Timestamp, updateDoc } from 'firebase/firestore';
+import { useCollectionOnce } from 'react-firebase-hooks/firestore';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { TemplateStyles } from '../../types/TemplateStyles.types';
 
 const BaseResumeData = () => {
     const name = useResumeStore((state) => state.name);
     const setName = useResumeStore((state) => state.setName);
-    const template = useResumeStore((state) => state.template);
-    const setTemplate = useResumeStore((state) => state.setTemplate);
+    const templateId = useResumeStore((state) => state.templateId);
+    const setTemplateId = useResumeStore((state) => state.setTemplateId);
+    const setTemplateStyles = useResumeStore((state) => state.setTemplateStyles);
 
-    const handleFormChange = (
+    const [templatesSnapshot, templateLoading] = useCollectionOnce(collection(db, 'templates'));
+
+    const getDefaultTemplateStyles = async (templateId: string) => {
+        const q = query(collection(db, 'templateStyles'), where('templateId', '==', templateId));
+
+        const querySnapshot = await getDocs(q);
+
+        if (querySnapshot.docs.length) return querySnapshot.docs[0].data();
+
+        return {};
+    };
+
+    const handleFormChange = async (
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent,
     ) => {
         const { name, value } = event.target;
 
         if (name == 'name') setName(value);
-        if (name == 'template') setTemplate(value);
+        if (name == 'template') setTemplateId(value);
 
         debouncedSaveDocument(name, value);
     };
 
     const { resumeId } = useParams();
     const saveDocument = useMemo(
-        () => (name: string, value: string) => {
+        () => async (name: string, value: string) => {
             if (resumeId) {
                 const resumeRef = doc(db, 'resumes', resumeId);
 
@@ -42,8 +58,17 @@ const BaseResumeData = () => {
 
                 if (name == 'name')
                     updateDoc(resumeRef, { name: value, timestamp: Timestamp.now() });
-                if (name == 'template')
-                    updateDoc(resumeRef, { template: value, timestamp: Timestamp.now() });
+                if (name == 'template') {
+                    const defaultStyles = await getDefaultTemplateStyles(value);
+
+                    setTemplateStyles(defaultStyles as TemplateStyles);
+
+                    updateDoc(resumeRef, {
+                        templateId: value,
+                        timestamp: Timestamp.now(),
+                        templateStyles: { ...defaultStyles },
+                    });
+                }
             }
         },
         [resumeId],
@@ -69,18 +94,27 @@ const BaseResumeData = () => {
             <Grid item xs={12} sm={6}>
                 <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-label">Template</InputLabel>
-                    <Select
-                        fullWidth
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={template}
-                        name="template"
-                        label="Template"
-                        onChange={handleFormChange}>
-                        <MenuItem value="Test">Test</MenuItem>
-                        <MenuItem value="Test 2">Test 2</MenuItem>
-                        <MenuItem value="Simple">Simple</MenuItem>
-                    </Select>
+                    {templateLoading ? (
+                        ''
+                    ) : (
+                        <Select
+                            fullWidth
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={templateId}
+                            name="template"
+                            label="Template"
+                            onChange={handleFormChange}>
+                            {templatesSnapshot?.docs.map((doc) => {
+                                const { name } = doc.data();
+                                return (
+                                    <MenuItem value={doc.id} key={doc.id}>
+                                        {name}
+                                    </MenuItem>
+                                );
+                            })}
+                        </Select>
+                    )}
                 </FormControl>
             </Grid>
         </EditorFieldBox>

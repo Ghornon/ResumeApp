@@ -3,18 +3,16 @@ import { pdfjs, Document, Page } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 import type { PDFDocumentProxy } from 'pdfjs-dist';
-import ExampleTemplate from '../templates/example/ExampleTemplate';
 import { pdf } from '@react-pdf/renderer';
 import { Box, Button, Pagination } from '@mui/material';
 import { blueGrey } from '@mui/material/colors';
 import { Spinner } from '../Spinner';
-import { ResumeType } from '../../types/Resume.types';
 import { useResumeStore } from '../../store/ResumeStore';
 import PDFPreviewMenu from './PDFPreviewMenu';
 import { useAsync } from 'react-use';
 import { Link } from 'react-router-dom';
 import './PDFView.scss';
-import SimpleTemplate from '../templates/Simple';
+import TemplateEngine from '../templates/TemplateEngine';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     'pdfjs-dist/build/pdf.worker.min.js',
@@ -43,16 +41,6 @@ function getWindowSize() {
     };
 }
 
-const DocumentTemplate = ({ resumeData }: { resumeData: ResumeType }) => {
-    if (resumeData && resumeData.template == 'Test')
-        return <ExampleTemplate resumeData={resumeData} />;
-
-    if (resumeData && resumeData.template == 'Simple')
-        return <SimpleTemplate resumeData={resumeData} />;
-
-    return <ExampleTemplate resumeData={resumeData} />;
-};
-
 const PDFPreview = () => {
     const resumeData = useResumeStore((state) => state);
     const [numPages, setNumPages] = useState<number>(1);
@@ -72,7 +60,7 @@ const PDFPreview = () => {
     const render = useAsync(async () => {
         if (!resumeData) return null;
 
-        const blob = await pdf(<DocumentTemplate resumeData={resumeData} />).toBlob();
+        const blob = await pdf(<TemplateEngine resumeData={resumeData} />).toBlob();
         const url = URL.createObjectURL(blob);
 
         return url;
@@ -113,7 +101,7 @@ const PDFPreview = () => {
             top={{ xs: 'auto', lg: 0 }}
             left={{ xs: 'auto', lg: '50%' }}
             position={{ xs: 'relative', lg: 'sticky' }}
-            width={{ xs: '100%', lg: '50%' }}>
+            width={{ xs: '100vw', lg: '50vw' }}>
             <Box
                 sx={{
                     height: 40,

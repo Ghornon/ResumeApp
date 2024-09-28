@@ -5,7 +5,7 @@ import { doc } from 'firebase/firestore';
 import { Spinner } from '../components/Spinner';
 import ErrorSnackbar from '../components/ErrorSnackbar';
 import { Stack } from '@mui/material';
-import EditorForm from '../components/Editor/EditorForm';
+import EditorForm from '../components/Editor';
 import PDFPreview from '../components/PDFPreview/PDFPreview';
 import { useEffect } from 'react';
 import { useResumeStore } from '../store/ResumeStore';

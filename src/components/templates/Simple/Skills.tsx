@@ -30,7 +30,6 @@ const SkillEntry = ({ skills }: { skills: SkillItem[] }) => (
                 <Text>{skill.skillName}</Text>
             </Text>
         ))}
-        asd
     </View>
 );
 

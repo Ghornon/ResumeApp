@@ -1,4 +1,5 @@
 import { Timestamp } from 'firebase/firestore';
+import { TemplateStyles } from './TemplateStyles.types';
 
 export enum languageLevel {
     A1 = 'A1 - Elementary',
@@ -43,7 +44,7 @@ export type LanguageItem = {
 export type ResumeType = {
     uid: string;
     name: string;
-    template: string;
+    templateId: string;
     timestamp: Timestamp;
     personalDetails: {
         [index: string]: string;
@@ -62,4 +63,5 @@ export type ResumeType = {
     skills: Array<SkillItem>;
     languages: Array<LanguageItem>;
     footer: string;
+    templateStyles: TemplateStyles;
 };
