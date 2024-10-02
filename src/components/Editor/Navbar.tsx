@@ -8,7 +8,7 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { useResumeStore } from '../../store/ResumeStore';
 
 const Navbar = () => {
-    const name = useResumeStore((state) => state.name);
+    const name = useResumeStore((state) => state.resume.name);
 
     return (
         <Box

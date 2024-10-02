@@ -1,14 +1,9 @@
-import { Grid, TextField, debounce } from '@mui/material';
+import { Grid, TextField } from '@mui/material';
 import { useResumeStore } from '../../store/ResumeStore';
-import { doc, Timestamp, updateDoc } from 'firebase/firestore';
-import { useMemo } from 'react';
-import { useParams } from 'react-router-dom';
-import { db } from '../../config/firebase';
-import { ResumeType } from '../../types/Resume.types';
 
 export const PersonalDetails = () => {
-    const personalDetails = useResumeStore((state) => state.personalDetails);
-    const setPersonalDetails = useResumeStore((state) => state.setPersonalDetails);
+    const personalDetails = useResumeStore((state) => state.resume.personalDetails);
+    const setValue = useResumeStore((state) => state.setValue);
 
     const personalDetailsFields = {
         jobTitle: 'Job title',
@@ -21,34 +16,6 @@ export const PersonalDetails = () => {
         city: 'City',
     };
 
-    const handleFormChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = event.target;
-        const newState = { ...personalDetails };
-        newState[name] = value;
-
-        setPersonalDetails(newState);
-        debouncedSaveDocument(newState);
-    };
-
-    const { resumeId } = useParams();
-    const saveDocument = useMemo(
-        () => (resumeData: ResumeType['personalDetails']) => {
-            if (resumeId) {
-                const resumeRef = doc(db, 'resumes', resumeId);
-
-                console.log('Saving data', resumeId, resumeData);
-                updateDoc(resumeRef, { personalDetails: resumeData, timestamp: Timestamp.now() });
-            }
-        },
-        [resumeId],
-    );
-
-    const debouncedSaveDocument = useMemo(
-        () =>
-            debounce((resumeData: ResumeType['personalDetails']) => saveDocument(resumeData), 1000),
-        [saveDocument],
-    );
-
     return (
         <>
             {Object.entries(personalDetailsFields).map(([key, value]) => (
@@ -57,9 +24,8 @@ export const PersonalDetails = () => {
                         fullWidth
                         label={value}
                         id={`personalDetails.${key}`}
-                        name={`${key}`}
                         value={personalDetails[key]}
-                        onChange={handleFormChange}
+                        onChange={(event) => setValue(`personalDetails.${key}`, event.target.value)}
                     />
                 </Grid>
             ))}

@@ -1,18 +1,15 @@
 import AddIcon from '@mui/icons-material/Add';
 import { SkillItem } from '../../types/Resume.types';
-import { useMemo, useState } from 'react';
-import { doc, Timestamp, updateDoc } from 'firebase/firestore';
+import { useState } from 'react';
 import {
     Grid,
     Typography,
     Button,
     TextField,
-    debounce,
     FormControl,
     InputLabel,
     Select,
     MenuItem,
-    SelectChangeEvent,
     Tooltip,
     IconButton,
 } from '@mui/material';
@@ -21,74 +18,36 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
 import { useResumeStore } from '../../store/ResumeStore';
-import { useParams } from 'react-router-dom';
-import { db } from '../../config/firebase';
 import { Accordion, AccordionActions, AccordionDetails, AccordionSummary } from './Accordion';
 
 export const Skills = () => {
     const [expanded, setExpanded] = useState<string | false>(false);
 
-    const skills = useResumeStore((state) => state.skills);
-    const setSkills = useResumeStore((state) => state.setSkills);
-
-    const { resumeId } = useParams();
-    const saveDocument = useMemo(
-        () => (resumeData: Array<SkillItem>) => {
-            if (resumeId) {
-                const resumeRef = doc(db, 'resumes', resumeId);
-
-                console.log('Saving data', resumeId, resumeData);
-
-                updateDoc(resumeRef, { skills: resumeData, timestamp: Timestamp.now() });
-            }
-        },
-        [resumeId],
-    );
-
-    const debouncedSaveDocument = useMemo(
-        () => debounce((resumeData: Array<SkillItem>) => saveDocument(resumeData), 1000),
-        [saveDocument],
-    );
+    const skills = useResumeStore((state) => state.resume.skills);
+    const setValue = useResumeStore((state) => state.setValue);
 
     const handleAccordionChange =
         (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
             setExpanded(isExpanded ? panel : false);
         };
 
-    const handleChange = (
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent,
-    ) => {
-        const { name, value } = event.target;
-        const path = name.split('.');
-        const finalProp = path.pop();
-        const index = parseInt(path[0]);
-        const newData: Array<SkillItem> = [...skills];
-
-        if (!isNaN(index) && finalProp) newData[index][finalProp] = value;
-
-        setSkills(newData);
-        debouncedSaveDocument(newData);
-    };
-
     const removeSkill = (index: number) => {
         console.log('Removing item');
-        const updatedHistory = skills.filter((_element, i) => i != index);
-        setSkills(updatedHistory as Array<SkillItem>);
-        debouncedSaveDocument(updatedHistory);
+        const updatedSkills = skills.filter((_element, i) => i != index);
+        setValue('skills', updatedSkills);
     };
 
     const moveSkill = (index: number, toIndex: number) => {
-        const updatedHistory = [...skills];
-        const element = updatedHistory.splice(index, 1)[0];
+        const updatedSkills = [...skills];
+        const element = updatedSkills.splice(index, 1)[0];
 
         const pointer = index + toIndex;
 
         if (pointer >= skills.length || pointer < 0) return;
 
-        updatedHistory.splice(pointer, 0, element);
+        updatedSkills.splice(pointer, 0, element);
 
-        setSkills(updatedHistory as Array<SkillItem>);
-        debouncedSaveDocument(updatedHistory);
+        setValue('skills', updatedSkills);
 
         setExpanded(`panel.${pointer}`);
     };
@@ -96,8 +55,7 @@ export const Skills = () => {
     const addNewSkill = () => {
         const newItem = { skillName: '', level: 5 } as SkillItem;
 
-        setSkills([...skills, newItem]);
-        debouncedSaveDocument([...skills, newItem]);
+        setValue('skills', [...skills, newItem]);
         setExpanded(`panel.${skills.length}`);
     };
 
@@ -124,7 +82,9 @@ export const Skills = () => {
                                     label="Skill name"
                                     id={`${index}.skillName`}
                                     name={`${index}.skillName`}
-                                    onChange={handleChange}
+                                    onChange={(event) =>
+                                        setValue(`skills[${index}.skillName]`, event.target.value)
+                                    }
                                     value={skill.skillName}
                                 />
                             </Grid>
@@ -137,8 +97,10 @@ export const Skills = () => {
                                         id={`${index}.level`}
                                         name={`${index}.level`}
                                         value={skill.level.toString()}
-                                        label="Template"
-                                        onChange={handleChange}>
+                                        label="Level"
+                                        onChange={(event) =>
+                                            setValue(`skills[${index}.level]`, event.target.value)
+                                        }>
                                         <MenuItem value="1">Novice</MenuItem>
                                         <MenuItem value="2">Beginner</MenuItem>
                                         <MenuItem value="3">Skillful</MenuItem>

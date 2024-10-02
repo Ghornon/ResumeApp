@@ -1,8 +1,8 @@
 import AddIcon from '@mui/icons-material/Add';
 import { EducationHistoryItem, EmploymentHistoryItem } from '../../types/Resume.types';
-import { useMemo, useState } from 'react';
-import { Timestamp, doc, updateDoc } from 'firebase/firestore';
-import { Grid, Typography, Button, TextField, debounce, IconButton, Tooltip } from '@mui/material';
+import { useState } from 'react';
+import { Timestamp } from 'firebase/firestore';
+import { Grid, Typography, Button, TextField, IconButton, Tooltip } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
@@ -14,17 +14,14 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import { useResumeStore } from '../../store/ResumeStore';
-import { useParams } from 'react-router-dom';
-import { db } from '../../config/firebase';
 import { Accordion, AccordionActions, AccordionDetails, AccordionSummary } from './Accordion';
 
 export const HistoryItem = ({ type }: { type: string }) => {
     const [expanded, setExpanded] = useState<string | false>(false);
 
-    const employmentHistory = useResumeStore((state) => state.employmentHistory);
-    const setEmploymentHistory = useResumeStore((state) => state.setEmploymentHistory);
-    const educationHistory = useResumeStore((state) => state.educationHistory);
-    const setEducationHistory = useResumeStore((state) => state.setEducationHistory);
+    const employmentHistory = useResumeStore((state) => state.resume.employmentHistory);
+    const educationHistory = useResumeStore((state) => state.resume.educationHistory);
+    const setValue = useResumeStore((state) => state.setValue);
 
     const getState = () => {
         if (type == 'employmentHistory') {
@@ -37,81 +34,16 @@ export const HistoryItem = ({ type }: { type: string }) => {
 
         return [];
     };
-    const { resumeId } = useParams();
-    const saveDocument = useMemo(
-        () => (resumeData: Array<EmploymentHistoryItem | EducationHistoryItem>) => {
-            if (resumeId) {
-                const resumeRef = doc(db, 'resumes', resumeId);
-
-                console.log('Saving data', resumeId, resumeData);
-                if (type == 'employmentHistory') {
-                    updateDoc(resumeRef, {
-                        employmentHistory: resumeData,
-                        timestamp: Timestamp.now(),
-                    });
-                }
-
-                if (type == 'educationHistory') {
-                    updateDoc(resumeRef, {
-                        educationHistory: resumeData,
-                        timestamp: Timestamp.now(),
-                    });
-                }
-            }
-        },
-        [resumeId, type],
-    );
-
-    const debouncedSaveDocument = useMemo(
-        () =>
-            debounce(
-                (resumeData: Array<EmploymentHistoryItem | EducationHistoryItem>) =>
-                    saveDocument(resumeData),
-                1000,
-            ),
-        [saveDocument],
-    );
-
-    const setState = (newState: Array<EmploymentHistoryItem | EducationHistoryItem>) => {
-        if (type == 'employmentHistory') {
-            setEmploymentHistory(newState as Array<EmploymentHistoryItem>);
-            debouncedSaveDocument(newState);
-        }
-
-        if (type == 'educationHistory') {
-            setEducationHistory(newState as Array<EducationHistoryItem>);
-            debouncedSaveDocument(newState);
-        }
-    };
 
     const handleAccordionChange =
         (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
             setExpanded(isExpanded ? panel : false);
         };
 
-    const handleHistoryItemChange = <
-        T extends
-            | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-            | { target: { name: string; value: Timestamp } },
-    >(
-        event: T,
-    ) => {
-        const { name, value } = event.target;
-        const path = name.split('.');
-        const finalProp = path.pop();
-        const index = parseInt(path[0]);
-
-        const newData: Array<EmploymentHistoryItem | EducationHistoryItem> = [...getState()];
-
-        if (!isNaN(index) && finalProp) newData[index][finalProp] = value;
-
-        setState(newData);
-    };
-
     const removeHistoryItem = (index: number) => {
         console.log('Removing item');
         const updatedHistory = getState().filter((_element, i) => i != index);
-        setState(updatedHistory);
+        setValue(type, updatedHistory);
     };
 
     const moveHistoryItem = (index: number, toIndex: number) => {
@@ -124,7 +56,7 @@ export const HistoryItem = ({ type }: { type: string }) => {
 
         updatedHistory.splice(pointer, 0, element);
 
-        setState(updatedHistory);
+        setValue(type, updatedHistory);
         setExpanded(`panel.${pointer}`);
     };
 
@@ -152,8 +84,7 @@ export const HistoryItem = ({ type }: { type: string }) => {
                 description: '',
             };
 
-        setState([...getState(), newItem]);
-
+        setValue(type, [...getState(), newItem]);
         setExpanded(`panel.${getState().length}`);
     };
 
@@ -228,18 +159,14 @@ export const HistoryItem = ({ type }: { type: string }) => {
                                                         name={`${index}.${key}`}
                                                         sx={{ width: '100%' }}
                                                         onChange={(newValue) =>
-                                                            handleHistoryItemChange({
-                                                                target: {
-                                                                    name: `${index}.${key}`,
-                                                                    value: Timestamp.fromDate(
-                                                                        new Date(
-                                                                            dayjs(
-                                                                                newValue,
-                                                                            ).toDate(),
-                                                                        ),
+                                                            setValue(
+                                                                `${type}[${index}].${key}`,
+                                                                Timestamp.fromDate(
+                                                                    new Date(
+                                                                        dayjs(newValue).toDate(),
                                                                     ),
-                                                                },
-                                                            })
+                                                                ),
+                                                            )
                                                         }
                                                         value={dayjs(
                                                             timestampToDate(historyItem[key]),
@@ -253,7 +180,12 @@ export const HistoryItem = ({ type }: { type: string }) => {
                                                 label={value}
                                                 id={`${index}.${key}`}
                                                 name={`${index}.${key}`}
-                                                onChange={handleHistoryItemChange}
+                                                onChange={(event) =>
+                                                    setValue(
+                                                        `${type}[${index}].${key}`,
+                                                        event.target.value,
+                                                    )
+                                                }
                                                 value={historyItem[key]}
                                                 multiline={key == 'description' ? true : false}
                                             />

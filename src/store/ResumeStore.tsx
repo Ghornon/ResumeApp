@@ -1,29 +1,16 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
+import { devtools } from 'zustand/middleware';
 import _set from 'lodash.set';
-import {
-    EducationHistoryItem,
-    EmploymentHistoryItem,
-    LanguageItem,
-    ResumeType,
-    SkillItem,
-} from '../types/Resume.types';
-import { Timestamp } from 'firebase/firestore';
+import { ResumeType } from '../types/Resume.types';
 import { FontSize, HeadlineCapitalization } from '../types/TemplateStyles.types';
+import { Timestamp } from 'firebase/firestore';
+import { debouncedUpdateResume } from '../helpers/updateResume';
 
-interface IResumeStore extends ResumeType {
-    setName: (newState: string) => void;
-    setTemplateId: (newState: string) => void;
-    setSummary: (newState: string) => void;
-    setPersonalDetails: (newState: ResumeType['personalDetails']) => void;
-    setEmploymentHistory: (newState: Array<EmploymentHistoryItem>) => void;
-    setEducationHistory: (newState: Array<EducationHistoryItem>) => void;
-    setSkills: (newState: Array<SkillItem>) => void;
-    setLanguages: (newState: Array<LanguageItem>) => void;
-    setFooter: (newState: string) => void;
-    setTemplateStyles: (newState: ResumeType['templateStyles']) => void;
-    setData: (data: ResumeType) => void;
-    setValue: (path: string, value: ResumeType) => void;
+interface IResumeStore {
+    resume: ResumeType;
+    resumeId: string;
+    setValue: (path: string, value: unknown) => void;
     reset: () => void;
 }
 
@@ -73,46 +60,23 @@ const initialState: ResumeType = {
     },
 };
 
-/* export const useResumeStore = create<IResumeStore>((set) => ({
-    ...initialState,
-    setName: (newState) => set({ name: newState }),
-    setTemplateId: (newState) => set({ templateId: newState }),
-    setSummary: (newState) => set({ summary: newState }),
-    setPersonalDetails: (newState) => set({ personalDetails: newState }),
-    setEmploymentHistory: (newState) => set({ employmentHistory: newState }),
-    setEducationHistory: (newState) => set({ educationHistory: newState }),
-    setSkills: (newState) => set({ skills: newState }),
-    setLanguages: (newState) => set({ languages: newState }),
-    setFooter: (newState) => set({ footer: newState }),
-    setTemplateStyles: (newState) => set({ templateStyles: newState }),
-    setData: (data) => set((state: ResumeType) => ({ ...state, ...data })),
-    reset: () => {
-        set(initialState);
-    },
-}));
- */
-
 export const useResumeStore = create<IResumeStore>()(
-    immer((set) => ({
-        ...initialState,
-        setName: (newState) => set({ name: newState }),
-        setTemplateId: (newState) => set({ templateId: newState }),
-        setSummary: (newState) => set({ summary: newState }),
-        setPersonalDetails: (newState) => set({ personalDetails: newState }),
-        setEmploymentHistory: (newState) => set({ employmentHistory: newState }),
-        setEducationHistory: (newState) => set({ educationHistory: newState }),
-        setSkills: (newState) => set({ skills: newState }),
-        setLanguages: (newState) => set({ languages: newState }),
-        setFooter: (newState) => set({ footer: newState }),
-        setTemplateStyles: (newState) => set({ templateStyles: newState }),
-        setData: (data) => set((state: ResumeType) => ({ ...state, ...data })),
-        setValue: (path, value) => {
-            set((state: ResumeType) => {
-                state = _set(state, path, value);
-            });
-        },
-        reset: () => {
-            set(initialState);
-        },
-    })),
+    devtools(
+        immer((set) => ({
+            resume: initialState,
+            resumeId: '',
+            setValue: (path, value) => {
+                set((draft) => {
+                    draft.resume = _set(draft.resume, path, value);
+                    void debouncedUpdateResume({
+                        resumeId: draft.resumeId,
+                        resume: JSON.parse(JSON.stringify(draft.resume)),
+                    });
+                });
+            },
+            reset: () => {
+                set({ resume: initialState });
+            },
+        })),
+    ),
 );

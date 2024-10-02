@@ -42,7 +42,7 @@ function getWindowSize() {
 }
 
 const PDFPreview = () => {
-    const resumeData = useResumeStore((state) => state);
+    const resumeData = useResumeStore((state) => state.resume);
     const [numPages, setNumPages] = useState<number>(1);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [windowSize, setWindowSize] = useState(getWindowSize());
