@@ -1,4 +1,6 @@
 import { create } from 'zustand';
+import { immer } from 'zustand/middleware/immer';
+import _set from 'lodash.set';
 import {
     EducationHistoryItem,
     EmploymentHistoryItem,
@@ -21,6 +23,7 @@ interface IResumeStore extends ResumeType {
     setFooter: (newState: string) => void;
     setTemplateStyles: (newState: ResumeType['templateStyles']) => void;
     setData: (data: ResumeType) => void;
+    setValue: (path: string, value: ResumeType) => void;
     reset: () => void;
 }
 
@@ -70,7 +73,7 @@ const initialState: ResumeType = {
     },
 };
 
-export const useResumeStore = create<IResumeStore>((set) => ({
+/* export const useResumeStore = create<IResumeStore>((set) => ({
     ...initialState,
     setName: (newState) => set({ name: newState }),
     setTemplateId: (newState) => set({ templateId: newState }),
@@ -87,3 +90,29 @@ export const useResumeStore = create<IResumeStore>((set) => ({
         set(initialState);
     },
 }));
+ */
+
+export const useResumeStore = create<IResumeStore>()(
+    immer((set) => ({
+        ...initialState,
+        setName: (newState) => set({ name: newState }),
+        setTemplateId: (newState) => set({ templateId: newState }),
+        setSummary: (newState) => set({ summary: newState }),
+        setPersonalDetails: (newState) => set({ personalDetails: newState }),
+        setEmploymentHistory: (newState) => set({ employmentHistory: newState }),
+        setEducationHistory: (newState) => set({ educationHistory: newState }),
+        setSkills: (newState) => set({ skills: newState }),
+        setLanguages: (newState) => set({ languages: newState }),
+        setFooter: (newState) => set({ footer: newState }),
+        setTemplateStyles: (newState) => set({ templateStyles: newState }),
+        setData: (data) => set((state: ResumeType) => ({ ...state, ...data })),
+        setValue: (path, value) => {
+            set((state: ResumeType) => {
+                state = _set(state, path, value);
+            });
+        },
+        reset: () => {
+            set(initialState);
+        },
+    })),
+);
