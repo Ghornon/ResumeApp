@@ -1,9 +1,9 @@
 import { FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@mui/material';
-import EditorFieldBox from './EditorFieldBox';
 import { useResumeStore } from '../../store/ResumeStore';
 import { db } from '../../config/firebase';
 import { useCollectionOnce } from 'react-firebase-hooks/firestore';
 import { collection } from 'firebase/firestore';
+import ChipDivider from '../ChipDivider';
 
 const BaseResumeData = () => {
     const name = useResumeStore((state) => state.resume.name);
@@ -13,7 +13,7 @@ const BaseResumeData = () => {
     const [templatesSnapshot, templateLoading] = useCollectionOnce(collection(db, 'templates'));
 
     return (
-        <EditorFieldBox title={'Template Options'}>
+        <ChipDivider title={'Template Options'}>
             <Grid item xs={12} sm={6}>
                 <TextField
                     fullWidth
@@ -50,7 +50,7 @@ const BaseResumeData = () => {
                     )}
                 </FormControl>
             </Grid>
-        </EditorFieldBox>
+        </ChipDivider>
     );
 };
 

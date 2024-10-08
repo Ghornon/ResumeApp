@@ -1,7 +1,7 @@
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 
-import Title from './Title';
 import { LanguageItem, languageLevel, ResumeType } from '../../../types/Resume.types';
+import H2 from '../_components/H2';
 
 const styles = StyleSheet.create({
     item: {
@@ -22,7 +22,7 @@ const LanguageEntry = ({ languages }: { languages: LanguageItem[] }) => (
         {languages.map((language, index) => (
             <View key={`language-${index}`} style={styles.item}>
                 <Text style={styles.language}>{language.language}</Text>
-                <Text>{languageLevel[language.level as keyof typeof languageLevel]}</Text>
+                <Text>{languageLevel[language.level as typeof languageLevel]}</Text>
             </View>
         ))}
     </View>
@@ -30,7 +30,7 @@ const LanguageEntry = ({ languages }: { languages: LanguageItem[] }) => (
 
 const Languages = ({ resumeData }: { resumeData: ResumeType }) => (
     <View>
-        <Title>Languages</Title>
+        <H2>Languages</H2>
         <LanguageEntry languages={resumeData.languages} />
     </View>
 );

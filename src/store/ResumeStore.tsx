@@ -42,9 +42,9 @@ const initialState: ResumeType = {
             rightColumnItems: [],
         },
         font: {
-            fontName: 'Arial',
+            fontName: 'Ubuntu',
             fontSize: FontSize.M,
-            lineSpacing: 1,
+            lineSpacing: 1.5,
             headlineCapitalization: HeadlineCapitalization.capitalize,
         },
         format: {
@@ -52,9 +52,9 @@ const initialState: ResumeType = {
             isFooterVisible: true,
         },
         colors: {
-            bgColor: 'white',
-            fontColor: 'black',
-            highlightColor: 'black',
+            bgColor: '#ffffff',
+            fontColor: '#000000',
+            highlightColor: '#03a9f4',
         },
         templateId: '',
     },

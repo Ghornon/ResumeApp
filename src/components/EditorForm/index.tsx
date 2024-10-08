@@ -1,8 +1,7 @@
 import { Box } from '@mui/material';
 import { PersonalDetails } from './PersonalDetails';
 import { HistoryItem } from './HistoryItem';
-import EditorFieldBox from './EditorFieldBox';
-import BaseResumeData from './BaseResumeData';
+import ChipDivider from '../ChipDivider';
 import Summary from './Summary';
 import { Skills } from './SkillIs';
 import { Languages } from './Languages';
@@ -15,41 +14,41 @@ const EditorForm = () => {
             component="form"
             sx={{
                 minHeight: '100vh',
+                maxHeight: '100vh',
                 paddingY: 2,
+                paddingX: 4,
+                overflowY: 'auto',
             }}
-            width={{ xs: '100vw', lg: '50vw' }}
-            paddingX={{ xs: 3, md: 5, xl: 10 }}>
+            width={{ xs: '100vw', lg: '30vw' }}>
             <Navbar />
 
-            <BaseResumeData />
-
-            <EditorFieldBox title="Personal Details">
+            <ChipDivider title="Personal Details">
                 <PersonalDetails />
-            </EditorFieldBox>
+            </ChipDivider>
 
-            <EditorFieldBox title="Summary">
+            <ChipDivider title="Summary">
                 <Summary />
-            </EditorFieldBox>
+            </ChipDivider>
 
-            <EditorFieldBox title="Employment History">
+            <ChipDivider title="Employment History">
                 <HistoryItem type={'employmentHistory'} />
-            </EditorFieldBox>
+            </ChipDivider>
 
-            <EditorFieldBox title="Education History">
+            <ChipDivider title="Education History">
                 <HistoryItem type={'educationHistory'} />
-            </EditorFieldBox>
+            </ChipDivider>
 
-            <EditorFieldBox title="Skills">
+            <ChipDivider title="Skills">
                 <Skills />
-            </EditorFieldBox>
+            </ChipDivider>
 
-            <EditorFieldBox title="Languages">
+            <ChipDivider title="Languages">
                 <Languages />
-            </EditorFieldBox>
+            </ChipDivider>
 
-            <EditorFieldBox title="Footer">
+            <ChipDivider title="Footer">
                 <Footer />
-            </EditorFieldBox>
+            </ChipDivider>
         </Box>
     );
 };

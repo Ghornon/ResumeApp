@@ -5,10 +5,11 @@ import { doc } from 'firebase/firestore';
 import { Spinner } from '../components/Spinner';
 import ErrorSnackbar from '../components/ErrorSnackbar';
 import { Stack } from '@mui/material';
-import EditorForm from '../components/Editor';
+import EditorForm from '../components/EditorForm';
 import PDFPreview from '../components/PDFPreview/PDFPreview';
 import { useEffect } from 'react';
 import { useResumeStore } from '../store/ResumeStore';
+import ThemeForm from '../components/ThemeForm';
 
 const Editor = () => {
     const { resumeId } = useParams();
@@ -27,7 +28,14 @@ const Editor = () => {
                 useResumeStore.setState({
                     ...useResumeStore.getInitialState,
                     resumeId: resumeSnapshot?.id,
-                    resume: { ...useResumeStore.getState().resume, ...data },
+                    resume: {
+                        ...useResumeStore.getState().resume,
+                        ...data,
+                        templateStyles: {
+                            ...useResumeStore.getState().resume.templateStyles,
+                            ...data.templateStyles,
+                        },
+                    },
                 });
             }
         }
@@ -42,6 +50,7 @@ const Editor = () => {
             <Stack direction={{ sm: 'column', lg: 'row' }}>
                 <EditorForm />
                 <PDFPreview />
+                <ThemeForm />
             </Stack>
         );
 };

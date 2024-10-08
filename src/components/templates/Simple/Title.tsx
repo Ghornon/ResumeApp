@@ -1,17 +1,17 @@
 import { Text, StyleSheet } from '@react-pdf/renderer';
 import { ReactNode } from 'react';
 
-const styles = StyleSheet.create({
-    title: {
-        fontFamily: 'Lato Bold',
-        fontSize: 14,
-        marginBottom: 10,
-        textTransform: 'uppercase',
-    },
-});
+const Title = ({ children }: { children: ReactNode }) => {
+    // const TemplateStyleSheet = getTemplateStyleSheet(resumeData);
 
-const Title = ({ children }: { children: ReactNode }) => (
-    <Text style={styles.title}>{children}</Text>
-);
+    const styles = StyleSheet.create({
+        title: {
+            marginBottom: 10,
+            // ...TemplateStyleSheet.h2,
+        },
+    });
+
+    return <Text style={styles.title}>{children}</Text>;
+};
 
 export default Title;

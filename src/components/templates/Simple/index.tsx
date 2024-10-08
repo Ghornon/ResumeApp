@@ -1,70 +1,14 @@
-import { Text, Font, Page, View, Document, StyleSheet } from '@react-pdf/renderer';
+import { Text, Page, View, Document } from '@react-pdf/renderer';
 import Header from './Header';
 import Education from './Education';
 import Skills from './Skills';
 import Experience from './Experience';
 import { ResumeType } from '../../../types/Resume.types';
 import Languages from './Languages';
-
-Font.register({
-    family: 'Open Sans',
-    src: `https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFVZ0e.ttf`,
-});
-
-Font.register({
-    family: 'Lato',
-    src: `https://fonts.gstatic.com/s/lato/v16/S6uyw4BMUTPHjx4wWw.ttf`,
-});
-
-Font.register({
-    family: 'Lato Italic',
-    src: `https://fonts.gstatic.com/s/lato/v16/S6u8w4BMUTPHjxsAXC-v.ttf`,
-});
-
-Font.register({
-    family: 'Lato Bold',
-    src: `https://fonts.gstatic.com/s/lato/v16/S6u9w4BMUTPHh6UVSwiPHA.ttf`,
-});
+import getDefaultStyleSheet from '../getDefaultStyleSheet';
 
 const Resume = ({ resumeData }: { resumeData: ResumeType }) => {
-    const styles = StyleSheet.create({
-        page: {
-            padding: 30,
-            width: 1000,
-        },
-        container: {
-            paddingTop: 10,
-            flex: 1,
-            flexDirection: 'row',
-            '@media max-width: 400': {
-                flexDirection: 'column',
-            },
-        },
-        image: {
-            marginBottom: 10,
-        },
-        leftColumn: {
-            flexDirection: 'column',
-            width: 370,
-            paddingTop: 10,
-            paddingRight: 30,
-        },
-        rightColumn: {
-            width: 170,
-            flexDirection: 'column',
-            paddingTop: 10,
-        },
-        footer: {
-            fontSize: 8,
-            fontFamily: 'Lato',
-            textAlign: 'center',
-            marginTop: 15,
-            paddingTop: 5,
-            '@media orientation: landscape': {
-                marginTop: 10,
-            },
-        },
-    });
+    const styles = getDefaultStyleSheet();
 
     return (
         <Page size="A4" style={styles.page}>

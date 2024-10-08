@@ -96,12 +96,12 @@ const PDFPreview = () => {
                 minHeight: '100vh',
                 maxHeight: '100vh',
                 margin: '0 auto',
-                padding: 4,
+                paddingY: 4,
             }}
-            top={{ xs: 'auto', lg: 0 }}
-            left={{ xs: 'auto', lg: '50%' }}
-            position={{ xs: 'relative', lg: 'sticky' }}
-            width={{ xs: '100vw', lg: '50vw' }}>
+            // top={{ xs: 'auto', lg: 0 }}
+            // left={{ xs: 'auto', lg: '50%' }}
+            // position={{ xs: 'relative', lg: 'sticky' }}
+            width={{ xs: '100vw', lg: '40vw' }}>
             <Box
                 sx={{
                     height: 40,

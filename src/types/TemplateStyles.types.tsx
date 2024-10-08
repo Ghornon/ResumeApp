@@ -1,17 +1,17 @@
 export enum FontSize {
     XXS = 8,
-    XS = 10,
-    S = 12,
-    M = 14,
-    L = 16,
-    XL = 18,
-    XXL = 20,
+    XS = 9,
+    S = 10,
+    M = 11,
+    L = 12,
+    XL = 13,
+    XXL = 14,
 }
 
 export enum HeadlineCapitalization {
-    capitalize,
-    uppercase,
-    lowercase,
+    capitalize = 'capitalize',
+    uppercase = 'uppercase',
+    lowercase = 'lowercase',
 }
 
 export enum Layout {
@@ -26,6 +26,7 @@ export enum Layout {
 }
 
 export type TemplateStyles = {
+    [index: string]: string | number | object;
     layout: {
         isSingleColumn: boolean;
         leftColumnItems: Layout[];

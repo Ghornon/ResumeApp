@@ -1,6 +1,6 @@
 import { Box, Chip, Divider, Grid } from '@mui/material';
 
-const EditorFieldBox = ({ title, children }: { title: string; children: React.ReactNode }) => {
+const ChipDivider = ({ title, children }: { title: string; children: React.ReactNode }) => {
     return (
         <>
             <Divider sx={{ paddingY: 2 }}>
@@ -28,4 +28,4 @@ const EditorFieldBox = ({ title, children }: { title: string; children: React.Re
     );
 };
 
-export default EditorFieldBox;
+export default ChipDivider;

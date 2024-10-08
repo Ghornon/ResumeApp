@@ -1,9 +1,8 @@
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
-
-import Title from './Title';
 import { Timestamp } from 'firebase/firestore';
 import { timestampToDate } from '../../../helpers/timestampToDate';
 import { ResumeType } from '../../../types/Resume.types';
+import H2 from '../_components/H2';
 
 const styles = StyleSheet.create({
     container: {
@@ -51,7 +50,7 @@ const styles = StyleSheet.create({
         fontSize: 11,
         color: 'black',
         textDecoration: 'none',
-        fontFamily: 'Lato Bold',
+        fontFamily: 'Ubuntu',
     },
 });
 
@@ -95,11 +94,11 @@ const ExperienceEntry = ({
 
 const Experience = ({ resumeData }: { resumeData: ResumeType }) => (
     <View style={styles.container}>
-        <Title>Experience</Title>
+        <H2>Experience</H2>
         {resumeData.employmentHistory.map(
             ({ jobTitle, employer, startDate, endDate, city, description }, index) => (
                 <ExperienceEntry
-                    key={`expierience${index}`}
+                    key={`experience${index}`}
                     jobTitle={jobTitle}
                     employer={employer}
                     startDate={startDate}
