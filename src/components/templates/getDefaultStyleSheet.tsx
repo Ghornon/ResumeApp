@@ -1,34 +1,145 @@
 import { Font, StyleSheet } from '@react-pdf/renderer';
 import { useResumeStore } from '../../store/ResumeStore';
 
-/* 
-  Special: ['Ubuntu', 'Raleway', 'Roboto', 'Hind', 'Lato'],
-        'Sans Serif': ['Arial', 'Calibri', 'Helvetica', 'Trebuchet MS'],
-        Serif: ['Cambria', 'Georgia', 'Garamond', 'Book Antiqua', 'Times New Roman'],
-*/
+const FONTS = {
+    Special: {
+        Ubuntu: [
+            { src: 'https://fonts.gstatic.com/s/ubuntu/v20/4iCs6KVjbNBYlgo6eA.ttf' },
+            {
+                src: 'https://fonts.gstatic.com/s/ubuntu/v20/4iCv6KVjbNBYlgoCxCvTtw.ttf',
+                fontWeight: 700,
+            },
+        ],
+        Raleway: [
+            {
+                src: 'https://fonts.gstatic.com/s/raleway/v34/1Ptxg8zYS_SKggPN4iEgvnHyvveLxVvaooCP.ttf',
+            },
+            {
+                src: 'https://fonts.gstatic.com/s/raleway/v34/1Ptxg8zYS_SKggPN4iEgvnHyvveLxVs9pYCP.ttf',
+                fontWeight: 700,
+            },
+        ],
+        Roboto: [
+            { src: 'https://fonts.gstatic.com/s/roboto/v32/KFOmCnqEu92Fr1Me5Q.ttf' },
+            {
+                src: 'https://fonts.gstatic.com/s/roboto/v32/KFOlCnqEu92Fr1MmWUlvAw.ttf',
+                fontWeight: 700,
+            },
+        ],
+        Hind: [
+            { src: 'https://fonts.gstatic.com/s/hind/v16/5aU69_a8oxmIRG4.ttf' },
+            {
+                src: 'https://fonts.gstatic.com/s/hind/v16/5aU19_a8oxmIfNJdIRs.ttf',
+                fontWeight: 700,
+            },
+        ],
+        Lato: [
+            { src: 'https://fonts.gstatic.com/s/lato/v24/S6u9w4BMUTPHh6UVew8.ttf' },
+            {
+                src: 'https://fonts.gstatic.com/s/lato/v24/S6u9w4BMUTPHh6UVew8.ttf',
+                fontWeight: 700,
+            },
+        ],
+    },
+    'Sans Serif': {
+        Roboto: [
+            { src: 'https://fonts.gstatic.com/s/roboto/v32/KFOmCnqEu92Fr1Me5Q.ttf' },
+            {
+                src: 'https://fonts.gstatic.com/s/roboto/v32/KFOlCnqEu92Fr1MmWUlvAw.ttf',
+                fontWeight: 700,
+            },
+        ],
+        Lato: [
+            { src: 'https://fonts.gstatic.com/s/lato/v24/S6u9w4BMUTPHh6UVew8.ttf' },
+            {
+                src: 'https://fonts.gstatic.com/s/lato/v24/S6u9w4BMUTPHh6UVew8.ttf',
+                fontWeight: 700,
+            },
+        ],
+        Montserrat: [
+            {
+                src: 'https://fonts.gstatic.com/s/montserrat/v26/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtr6Ew-.ttf',
+            },
+            {
+                src: 'https://fonts.gstatic.com/s/montserrat/v26/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCuM70w-.ttf',
+                fontWeight: 700,
+            },
+        ],
+        'Open Sans': [
+            {
+                src: 'https://fonts.gstatic.com/s/opensans/v40/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0C4n.ttf',
+            },
+            {
+                src: 'https://fonts.gstatic.com/s/opensans/v40/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsg-1y4n.ttf',
+                fontWeight: 700,
+            },
+        ],
+        Raleway: [
+            {
+                src: 'https://fonts.gstatic.com/s/raleway/v34/1Ptxg8zYS_SKggPN4iEgvnHyvveLxVvaooCP.ttf',
+            },
+            {
+                src: 'https://fonts.gstatic.com/s/raleway/v34/1Ptxg8zYS_SKggPN4iEgvnHyvveLxVs9pYCP.ttf',
+                fontWeight: 700,
+            },
+        ],
+    },
+    Serif: {
+        Caladea: [
+            {
+                src: 'https://fonts.gstatic.com/s/caladea/v7/kJEzBugZ7AAjhybUjR8.ttf',
+            },
+            {
+                src: 'https://fonts.gstatic.com/s/caladea/v7/kJE2BugZ7AAjhybUtaNY39o.ttf',
+                fontWeight: 700,
+            },
+        ],
+        Lora: [
+            { src: 'https://fonts.gstatic.com/s/lora/v35/0QI6MX1D_JOuGQbT0gvTJPa787weuyJG.ttf' },
+            {
+                src: 'https://fonts.gstatic.com/s/lora/v35/0QI6MX1D_JOuGQbT0gvTJPa787z5vCJG.ttf',
+                fontWeight: 700,
+            },
+        ],
+        'Roboto Slab': [
+            {
+                src: 'https://fonts.gstatic.com/s/robotoslab/v34/BngbUXZYTXPIvIBgJJSb6s3BzlRRfKOFbvjojISWaA.ttf',
+            },
+            {
+                src: 'https://fonts.gstatic.com/s/robotoslab/v34/BngbUXZYTXPIvIBgJJSb6s3BzlRRfKOFbvjoa4OWaA.ttf',
+                fontWeight: 700,
+            },
+        ],
+        'Playfair Display': [
+            {
+                src: 'https://fonts.gstatic.com/s/playfairdisplay/v37/nuFvD-vYSZviVYUb_rj3ij__anPXJzDwcbmjWBN2PKdFvUDQ.ttf',
+            },
+            {
+                src: 'https://fonts.gstatic.com/s/playfairdisplay/v37/nuFvD-vYSZviVYUb_rj3ij__anPXJzDwcbmjWBN2PKeiukDQ.ttf',
+                fontWeight: 700,
+            },
+        ],
+        Merriweather: [
+            {
+                src: 'https://fonts.gstatic.com/s/merriweather/v30/u-440qyriQwlOrhSvowK_l5Oew.ttf',
+            },
+            {
+                src: 'https://fonts.gstatic.com/s/merriweather/v30/u-4n0qyriQwlOrhSvowK_l52xwNpXw.ttf',
+                fontWeight: 700,
+            },
+        ],
+    },
+} as const;
 
-/* Special fonts */
-Font.register({
-    family: 'Ubuntu',
-    src: 'http://fonts.gstatic.com/s/ubuntu/v9/2Q-AW1e_taO6pHwMXcXW5w.ttf',
-});
+/* Register fonts */
 
-Font.register({
-    family: 'Raleway',
-    src: 'http://fonts.gstatic.com/s/raleway/v11/bIcY3_3JNqUVRAQQRNVteQ.ttf',
-});
-Font.register({
-    family: 'Roboto',
-    src: 'http://fonts.gstatic.com/s/roboto/v16/zN7GBFwfMP4uA6AR0HCoLQ.ttf',
-});
-Font.register({
-    family: 'Hind',
-    src: 'http://fonts.gstatic.com/s/hind/v6/nz5dxQAyXAGLFHmmJlZXFg.ttf',
-});
-
-Font.register({
-    family: 'Lato',
-    src: 'http://fonts.gstatic.com/s/lato/v13/v0SdcGFAl2aezM9Vq_aFTQ.ttf',
+Object.values(FONTS).map((fontFamily) => {
+    Object.entries(fontFamily).map(([fontName, fontSources]) => {
+        Font.register({
+            family: fontName as string,
+            fonts: fontSources,
+        });
+    });
 });
 
 /* Emoji */
@@ -53,22 +164,22 @@ const getDefaultStyleSheet = () => {
             backgroundColor: styles.colors.highlightColor,
         },
         title: {
-            fontWeight: 'bold',
+            fontWeight: 700,
             fontSize: styles.font.fontSize * 3,
             textTransform: styles.font.headlineCapitalization,
         },
         h1: {
-            fontWeight: 'bold',
+            fontWeight: 700,
             fontSize: styles.font.fontSize * 2,
             textTransform: styles.font.headlineCapitalization,
         },
         h2: {
-            fontWeight: 'bold',
+            fontWeight: 700,
             fontSize: styles.font.fontSize * 1.75,
             textTransform: styles.font.headlineCapitalization,
         },
         h3: {
-            fontWeight: 'bold',
+            fontWeight: 700,
             fontSize: styles.font.fontSize * 1.5,
             textTransform: styles.font.headlineCapitalization,
         },

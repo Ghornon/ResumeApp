@@ -69,7 +69,6 @@ export const Colors = () => {
                     fullWidth
                     label="Highlight Color"
                     name="highlightColor"
-                    defaultValue={colors.highlightColor}
                     value={colors.highlightColor}
                     onChange={(event) =>
                         setValue('templateStyles.colors.highlightColor', event.target.value)
@@ -82,7 +81,6 @@ export const Colors = () => {
                     fullWidth
                     name="bgColor"
                     label="Background color"
-                    defaultValue={colors.bgColor}
                     value={colors.bgColor}
                     onChange={(event) =>
                         setValue('templateStyles.colors.bgColor', event.target.value)
@@ -95,7 +93,6 @@ export const Colors = () => {
                     fullWidth
                     name="fontColor"
                     label="Font color"
-                    defaultValue={colors.fontColor}
                     value={colors.fontColor}
                     onChange={(event) =>
                         setValue('templateStyles.colors.fontColor', event.target.value)
