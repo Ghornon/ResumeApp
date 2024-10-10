@@ -3,13 +3,12 @@ import { pdfjs, Document, Page } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 import type { PDFDocumentProxy } from 'pdfjs-dist';
-import { pdf } from '@react-pdf/renderer';
+import { pdf, usePDF } from '@react-pdf/renderer';
 import { Box, Button, Pagination } from '@mui/material';
 import { blueGrey } from '@mui/material/colors';
 import { Spinner } from '../Spinner';
 import { useResumeStore } from '../../store/ResumeStore';
 import PDFPreviewMenu from './PDFPreviewMenu';
-import { useAsync } from 'react-use';
 import { Link } from 'react-router-dom';
 import './PDFView.scss';
 import TemplateEngine from '../templates/TemplateEngine';
@@ -57,19 +56,18 @@ const PDFPreview = () => {
         setCurrentPage(value);
     };
 
-    const render = useAsync(async () => {
-        if (!resumeData) return null;
+    const [instance, updateInstance] = usePDF({
+        document: <TemplateEngine resumeData={resumeData} />,
+    });
 
-        const blob = await pdf(<TemplateEngine resumeData={resumeData} />).toBlob();
-        const url = URL.createObjectURL(blob);
-
-        return url;
+    useEffect(() => {
+        updateInstance(<TemplateEngine resumeData={resumeData} />);
     }, [resumeData]);
 
     const isFirstRendering = !previousRenderValue;
 
-    const isLatestValueRendered = previousRenderValue === render.value;
-    const isBusy = render.loading || !isLatestValueRendered;
+    const isLatestValueRendered = previousRenderValue === instance.url;
+    const isBusy = instance.loading || !isLatestValueRendered;
 
     const shouldShowPreviousDocument = !isFirstRendering && isBusy;
 
@@ -98,9 +96,6 @@ const PDFPreview = () => {
                 margin: '0 auto',
                 paddingY: 4,
             }}
-            // top={{ xs: 'auto', lg: 0 }}
-            // left={{ xs: 'auto', lg: '50%' }}
-            // position={{ xs: 'relative', lg: 'sticky' }}
             width={{ xs: '100vw', lg: '40vw' }}>
             <Box
                 sx={{
@@ -111,7 +106,7 @@ const PDFPreview = () => {
                     width: windowSize.documentWidth,
                 }}>
                 <Link
-                    to={render.value ? render.value : ''}
+                    to={instance.url ? instance.url : ''}
                     download={`${resumeData.name}.pdf`}
                     target="_blank"
                     rel="noreferrer">
@@ -120,7 +115,7 @@ const PDFPreview = () => {
                     </Button>
                 </Link>
 
-                <PDFPreviewMenu url={render.value} />
+                <PDFPreviewMenu url={instance.url} />
             </Box>
 
             <Box
@@ -149,13 +144,13 @@ const PDFPreview = () => {
                     </Document>
                 ) : null}
 
-                {render.loading ? (
+                {instance.loading ? (
                     <Spinner />
                 ) : (
                     <Document
-                        key={render.value}
+                        key={instance.url}
                         className={shouldShowPreviousDocument ? 'rendering-document' : null}
-                        file={render.value}
+                        file={instance.url}
                         loading={isFirstRendering ? <Spinner /> : null}
                         onLoadSuccess={onDocumentLoadSuccess}>
                         <Page
@@ -163,7 +158,7 @@ const PDFPreview = () => {
                             pageNumber={currentPage}
                             width={windowSize.documentWidth}
                             height={windowSize.documentHeight}
-                            onRenderSuccess={() => setPreviousRenderValue(render.value)}
+                            onRenderSuccess={() => setPreviousRenderValue(instance.url)}
                         />
                     </Document>
                 )}
