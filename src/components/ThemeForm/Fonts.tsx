@@ -1,10 +1,20 @@
-import { FormControl, Grid, InputLabel, MenuItem, Select, Slider, Stack } from '@mui/material';
+import {
+    FormControl,
+    Grid,
+    InputLabel,
+    ListSubheader,
+    MenuItem,
+    Select,
+    Slider,
+    Stack,
+} from '@mui/material';
 import { useResumeStore } from '../../store/ResumeStore';
 import { FontSize } from '../../types/TemplateStyles.types';
 import TextDecreaseOutlinedIcon from '@mui/icons-material/TextDecreaseOutlined';
 import TextIncreaseOutlinedIcon from '@mui/icons-material/TextIncreaseOutlined';
 import DensitySmallOutlinedIcon from '@mui/icons-material/DensitySmallOutlined';
 import DensityMediumOutlinedIcon from '@mui/icons-material/DensityMediumOutlined';
+import { FONTS } from '../templates/getDefaultStyleSheet';
 
 function fontValueLabelFormat(value: number) {
     return `${FontSize[value]} - ${value} pt`;
@@ -13,7 +23,6 @@ function fontValueLabelFormat(value: number) {
 export const Fonts = () => {
     const templateStyles = useResumeStore((state) => state.resume.templateStyles);
     const setValue = useResumeStore((state) => state.setValue);
-    const fonts = ['Ubuntu', 'Raleway', 'Roboto', 'Hind', 'Lato'];
 
     return (
         <>
@@ -26,12 +35,26 @@ export const Fonts = () => {
                         label="Font"
                         value={templateStyles.font.fontName.toString() || ''}
                         name="fontName"
-                        onChange={(event) =>
-                            setValue('templateStyles.font.fontName', event.target.value)
-                        }>
-                        {fonts.map((element: string) => (
-                            <MenuItem value={element} key={`font-${element}`}>
-                                {element}
+                        onChange={(event) => {
+                            console.log(event.target.value);
+                            setValue('templateStyles.font.fontName', event.target.value);
+                        }}>
+                        <ListSubheader>Special</ListSubheader>
+                        {Object.keys(FONTS['Special']).map((fontName) => (
+                            <MenuItem value={fontName} key={`Special-${fontName}`}>
+                                {fontName}
+                            </MenuItem>
+                        ))}
+                        <ListSubheader>Sans Serif</ListSubheader>
+                        {Object.keys(FONTS['Sans Serif']).map((fontName) => (
+                            <MenuItem value={fontName} key={`SansSerif-${fontName}`}>
+                                {fontName}
+                            </MenuItem>
+                        ))}
+                        <ListSubheader>Serif</ListSubheader>
+                        {Object.keys(FONTS['Serif']).map((fontName) => (
+                            <MenuItem value={fontName} key={`Serif-${fontName}`}>
+                                {fontName}
                             </MenuItem>
                         ))}
                     </Select>

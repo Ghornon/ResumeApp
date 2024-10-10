@@ -1,7 +1,7 @@
 import { Font, StyleSheet } from '@react-pdf/renderer';
 import { useResumeStore } from '../../store/ResumeStore';
 
-const FONTS = {
+export const FONTS = {
     Special: {
         Ubuntu: [
             { src: 'https://fonts.gstatic.com/s/ubuntu/v20/4iCs6KVjbNBYlgo6eA.ttf' },
