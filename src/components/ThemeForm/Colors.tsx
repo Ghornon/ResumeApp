@@ -46,21 +46,24 @@ export const Colors = () => {
             <Grid item xs={12} sm={12}>
                 <Box
                     sx={{
+                        width: '100%',
                         display: 'flex',
                         flexFlow: 'row wrap',
-                        justifyContent: 'space-between',
+                        justifyContent: 'center',
+                        paddingBottom: 2,
                     }}>
                     {themeColors.map((currentColor) => (
-                        <Radio
-                            key={currentColor}
-                            {...controlProps(currentColor)}
-                            sx={{
-                                color: currentColor,
-                                '&.Mui-checked': {
+                        <Box key={currentColor} sx={{ minWidth: 50 }}>
+                            <Radio
+                                {...controlProps(currentColor)}
+                                sx={{
                                     color: currentColor,
-                                },
-                            }}
-                        />
+                                    '&.Mui-checked': {
+                                        color: currentColor,
+                                    },
+                                }}
+                            />
+                        </Box>
                     ))}
                 </Box>
             </Grid>
