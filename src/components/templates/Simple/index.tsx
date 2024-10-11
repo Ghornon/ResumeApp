@@ -23,7 +23,7 @@ const Resume = ({ resumeData }: { resumeData: ResumeType }) => {
                     <Languages resumeData={resumeData} />
                 </View>
             </View>
-            {resumeData.footer.length > 0 ? (
+            {resumeData.templateStyles.format.isFooterVisible ? (
                 <Text style={styles.footer}>{resumeData.footer}</Text>
             ) : null}
         </Page>

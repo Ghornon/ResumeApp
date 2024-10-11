@@ -19,6 +19,7 @@ export const Colors = () => {
 
     const themeColors = [
         '#000000',
+        '#313C4E',
         '#475569',
         '#57534e',
         '#dc2626',

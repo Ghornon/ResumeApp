@@ -3,7 +3,7 @@ import { pdfjs, Document, Page } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 import type { PDFDocumentProxy } from 'pdfjs-dist';
-import { pdf, usePDF } from '@react-pdf/renderer';
+import { usePDF } from '@react-pdf/renderer';
 import { Box, Button, Pagination } from '@mui/material';
 import { blueGrey } from '@mui/material/colors';
 import { Spinner } from '../Spinner';
@@ -39,7 +39,6 @@ function getWindowSize() {
         documentHeight,
     };
 }
-
 const PDFPreview = () => {
     const resumeData = useResumeStore((state) => state.resume);
     const [numPages, setNumPages] = useState<number>(1);
@@ -152,7 +151,13 @@ const PDFPreview = () => {
                         className={shouldShowPreviousDocument ? 'rendering-document' : null}
                         file={instance.url}
                         loading={isFirstRendering ? <Spinner /> : null}
-                        onLoadSuccess={onDocumentLoadSuccess}>
+                        onLoadSuccess={onDocumentLoadSuccess}
+                        onLoadError={(error) =>
+                            alert('Error while loading document! ' + error.message)
+                        }
+                        onSourceError={(error) =>
+                            alert('Error while retrieving document source! ' + error.message)
+                        }>
                         <Page
                             key={`page_${currentPage}`}
                             pageNumber={currentPage}

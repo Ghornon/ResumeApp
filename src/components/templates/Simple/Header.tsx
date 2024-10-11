@@ -1,8 +1,8 @@
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 import { ResumeType } from '../../../types/Resume.types';
-import H2 from '../_components/H2';
 import Title from '../_components/Title';
 import getDefaultStyleSheet from '../getDefaultStyleSheet';
+import H1 from '../_components/H1';
 
 const Header = ({ resumeData }: { resumeData: ResumeType }) => {
     const defaultStyles = getDefaultStyleSheet();
@@ -17,9 +17,11 @@ const Header = ({ resumeData }: { resumeData: ResumeType }) => {
         },
         contact: {
             width: '112%',
+            lineHeight: 1,
+            paddingHorizontal: 40,
             display: 'flex',
             flexDirection: 'row',
-            justifyContent: 'center',
+            justifyContent: 'space-around',
             alignContent: 'center',
             position: 'absolute',
             bottom: 0,
@@ -27,11 +29,12 @@ const Header = ({ resumeData }: { resumeData: ResumeType }) => {
             ...defaultStyles.highlightColor,
         },
         contactItem: {
-            paddingHorizontal: 10,
-            paddingVertical: 10,
+            padding: 12,
             color: 'white',
         },
     });
+
+    const contactItems = ['email', 'phone', 'country', 'city'];
 
     return (
         <View style={styles.header}>
@@ -41,17 +44,24 @@ const Header = ({ resumeData }: { resumeData: ResumeType }) => {
                 </Title>
             </View>
             <View style={styles.container}>
-                <H2>{resumeData.personalDetails.jobTitle}</H2>
+                <H1>{resumeData.personalDetails.jobTitle}</H1>
             </View>
             <View style={styles.container}>
                 <Text>{resumeData.summary}</Text>
             </View>
 
             <View style={styles.contact}>
-                <Text style={styles.contactItem}>{resumeData.personalDetails.email}</Text>
-                <Text style={styles.contactItem}>{resumeData.personalDetails.phone}</Text>
-                <Text style={styles.contactItem}>{resumeData.personalDetails.country}</Text>
-                <Text style={styles.contactItem}>{resumeData.personalDetails.city}</Text>
+                {contactItems.map((item) => {
+                    if (
+                        resumeData.personalDetails[item] &&
+                        resumeData.personalDetails[item].length > 0
+                    )
+                        return (
+                            <Text style={styles.contactItem} key={item}>
+                                {resumeData.personalDetails[item]}
+                            </Text>
+                        );
+                })}
             </View>
         </View>
     );

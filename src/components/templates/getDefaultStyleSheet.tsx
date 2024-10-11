@@ -172,6 +172,7 @@ const getDefaultStyleSheet = () => {
             fontWeight: 700,
             fontSize: styles.font.fontSize * 2,
             textTransform: styles.font.headlineCapitalization,
+            color: styles.colors.highlightColor,
         },
         h2: {
             fontWeight: 700,
@@ -182,6 +183,7 @@ const getDefaultStyleSheet = () => {
             fontWeight: 700,
             fontSize: styles.font.fontSize * 1.5,
             textTransform: styles.font.headlineCapitalization,
+            color: styles.colors.highlightColor,
         },
         p: {
             padding: 5,
@@ -192,17 +194,18 @@ const getDefaultStyleSheet = () => {
         container: {
             paddingTop: 10,
             width: '100%',
+            display: 'flex',
             flex: 1,
             flexDirection: 'row',
         },
         leftColumn: {
             flexDirection: 'column',
-            width: '70%',
+            width: '60%',
             paddingTop: 10,
             paddingRight: 30,
         },
         rightColumn: {
-            width: '30%',
+            width: '40%',
             flexDirection: 'column',
             paddingTop: 10,
         },

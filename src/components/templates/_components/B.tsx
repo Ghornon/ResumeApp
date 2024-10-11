@@ -2,10 +2,10 @@ import { Text } from '@react-pdf/renderer';
 import { ReactNode } from 'react';
 import getDefaultStyleSheet from '../getDefaultStyleSheet';
 
-const P = ({ children }: { children: ReactNode }) => {
+const B = ({ children }: { children: ReactNode }) => {
     const styles = getDefaultStyleSheet();
 
-    return <Text style={styles.p}>{children}</Text>;
+    return <Text style={styles.b}>{children}</Text>;
 };
 
-export default P;
+export default B;

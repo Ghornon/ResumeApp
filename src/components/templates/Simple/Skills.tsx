@@ -9,7 +9,6 @@ const SkillEntry = ({ skills }: { skills: SkillItem[] }) => {
 
     const styles = StyleSheet.create({
         container: {
-            width: 170,
             gap: 5,
             paddingBottom: 10,
             display: 'flex',
