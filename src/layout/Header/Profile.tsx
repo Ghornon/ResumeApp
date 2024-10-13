@@ -110,7 +110,7 @@ const Profile = () => {
                     <Typography sx={{ ml: 1 }}>Profile</Typography>
                 </MenuItem>
                 <Divider />
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={handleGoToProfile}>
                     <ListItemIcon>
                         <Settings fontSize="small" />
                     </ListItemIcon>

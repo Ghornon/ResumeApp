@@ -4,7 +4,7 @@ import { useDocumentOnce } from 'react-firebase-hooks/firestore';
 import { doc } from 'firebase/firestore';
 import { Spinner } from '../components/Spinner';
 import ErrorSnackbar from '../components/ErrorSnackbar';
-import { BottomNavigation, BottomNavigationAction, Box, Stack, useMediaQuery } from '@mui/material';
+import { BottomNavigation, BottomNavigationAction, Stack, useMediaQuery } from '@mui/material';
 import EditorForm from '../components/EditorForm';
 import PDFPreview from '../components/PDFPreview/PDFPreview';
 import { useEffect, useState } from 'react';
