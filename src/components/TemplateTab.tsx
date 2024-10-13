@@ -7,6 +7,7 @@ import { Timestamp, addDoc, collection } from 'firebase/firestore';
 import { auth, db } from '../config/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
+import { getTemplateStylesDoc } from '../helpers/getTemplateStylesDoc';
 
 const TemplateTab = ({
     name,
@@ -27,6 +28,8 @@ const TemplateTab = ({
 
     const handleUseThisTemplate = async () => {
         try {
+            const templateStyles = await getTemplateStylesDoc(templateId);
+
             const resume = await addDoc(collection(db, 'resumes'), {
                 uid: user?.uid,
                 name: 'New Resume',
@@ -34,6 +37,7 @@ const TemplateTab = ({
                 template: name,
                 posterUrl,
                 timestamp: Timestamp.now(),
+                templateStyles,
             });
 
             if (resume) navigate(`/editor/${resume.id}`);

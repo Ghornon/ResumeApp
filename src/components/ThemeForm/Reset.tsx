@@ -1,8 +1,20 @@
 import { Button, Card, CardActions, CardContent, Grid, Typography } from '@mui/material';
 import { useResumeStore } from '../../store/ResumeStore';
+import { getTemplateStylesDoc } from '../../helpers/getTemplateStylesDoc';
 
 export const Reset = () => {
+    const templateId = useResumeStore((state) => state.resume.templateId);
     const setValue = useResumeStore((state) => state.setValue);
+
+    const handleReset = async () => {
+        const templateStyles = await getTemplateStylesDoc(templateId);
+
+        setValue('templateStyles', useResumeStore.getInitialState().resume.templateStyles);
+
+        Object.keys(templateStyles).map((property) => {
+            setValue(`templateStyles.${property}`, templateStyles[property]);
+        });
+    };
 
     return (
         <Grid item xs={12} sm={12}>
@@ -19,12 +31,7 @@ export const Reset = () => {
                         variant="contained"
                         color="error"
                         sx={{ margin: '0 auto' }}
-                        onClick={() =>
-                            setValue(
-                                'templateStyles',
-                                useResumeStore.getInitialState().resume.templateStyles,
-                            )
-                        }>
+                        onClick={handleReset}>
                         Reset
                     </Button>
                 </CardActions>
