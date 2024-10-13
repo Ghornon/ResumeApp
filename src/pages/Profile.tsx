@@ -132,13 +132,19 @@ const Profile = () => {
             ) : null}
             {error && error.length > 0 ? <ErrorSnackbar>{error}</ErrorSnackbar> : null}
             <Box>
-                <Typography variant="h3" gutterBottom>
+                <Typography
+                    variant="h4"
+                    sx={{ textTransform: 'uppercase', fontWeight: 'medium' }}
+                    gutterBottom>
                     Settings
                 </Typography>
 
-                <Grid2 container spacing={2} size={{ xs: 12, sm: 8 }}>
+                <Grid2 container spacing={2} size={{ xs: 12, sm: 8 }} sx={{ my: 2 }}>
                     <Grid2 size={12}>
-                        <Typography variant="h4" gutterBottom>
+                        <Typography
+                            variant="h5"
+                            sx={{ textTransform: 'uppercase', fontWeight: 'medium' }}
+                            gutterBottom>
                             Account
                         </Typography>
                         <Typography variant="body2" gutterBottom>
@@ -179,7 +185,13 @@ const Profile = () => {
                                 })
                             }
                         />
-                        <FormHelperText id="delete-helper-text" color="success">
+                        <FormHelperText
+                            id="delete-helper-text"
+                            sx={{
+                                color: personalDetails.emailVerified
+                                    ? 'success.main'
+                                    : 'error.main',
+                            }}>
                             {personalDetails.emailVerified ? 'Email verified' : 'Email unverified'}
                         </FormHelperText>
                     </Grid2>
@@ -196,10 +208,11 @@ const Profile = () => {
                             }
                         />
                     </Grid2>
-                    <Grid2 size={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Grid2 size={12} sx={{ display: 'flex', justifyContent: 'right' }}>
                         <Button
-                            variant="text"
+                            variant="outlined"
                             size="large"
+                            sx={{ marginRight: 2 }}
                             disabled={personalDetails.emailVerified}
                             onClick={sendUserEmailVerification}>
                             Send verification email
@@ -210,9 +223,12 @@ const Profile = () => {
                     </Grid2>
                 </Grid2>
 
-                <Grid2 container spacing={2} size={{ xs: 12, sm: 8 }}>
+                <Grid2 container spacing={2} size={{ xs: 12, sm: 8 }} sx={{ my: 2 }}>
                     <Grid2 size={12}>
-                        <Typography variant="h4" gutterBottom>
+                        <Typography
+                            variant="h5"
+                            sx={{ textTransform: 'uppercase', fontWeight: 'medium' }}
+                            gutterBottom>
                             Security
                         </Typography>
                         <Typography variant="body2" gutterBottom>
@@ -256,9 +272,12 @@ const Profile = () => {
                     </Grid2>
                 </Grid2>
 
-                <Grid2 container spacing={2} size={{ xs: 12, sm: 8 }}>
+                <Grid2 container spacing={2} size={{ xs: 12, sm: 8 }} sx={{ my: 2 }}>
                     <Grid2 size={12}>
-                        <Typography variant="h4" gutterBottom>
+                        <Typography
+                            variant="h5"
+                            sx={{ textTransform: 'uppercase', fontWeight: 'medium' }}
+                            gutterBottom>
                             Danger Zone
                         </Typography>
                         <Typography variant="body2" gutterBottom>
@@ -285,12 +304,8 @@ const Profile = () => {
                             Type <b>delete</b> to confirm deleting your account.
                         </FormHelperText>
                     </Grid2>
-                    <Grid2 size={{ xs: 12, sm: 6 }}>
-                        <Button
-                            variant="contained"
-                            size="large"
-                            color="error"
-                            onClick={deleteUserAccount}>
+                    <Grid2 size={{ xs: 12, sm: 12 }}>
+                        <Button variant="contained" color="error" onClick={deleteUserAccount}>
                             Delete Account
                         </Button>
                     </Grid2>
