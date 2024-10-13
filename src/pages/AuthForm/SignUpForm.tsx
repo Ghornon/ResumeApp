@@ -9,7 +9,7 @@ import { Alert, IconButton, Paper, TextField } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { auth, db } from '../../config/firebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { addDoc, collection } from 'firebase/firestore';
 import { SignUpType } from '../../types/SignUp.types';
 import { useState } from 'react';
@@ -74,13 +74,9 @@ const SignUpForm = () => {
                 formData.password,
             );
             const user = res.user;
-            await addDoc(collection(db, 'users'), {
-                uid: user.uid,
-                authProvider: 'local',
-                email: formData.email,
-                firstName: formData.firstName,
-                lastName: formData.lastName,
-                photoURL: '',
+
+            await updateProfile(user, {
+                displayName: `${formData.firstName} ${formData.lastName}`,
             });
         } catch (e) {
             const error = e instanceof FirebaseError;
