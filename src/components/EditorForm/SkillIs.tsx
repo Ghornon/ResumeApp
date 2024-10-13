@@ -18,7 +18,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
 import { useResumeStore } from '../../store/ResumeStore';
-import { Accordion, AccordionActions, AccordionDetails, AccordionSummary } from './Accordion';
+import { Accordion, AccordionActions, AccordionDetails, AccordionSummary } from '../Accordion';
 
 export const Skills = () => {
     const [expanded, setExpanded] = useState<string | false>(false);

@@ -14,7 +14,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import { useResumeStore } from '../../store/ResumeStore';
-import { Accordion, AccordionActions, AccordionDetails, AccordionSummary } from './Accordion';
+import { Accordion, AccordionActions, AccordionDetails, AccordionSummary } from '../Accordion';
 
 export const HistoryItem = ({ type }: { type: string }) => {
     const [expanded, setExpanded] = useState<string | false>(false);

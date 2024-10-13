@@ -12,7 +12,7 @@ import {
 import { InsertDriveFile, Home, Email } from '@mui/icons-material';
 import { NavLink } from 'react-router-dom';
 import HeaderContent from './HeaderContent';
-import logo from '../../../public/idea.png';
+import logo from '../../assets/images/idea.png';
 import { useState } from 'react';
 
 const Header = () => {
