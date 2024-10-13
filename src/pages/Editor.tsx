@@ -33,6 +33,7 @@ const Editor = () => {
             const data = resumeSnapshot?.data();
 
             if (data) {
+                useResumeStore.getState().reset();
                 useResumeStore.setState({
                     ...useResumeStore.getInitialState,
                     resumeId: resumeSnapshot?.id,

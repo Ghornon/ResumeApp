@@ -5,22 +5,28 @@ import Poster from './Poster';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DownloadIcon from '@mui/icons-material/Download';
 import DeleteIcon from '@mui/icons-material/Delete';
+import PrintIcon from '@mui/icons-material/Print';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { db } from '../config/firebase';
 import { doc, deleteDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { blueGrey } from '@mui/material/colors';
+import { ResumeType } from '../types/Resume.types';
+import { buildResumeAsPDF } from '../helpers/buildResumeAsPDF';
+import printJS from 'print-js';
 
 const ResumeTab = ({
     docId,
     name,
     posterUrl,
     date,
+    resumeData,
 }: {
     docId: string;
     name: string;
     posterUrl: string;
     date: string;
+    resumeData: ResumeType;
 }) => {
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -37,6 +43,28 @@ const ResumeTab = ({
     const handleRemove = async () => {
         await deleteDoc(doc(db, 'resumes', docId));
         handleMenuClose();
+    };
+
+    const handleDownloadResume = async () => {
+        const url = await buildResumeAsPDF(resumeData);
+
+        if (!url) return;
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${name}.pdf`;
+        document.body.appendChild(link);
+
+        link.click();
+
+        document.body.removeChild(link);
+    };
+
+    const printResume = async () => {
+        const url = await buildResumeAsPDF(resumeData);
+
+        if (!url) return;
+        printJS(url);
     };
 
     return (
@@ -122,8 +150,16 @@ const ResumeTab = ({
                             }}>
                             <ModeEditIcon sx={{ mr: 1 }} /> Edit
                         </MenuItem>
-                        <MenuItem onClick={handleMenuClose}>
+                        <MenuItem
+                            onClick={async () => {
+                                await handleDownloadResume();
+                                handleMenuClose();
+                            }}>
                             <DownloadIcon sx={{ mr: 1 }} /> Download
+                        </MenuItem>
+                        <MenuItem onClick={printResume}>
+                            <PrintIcon sx={{ mr: 1 }} />
+                            Print
                         </MenuItem>
                         <MenuItem onClick={handleRemove}>
                             <DeleteIcon sx={{ mr: 1 }} /> Remove

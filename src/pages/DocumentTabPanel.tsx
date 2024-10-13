@@ -13,6 +13,7 @@ import { Spinner } from '../components/Spinner';
 import ErrorSnackbar from '../components/ErrorSnackbar';
 import { getAuth } from 'firebase/auth';
 import TemplateTab from '../components/TemplateTab';
+import { ResumeType } from '../types/Resume.types';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -93,6 +94,8 @@ const DocumentTabPanel = () => {
                 <Grid container spacing={2}>
                     {resumesSnapshot?.docs.map((doc) => {
                         const { name, timestamp, posterUrl } = doc.data();
+                        const resumeData = doc.data() as ResumeType;
+
                         const date = new Date(timestamp.seconds * 1000).toLocaleDateString();
                         return (
                             <Grid item xs={12} sm={6} md={4} key={doc.id}>
@@ -101,6 +104,7 @@ const DocumentTabPanel = () => {
                                     name={name}
                                     posterUrl={posterUrl}
                                     date={date}
+                                    resumeData={resumeData}
                                 />
                             </Grid>
                         );

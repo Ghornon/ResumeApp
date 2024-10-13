@@ -48,7 +48,7 @@ const PDFPreviewMenu = ({ url }: { url: string | null | undefined }) => {
                     onClick={() => {
                         printJS(url ? url : '');
                     }}>
-                    <PrintOutlinedIcon />
+                    <PrintOutlinedIcon sx={{ mr: 1 }} />
                     Print
                 </MenuItem>
             </Menu>
