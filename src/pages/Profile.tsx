@@ -139,7 +139,7 @@ const Profile = () => {
                     Settings
                 </Typography>
 
-                <Grid2 container spacing={2} size={{ xs: 12, sm: 8 }} sx={{ my: 2 }}>
+                <Grid2 container spacing={2} size={{ xs: 12, md: 8 }} sx={{ my: 2 }}>
                     <Grid2 size={12}>
                         <Typography
                             variant="h5"
@@ -223,7 +223,7 @@ const Profile = () => {
                     </Grid2>
                 </Grid2>
 
-                <Grid2 container spacing={2} size={{ xs: 12, sm: 8 }} sx={{ my: 2 }}>
+                <Grid2 container spacing={2} size={{ xs: 12, md: 8 }} sx={{ my: 2 }}>
                     <Grid2 size={12}>
                         <Typography
                             variant="h5"
@@ -272,7 +272,7 @@ const Profile = () => {
                     </Grid2>
                 </Grid2>
 
-                <Grid2 container spacing={2} size={{ xs: 12, sm: 8 }} sx={{ my: 2 }}>
+                <Grid2 container spacing={2} size={{ xs: 12, md: 8 }} sx={{ my: 2 }}>
                     <Grid2 size={12}>
                         <Typography
                             variant="h5"

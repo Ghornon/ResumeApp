@@ -68,7 +68,8 @@ const Profile = () => {
                 <Typography
                     aria-controls={open ? 'account-menu' : undefined}
                     aria-haspopup="true"
-                    aria-expanded={open ? 'true' : undefined}>
+                    aria-expanded={open ? 'true' : undefined}
+                    sx={{ display: { xs: 'none', md: 'inline-block' } }}>
                     {user?.displayName || 'Guest'}
                 </Typography>
             </Box>

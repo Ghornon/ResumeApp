@@ -85,9 +85,14 @@ export function MobileLayout({
                 flexDirection: 'column',
                 gap: 2,
             }}>
-            <Box sx={{ display: 'flex', gap: 2, overflow: 'auto' }}>
+            <Box
+                sx={{
+                    maxWidth: '100%',
+                    textAlign: 'center',
+                }}>
                 {items.map(({ title }, index) => (
                     <Chip
+                        sx={{ marginLeft: 1, marginTop: 1 }}
                         size="medium"
                         key={index}
                         label={title}
@@ -105,7 +110,7 @@ export function MobileLayout({
                         mb: 2,
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
-                        minHeight: 280,
+                        minHeight: 180,
                     })}
                 />
                 <Box sx={{ px: 2, pb: 2 }}>
