@@ -15,7 +15,7 @@ import { useState } from 'react';
 import { FirebaseError } from 'firebase/app';
 import { useSignInWithGithub, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import handleSocialLogin from '../../helpers/handleSocialLogin';
-import logo from '../../../public/idea.png';
+import logo from '../../assets/images/idea.png';
 
 const SignUpForm = () => {
     const [formData, setFormData] = useState({
