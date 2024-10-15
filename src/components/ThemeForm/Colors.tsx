@@ -1,5 +1,6 @@
-import { Box, Grid, Radio, TextField } from '@mui/material';
+import { Box, Grid, InputAdornment, Radio, TextField } from '@mui/material';
 import { useResumeStore } from '../../store/ResumeStore';
+import { Brightness1 } from '@mui/icons-material';
 
 export const Colors = () => {
     const colors = useResumeStore((state) => state.resume.templateStyles.colors);
@@ -48,13 +49,13 @@ export const Colors = () => {
                 <Box
                     sx={{
                         width: '100%',
-                        display: 'flex',
-                        flexFlow: 'row wrap',
+                        display: 'inline-flex',
+                        flexWrap: 'wrap',
                         justifyContent: 'center',
                         paddingBottom: 2,
                     }}>
                     {themeColors.map((currentColor) => (
-                        <Box key={currentColor} sx={{ minWidth: 50 }}>
+                        <Box key={currentColor}>
                             <Radio
                                 {...controlProps(currentColor)}
                                 sx={{
@@ -77,6 +78,15 @@ export const Colors = () => {
                     onChange={(event) =>
                         setValue('templateStyles.colors.highlightColor', event.target.value)
                     }
+                    slotProps={{
+                        input: {
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <Brightness1 sx={{ color: colors.highlightColor }} />
+                                </InputAdornment>
+                            ),
+                        },
+                    }}
                     variant="outlined"
                 />
             </Grid>
@@ -89,6 +99,15 @@ export const Colors = () => {
                     onChange={(event) =>
                         setValue('templateStyles.colors.bgColor', event.target.value)
                     }
+                    slotProps={{
+                        input: {
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <Brightness1 sx={{ color: colors.bgColor }} />
+                                </InputAdornment>
+                            ),
+                        },
+                    }}
                     variant="outlined"
                 />
             </Grid>
@@ -101,6 +120,15 @@ export const Colors = () => {
                     onChange={(event) =>
                         setValue('templateStyles.colors.fontColor', event.target.value)
                     }
+                    slotProps={{
+                        input: {
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <Brightness1 sx={{ color: colors.fontColor }} />
+                                </InputAdornment>
+                            ),
+                        },
+                    }}
                     variant="outlined"
                 />
             </Grid>
