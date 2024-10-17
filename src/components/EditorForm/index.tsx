@@ -7,6 +7,7 @@ import { Skills } from './SkillIs';
 import { Languages } from './Languages';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import ResumeScore from './ResumeScore';
 
 const EditorForm = () => {
     return (
@@ -21,6 +22,8 @@ const EditorForm = () => {
             }}
             width={{ xs: '100vw', lg: '30vw' }}>
             <Navbar />
+
+            <ResumeScore />
 
             <ChipDivider title="Personal Details">
                 <PersonalDetails />
