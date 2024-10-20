@@ -9,7 +9,14 @@ import {
     Tabs,
     Tab,
 } from '@mui/material';
-import { InsertDriveFile, Home, Email } from '@mui/icons-material';
+import {
+    InsertDriveFile,
+    Home,
+    Email,
+    Description,
+    Article,
+    DocumentScanner,
+} from '@mui/icons-material';
 import { NavLink } from 'react-router-dom';
 import HeaderContent from './HeaderContent';
 import logo from '../../assets/images/idea.png';
@@ -82,17 +89,17 @@ const Header = () => {
                         />
                         <BottomNavigationAction
                             label="Resume"
-                            icon={<InsertDriveFile />}
+                            icon={<Article />}
                             component={NavLink}
                             value="/resumes"
                             to="/resumes"
                         />
                         <BottomNavigationAction
-                            label="Cover Letter"
-                            icon={<Email />}
+                            label="Parser"
+                            icon={<DocumentScanner />}
                             component={NavLink}
-                            value="/cover-letter-templates"
-                            to="/cover-letter-templates"
+                            value="/parser"
+                            to="/parser"
                         />
                     </BottomNavigation>
                 ) : (
@@ -105,12 +112,7 @@ const Header = () => {
                                 component={NavLink}
                                 to="/resumes"
                             />
-                            <Tab
-                                label="Cover Letter"
-                                value="/cover-letter-templates"
-                                component={NavLink}
-                                to="/cover-letter-templates"
-                            />
+                            <Tab label="Parser" value="/parser" component={NavLink} to="/parser" />
                         </Tabs>
                     </Box>
                 )}

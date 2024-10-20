@@ -15,6 +15,7 @@ const Profile = lazy(() => import('./pages/Profile'));
 const Editor = lazy(() => import('./pages/Editor'));
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { purple } from '@mui/material/colors';
+const Parser = lazy(() => import('./pages/Parser'));
 
 const defaultTheme = createTheme({
     palette: {
@@ -41,6 +42,7 @@ const App = () => {
                                 <Route index element={<Dashboard />} />
                                 <Route path="/resumes" element={<DocumentTabPanel />} />
                                 <Route path="/profile" element={<Profile />} />
+                                <Route path="/parser" element={<Parser />} />
                             </Route>
                             <Route
                                 path="/editor"
