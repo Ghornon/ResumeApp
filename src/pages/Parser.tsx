@@ -1,7 +1,14 @@
-import { Box, Button, IconButton, Typography } from '@mui/material';
+import { Box, Button, Card, IconButton, Pagination, Typography } from '@mui/material';
 import { useState } from 'react';
 import { parseResumeFromPdf } from '../lib/parse-resume-from-pdf';
-import { Close, FileUploadRounded } from '@mui/icons-material';
+import { ArrowCircleRightOutlined, Close, FileUploadRounded } from '@mui/icons-material';
+import { pdfjs, Document, Page } from 'react-pdf';
+import type { PDFDocumentProxy } from 'pdfjs-dist';
+
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+    'pdfjs-dist/build/pdf.worker.min.js',
+    import.meta.url,
+).toString();
 
 const defaultFileState = {
     name: '',
@@ -12,6 +19,8 @@ const defaultFileState = {
 const Parser = () => {
     const [file, setFile] = useState(defaultFileState);
     const [isHoveredOnDropzone, setIsHoveredOnDropzone] = useState(false);
+    const [numPages, setNumPages] = useState<number>(1);
+    const [currentPage, setCurrentPage] = useState<number>(1);
 
     const hasFile = Boolean(file.name);
 
@@ -52,14 +61,51 @@ const Parser = () => {
         console.info('Parsed data: ', resume);
     };
 
+    const onDocumentLoadSuccess = ({ numPages: nextNumPages }: PDFDocumentProxy): void => {
+        setNumPages(nextNumPages);
+    };
+
+    const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
+        setCurrentPage(value);
+    };
+
     return (
         <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="flex-start"
-            minHeight="100vh"
-            sx={{ pt: '20px' }}>
+            sx={{
+                pt: '20px',
+                minHeight: '100vh',
+                display: 'flex',
+                gap: 2,
+                justifyContent: 'center',
+            }}>
+            {hasFile ? (
+                <Box>
+                    <Card elevation={2}>
+                        <Document
+                            file={file.fileUrl}
+                            onLoadSuccess={onDocumentLoadSuccess}
+                            onLoadError={(error) =>
+                                alert('Error while loading document! ' + error.message)
+                            }
+                            onSourceError={(error) =>
+                                alert('Error while retrieving document source! ' + error.message)
+                            }>
+                            <Page key={`page_${currentPage}`} pageNumber={currentPage} />
+                        </Document>
+                    </Card>
+                    <Box
+                        sx={{
+                            height: 40,
+                            width: '100%',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}>
+                        <Pagination count={numPages} size="small" onChange={handlePageChange} />
+                    </Box>
+                </Box>
+            ) : null}
+
             <Box
                 sx={{
                     maxWidth: 700,
@@ -110,8 +156,11 @@ const Parser = () => {
                                 <Close />
                             </IconButton>
                         </Box>
-                        <Button variant="outlined" onClick={onImportClick}>
-                            Import
+                        <Button
+                            variant="outlined"
+                            onClick={onImportClick}
+                            endIcon={<ArrowCircleRightOutlined />}>
+                            Import and Continue
                         </Button>
                     </>
                 )}
