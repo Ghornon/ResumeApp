@@ -2,7 +2,6 @@ import { Text, View, StyleSheet } from '@react-pdf/renderer';
 import { ResumeType } from '../../../types/Resume.types';
 import Title from '../_components/Title';
 import getDefaultStyleSheet from '../getDefaultStyleSheet';
-import H1 from '../_components/H1';
 
 import FontAwesomeIcon from '../_components/FontAwesomeIcon';
 import {
@@ -11,6 +10,7 @@ import {
     faEarthEurope,
     faLocationDot,
 } from '@fortawesome/free-solid-svg-icons';
+import Subtitle from '../_components/Subtitle';
 
 const Header = ({ resumeData }: { resumeData: ResumeType }) => {
     const defaultStyles = getDefaultStyleSheet();
@@ -67,7 +67,7 @@ const Header = ({ resumeData }: { resumeData: ResumeType }) => {
                 </Title>
             </View>
             <View style={styles.container}>
-                <H1>{resumeData.personalDetails.jobTitle}</H1>
+                <Subtitle>{resumeData.personalDetails.jobTitle}</Subtitle>
             </View>
             <View style={styles.container}>
                 <Text>{resumeData.summary}</Text>

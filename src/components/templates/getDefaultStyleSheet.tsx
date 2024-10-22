@@ -168,6 +168,11 @@ const getDefaultStyleSheet = () => {
             fontSize: styles.font.fontSize * 3,
             textTransform: styles.font.headlineCapitalization,
         },
+        subtitle: {
+            fontWeight: 400,
+            fontSize: styles.font.fontSize * 2,
+            textTransform: styles.font.headlineCapitalization,
+        },
         h1: {
             fontWeight: 700,
             fontSize: styles.font.fontSize * 2,

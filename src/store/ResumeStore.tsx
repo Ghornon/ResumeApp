@@ -48,7 +48,7 @@ const initialState: ResumeType = {
             headlineCapitalization: HeadlineCapitalization.capitalize,
         },
         format: {
-            dateFormat: 'dd-mm-yyyy',
+            dateFormat: 'mm/yyyy',
             isFooterVisible: true,
         },
         colors: {

@@ -1,6 +1,6 @@
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 import { Timestamp } from 'firebase/firestore';
-import { timestampToDate } from '../../../helpers/timestampToDate';
+import { timestampToDateString } from '../../../helpers/timestampToDate';
 import { ResumeType } from '../../../types/Resume.types';
 import H2 from '../_components/H2';
 import B from '../_components/B';
@@ -26,6 +26,7 @@ const ExperienceEntry = ({
     endDate,
     city,
     description,
+    dateFormat,
 }: {
     jobTitle: string;
     employer: string;
@@ -33,15 +34,18 @@ const ExperienceEntry = ({
     endDate: Timestamp;
     city: string;
     description: string;
+    dateFormat: string;
 }) => {
-    const title = `${employer} | ${jobTitle}`;
     return (
         <View style={styles.box}>
-            <B>{title}</B>
+            <B>{jobTitle}</B>
+            <B>{employer}</B>
 
             <View style={styles.container}>
                 <Text>
-                    {timestampToDate(startDate)} to {timestampToDate(endDate)}
+                    {timestampToDateString(startDate, dateFormat)}
+                    {' - '}
+                    {timestampToDateString(endDate, dateFormat)}
                 </Text>
 
                 <Text>{city}</Text>
@@ -64,6 +68,7 @@ const Experience = ({ resumeData }: { resumeData: ResumeType }) => (
                     endDate={endDate}
                     city={city}
                     description={description}
+                    dateFormat={resumeData.templateStyles.format.dateFormat}
                 />
             ),
         )}

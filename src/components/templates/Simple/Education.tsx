@@ -1,5 +1,5 @@
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
-import { timestampToDate } from '../../../helpers/timestampToDate';
+import { timestampToDateString } from '../../../helpers/timestampToDate';
 import { ResumeType } from '../../../types/Resume.types';
 import H2 from '../_components/H2';
 import B from '../_components/B';
@@ -26,13 +26,18 @@ const Education = ({ resumeData }: { resumeData: ResumeType }) => (
         <H2>Education</H2>
         {resumeData.educationHistory.map((education, index) => (
             <View key={`education-${index}`}>
-                <B>
-                    {education.schoolName} | {education.city}
-                </B>
+                <B>{education.schoolName}</B>
                 <View style={styles.container}>
                     <Text>
-                        {timestampToDate(education.startDate)} to{' '}
-                        {timestampToDate(education.endDate)}
+                        {timestampToDateString(
+                            education.startDate,
+                            resumeData.templateStyles.format.dateFormat,
+                        )}
+                        {' - '}
+                        {timestampToDateString(
+                            education.endDate,
+                            resumeData.templateStyles.format.dateFormat,
+                        )}
                     </Text>
                     <Text>{education.city}</Text>
                 </View>

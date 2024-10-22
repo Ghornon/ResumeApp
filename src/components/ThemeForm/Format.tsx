@@ -27,9 +27,12 @@ export const Format = () => {
                         onChange={(event) =>
                             setValue('templateStyles.format.dateFormat', event.target.value)
                         }>
-                        <MenuItem value="dd-mm-yyyy">dd-mm-yyyy</MenuItem>
-                        <MenuItem value="mm-dd-yyyy">mm-dd-yyyy</MenuItem>
-                        <MenuItem value="yyyy-mm-dd">yyyy-mm-dd</MenuItem>
+                        <MenuItem value="mm/yyyy">mm/yyyy</MenuItem>
+                        <MenuItem value="yyyy/mm">yyyy/mm</MenuItem>
+                        <MenuItem value="mm-yyyy">mm-yyyy</MenuItem>
+                        <MenuItem value="yyyy-mm">yyyy-mm</MenuItem>
+                        <MenuItem value="mm.yyyy">mm.yyyy</MenuItem>
+                        <MenuItem value="yyyy.mm">yyyy.mm</MenuItem>
                     </Select>
                 </FormControl>
             </Grid>
