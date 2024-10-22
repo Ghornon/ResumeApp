@@ -15,7 +15,7 @@ export const timestampToDate = (timestamp: Timestamp) => {
 export const timestampToDateString = (timestamp: Timestamp, dateFormat: string) => {
     const newDate = new Date(timestamp.seconds * 1000);
 
-    const month = newDate.getUTCMonth();
+    const month = newDate.toLocaleString('default', { month: '2-digit' });
     const year = newDate.getUTCFullYear();
 
     switch (dateFormat) {
