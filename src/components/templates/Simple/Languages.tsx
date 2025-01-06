@@ -19,12 +19,17 @@ const styles = StyleSheet.create({
 
 const LanguageEntry = ({ languages }: { languages: LanguageItem[] }) => (
     <View style={styles.item}>
-        {languages.map((language, index) => (
-            <View key={`language-${index}`} style={styles.item}>
-                <Text style={styles.language}>{language.language}</Text>
-                <Text>{languageLevel[language.level as typeof languageLevel]}</Text>
-            </View>
-        ))}
+        {languages.map((language, index) => {
+            const level = language.level as languageLevel;
+            const indexOfLevel = Object.keys(languageLevel).indexOf(level);
+            return (
+                <View key={`language-${index}`} style={styles.item}>
+                    <Text style={styles.language}>{language.language}</Text>
+
+                    <Text>{Object.values(languageLevel)[indexOfLevel]}</Text>
+                </View>
+            );
+        })}
     </View>
 );
 

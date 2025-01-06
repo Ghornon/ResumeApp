@@ -9,14 +9,7 @@ import {
     Tabs,
     Tab,
 } from '@mui/material';
-import {
-    InsertDriveFile,
-    Home,
-    Email,
-    Description,
-    Article,
-    DocumentScanner,
-} from '@mui/icons-material';
+import { Home, Article, DocumentScanner } from '@mui/icons-material';
 import { NavLink } from 'react-router-dom';
 import HeaderContent from './HeaderContent';
 import logo from '../../assets/images/idea.png';

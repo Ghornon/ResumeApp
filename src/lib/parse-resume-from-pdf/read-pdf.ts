@@ -1,8 +1,5 @@
 // https://stackoverflow.com/a/63486898/7699841
 import * as pdfjs from 'pdfjs-dist';
-// @ts-expect-error Module declaration from pdfjs throw error on src
-/* import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.entry';
-pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker; */
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     'pdfjs-dist/build/pdf.worker.min.js',
@@ -42,6 +39,7 @@ export const readPdf = async (fileUrl: string): Promise<TextItems> => {
         const pageTextItems = textContent.items.map((item) => {
             const {
                 str: text,
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 dir, // Remove text direction
                 transform,
                 fontName: pdfFontName,
